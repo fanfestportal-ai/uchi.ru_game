@@ -1480,3 +1480,68 @@ body::after {
     font-size: 16px;
   }
 }
+
+/* Центрирование панели выбора заданий */
+.task-select-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 15px 30px;
+  background: linear-gradient(135deg, #f0f0ff 0%, #e8e8ff 100%);
+  border-radius: 60px;
+  margin: 0 30px 20px 30px;
+  flex-wrap: wrap;
+}
+
+.task-select-label {
+  font-weight: 700;
+  color: #667eea;
+  font-size: 16px;
+}
+
+.task-select-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.task-select-btn {
+  padding: 8px 16px;
+  background: white;
+  border: 2px solid #667eea;
+  border-radius: 40px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #667eea;
+}
+
+.task-select-btn:hover {
+  background: #667eea;
+  color: white;
+  transform: scale(1.02);
+}
+
+.task-select-btn.active {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-color: transparent;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+  .task-select-panel {
+    margin: 0 15px 15px 15px;
+    padding: 12px 15px;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .task-select-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}

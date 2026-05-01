@@ -1275,7 +1275,7 @@ function renderMirrorText() {
     { text: "Астрономы открыли новую планету в системе Проксимы Центавра. Наблюдения длились несколько лет. На планете есть атмосфера и вода. Возможно, там существует жизнь. Новость облетела весь мир. Учёные готовят новую миссию к этой звезде.", answer: "Астрономы открыли новую планету с возможной жизнью", options: ["Астрономы открыли новую планету с возможной жизнью", "Открытие оказалось ошибкой", "Воды на планете нет", "Жизнь точно существует", "Миссию отменили"] }
   ];
 
-  const allMedium = [...textsMedium];
+    const allMedium = [...textsMedium];
   const allHard = [...textsHard];
   
   // Получаем тексты в зависимости от уровня
@@ -1288,14 +1288,14 @@ function renderMirrorText() {
     task = allHard[Math.floor(Math.random() * allHard.length)];
   }
   
-  // Определяем размер шрифта в зависимости от уровня
-  let fontSize = "22px";
+  // Определяем размер шрифта в зависимости от уровня (в 2 раза больше)
+  let fontSize = "44px";   // было 22px → стало 44px (×2)
   let containerClass = "";
   if (state.level === 2) {
-    fontSize = "18px";
+    fontSize = "36px";     // было 18px → стало 36px (×2)
     containerClass = "medium-text";
   } else if (state.level === 3) {
-    fontSize = "16px";
+    fontSize = "32px";     // было 16px → стало 32px (×2)
     containerClass = "hard-text";
   }
   
@@ -1310,7 +1310,7 @@ function renderMirrorText() {
       📖 Задача: Текст написан задом наперёд (зеркально). Прочитай его правильно и выбери ответ!
     </div>
     <div class="mirror-text-container" style="text-align: center; margin: 20px 0;">
-      <div class="flipped-text ${containerClass}" style="transform: scaleX(-1); font-size: ${fontSize}; text-align: center; background: white; padding: 25px; border-radius: 20px; line-height: 1.6; max-width: 100%; display: inline-block; word-break: break-word;">
+      <div class="flipped-text ${containerClass}" style="transform: scaleX(-1); font-size: ${fontSize}; text-align: center; background: white; padding: 25px; border-radius: 20px; line-height: 1.6; max-width: 100%; display: inline-block; word-break: break-word; font-weight: 500;">
         ${displayText}
       </div>
     </div>
@@ -1422,57 +1422,477 @@ function renderMirrorText() {
     }
   };
 }
+// 5. Раздели текст на слова (интерактивная версия)
+let splitWordsTimeout = null;
+let currentSplitTask = null;
+let currentSplitPositions = [];
 
-// 5. Раздели текст на слова
 function renderSplitWords() {
-  const texts = {
-    1: { text: "мамамылараму", correct: "мама мыла раму", options: ["мама мыла раму", "мамамыла раму", "ма мамы ла раму"] },
-    2: { text: "котспитнасобакалает", correct: "кот спит а собака лает", options: ["кот спит а собака лает", "котспит на собака лает", "кот спит на собака лает"] },
-    3: { text: "девочкачитаеткнигуамальчикрисует", correct: "девочка читает книгу а мальчик рисует", options: ["девочка читает книгу а мальчик рисует", "девочка читает книгу амальчик рисует", "де вочка читает книгу а мальчик рисует"] }
-  };
+  // Очищаем предыдущий таймаут
+  if (splitWordsTimeout) {
+    clearTimeout(splitWordsTimeout);
+    splitWordsTimeout = null;
+  }
   
-  const task = texts[state.level] || texts[1];
+  // ===== ЛЁГКИЙ УРОВЕНЬ (1 предложение) - 20 текстов =====
+  const textsEasy = [
+    { text: "мамамылараму", correct: "мама мыла раму", words: ["мама", "мыла", "раму"] },
+    { text: "котловитмышей", correct: "кот ловит мышей", words: ["кот", "ловит", "мышей"] },
+    { text: "солнцесветитярко", correct: "солнце светит ярко", words: ["солнце", "светит", "ярко"] },
+    { text: "девочкачитаеткнигу", correct: "девочка читает книгу", words: ["девочка", "читает", "книгу"] },
+    { text: "мальчикрисуетдом", correct: "мальчик рисует дом", words: ["мальчик", "рисует", "дом"] },
+    { text: "собакагромколает", correct: "собака громко лает", words: ["собака", "громко", "лает"] },
+    { text: "птицапоётнаветке", correct: "птица поёт на ветке", words: ["птица", "поёт", "на", "ветке"] },
+    { text: "рыбаплаваетвреке", correct: "рыба плавает в реке", words: ["рыба", "плавает", "в", "реке"] },
+    { text: "цветыраспустилисьвесной", correct: "цветы распустились весной", words: ["цветы", "распустились", "весной"] },
+    { text: "детииграютвфутбол", correct: "дети играют в футбол", words: ["дети", "играют", "в", "футбол"] },
+    { text: "машинаедетподороге", correct: "машина едет по дороге", words: ["машина", "едет", "по", "дороге"] },
+    { text: "бабушкапечётпирог", correct: "бабушка печёт пирог", words: ["бабушка", "печёт", "пирог"] },
+    { text: "дедушкачитаетгазету", correct: "дедушка читает газету", words: ["дедушка", "читает", "газету"] },
+    { text: "учительобъясняетурок", correct: "учитель объясняет урок", words: ["учитель", "объясняет", "урок"] },
+    { text: "врачлечитбольных", correct: "врач лечит больных", words: ["врач", "лечит", "больных"] },
+    { text: "поварготовитобед", correct: "повар готовит обед", words: ["повар", "готовит", "обед"] },
+    { text: "художникрисуетпейзаж", correct: "художник рисует пейзаж", words: ["художник", "рисует", "пейзаж"] },
+    { text: "музыкантиграетнаскрипке", correct: "музыкант играет на скрипке", words: ["музыкант", "играет", "на", "скрипке"] },
+    { text: "танцорвыступаетнасцене", correct: "танцор выступает на сцене", words: ["танцор", "выступает", "на", "сцене"] },
+    { text: "строительстроитдом", correct: "строитель строит дом", words: ["строитель", "строит", "дом"] }
+  ];
+
+  // ===== СРЕДНИЙ УРОВЕНЬ (3 предложения) - 20 текстов =====
+  const textsMedium = [
+    { text: "утромсолнцевсталораномальчикпроснулсяиумылся", correct: "утром солнце встало рано мальчик проснулся и умылся", words: ["утром", "солнце", "встало", "рано", "мальчик", "проснулся", "и", "умылся"] },
+    { text: "вшколесегодняпразднуютденьзнанийдетиприносятцветыучителям", correct: "в школе сегодня празднуют день знаний дети приносят цветы учителям", words: ["в", "школе", "сегодня", "празднуют", "день", "знаний", "дети", "приносят", "цветы", "учителям"] },
+    { text: "наулицесильныйветердеревьякачаютсялучшесидетьдома", correct: "на улице сильный ветер деревья качаются лучше сидеть дома", words: ["на", "улице", "сильный", "ветер", "деревья", "качаются", "лучше", "сидеть", "дома"] },
+    { text: "котигралсклубкоммышьбегалапокомнатепотомоналегласпать", correct: "кот играл с клубком мышь бегала по комнате потом она легла спать", words: ["кот", "играл", "с", "клубком", "мышь", "бегал", "по", "комнате", "потом", "он", "лёг", "спать"] },
+    { text: "мамакупилавмагазинехлебмолокоидетиоченьобрадовались", correct: "мама купила в магазине хлеб молоко и дети очень обрадовались", words: ["мама", "купила", "в", "магазине", "хлеб", "молоко", "и", "дети", "очень", "обрадовались"] },
+    { text: "летомыездилинаморекупалисьзагоралистроилизамкиизпеска", correct: "летом мы ездили на море купались загорали строили замки из песка", words: ["летом", "мы", "ездили", "на", "море", "купались", "загорали", "строили", "замки", "из", "песка"] },
+    { text: "взоопаркеживутслоныжирафыиобезьяныдетилюбятнанихсмотреть", correct: "в зоопарке живут слоны жирафы и обезьяны дети любят на них смотреть", words: ["в", "зоопарке", "живут", "слоны", "жирафы", "и", "обезьяны", "дети", "любят", "на", "них", "смотреть"] },
+    { text: "настолележаликнигаручкаитетрадьученикготовилсякуроку", correct: "на столе лежали книга ручка и тетрадь ученик готовился к уроку", words: ["на", "столе", "лежали", "книга", "ручка", "и", "тетрадь", "ученик", "готовился", "к", "уроку"] },
+    { text: "послеуроковдетипошлигулятьнаплощадкуиграливпрятки", correct: "после уроков дети пошли гулять на площадку играли в прятки", words: ["после", "уроков", "дети", "пошли", "гулять", "на", "площадку", "играли", "в", "прятки"] },
+    { text: "вциркприехалиартистыдолгожданноепредставлениеначинается", correct: "в цирк приехали артисты долгожданное представление начинается", words: ["в", "цирк", "приехали", "артисты", "долгожданное", "представление", "начинается"] },
+    { text: "утромшёлдождьапослеобедавыглянулосолнцеденьудался", correct: "утром шёл дождь а после обеда выглянуло солнце день удался", words: ["утром", "шёл", "дождь", "а", "после", "обеда", "выглянуло", "солнце", "день", "удался"] },
+    { text: "бабушкаиспеклапирогиисварилавареньекнамвгостипришли", correct: "бабушка испекла пироги и сварила варенье к нам в гости пришли", words: ["бабушка", "испекла", "пироги", "и", "сварила", "варенье", "к", "нам", "в", "гости", "пришли"] },
+    { text: "папаремонтировалмашинусынподавалемуинструментыработаспорилась", correct: "папа ремонтировал машину сын подавал ему инструменты работа спорилась", words: ["папа", "ремонтировал", "машину", "сын", "подавал", "ему", "инструменты", "работа", "спорилась"] },
+    { text: "впаркецветуттюльпаныпионыирозывоздухнаполненароматом", correct: "в парке цветут тюльпаны пионы и розы воздух наполнен ароматом", words: ["в", "парке", "цветут", "тюльпаны", "пионы", "и", "розы", "воздух", "наполнен", "ароматом"] },
+    { text: "котикспитцелыйденьночьювесьдомегоноситсяиграет", correct: "котик спит целый день ночью весь дом его носится играет", words: ["котик", "спит", "целый", "день", "ночью", "весь", "дом", "его", "носится", "играет"] },
+    { text: "спортсментренируетсяежедневноонхочетстатьолимпийскимчемпионом", correct: "спортсмен тренируется ежедневно он хочет стать олимпийским чемпионом", words: ["спортсмен", "тренируется", "ежедневно", "он", "хочет", "стать", "олимпийским", "чемпионом"] },
+    { text: "карлсонжилнакрышеонлюбилвареньеипроказы", correct: "карлсон жил на крыше он любил варенье и проказы", words: ["карлсон", "жил", "на", "крыше", "он", "любил", "варенье", "и", "проказы"] },
+    { text: "пятачокшёлвгостиквиннипухонёсподарокгоршочекмёда", correct: "пятачок шёл в гости к вини пух он нёс подарок горшочек мёда", words: ["пятачок", "шёл", "в", "гости", "к", "вини", "пух", "он", "нёс", "подарок", "горшочек", "мёда"] },
+    { text: "невыпускайтептицзимойимхолодноиголодно", correct: "не выпускайте птиц зимой им холодно и голодно", words: ["не", "выпускайте", "птиц", "зимой", "им", "холодно", "и", "голодно"] },
+    { text: "помогайтебездомнымживотнымкаждыйможетсделатьдоброедело", correct: "помогайте бездомным животным каждый может сделать доброе дело", words: ["помогайте", "бездомным", "животным", "каждый", "может", "сделать", "доброе", "дело"] }
+  ];
+
+  // ===== СЛОЖНЫЙ УРОВЕНЬ (6 предложений) - 20 текстов =====
+  const textsHard = [
+    { text: "однаждывтёмномлесужилмаленькийёжиккаждоеутроонвыходилискатьягодыигрибыоднаждыонвстретилзайцакоторыйпредложилёжикудружбу", correct: "однажды в тёмном лесу жил маленький ёжик каждое утро он выходил искать ягоды и грибы однажды он встретил зайца который предложил ёжику дружбу", words: ["однажды", "в", "тёмном", "лесу", "жил", "маленький", "ёжик", "каждое", "утро", "он", "выходил", "искать", "ягоды", "и", "грибы", "однажды", "он", "встретил", "зайца", "который", "предложил", "ёжику", "дружбу"] },
+    { text: "машапошлавпервыйклассучительницавстретилаеёсулыбкойвклассебыломногоновыхдрузеймашанаучиласьчитатьписатьиоченьполюбилаучиться", correct: "маша пошла в первый класс учительница встретила её с улыбкой в классе было много новых друзей маша научилась читать писать и очень полюбила учиться", words: ["маша", "пошла", "в", "первый", "класс", "учительница", "встретила", "её", "с", "улыбкой", "в", "классе", "было", "много", "новых", "друзей", "маша", "научилась", "читать", "писать", "и", "очень", "полюбила", "учиться"] },
+    { text: "александрмечталстатьврачомсдетстваонхорошоучилсявшколепоступилвмедицинскийуниверситетнабюджетмногочиталипрактиковалсявбольницепослеучёбыустроилсявдетскуюполиклинику", correct: "александр мечтал стать врачом с детства он хорошо учился в школе поступил в медицинский университет на бюджет много читал и практиковался в больнице после учёбы устроился в детскую поликлинику", words: ["александр", "мечтал", "стать", "врачом", "с", "детства", "он", "хорошо", "учился", "в", "школе", "поступил", "в", "медицинский", "университет", "на", "бюджет", "много", "читал", "и", "практиковался", "в", "больнице", "после", "учёбы", "устроился", "в", "детскую", "поликлинику"] },
+    { text: "командапрограммистовсоздавалавуюкомпьютернуюигруработанаднейшлатригодадизайнерырисовалиперсонажейипрограммистыписаликодисправлялиошибкиигрувыпустилинавсехплатформахгеймерыповсемумируоценилиеёвысоко", correct: "команда программистов создавала новую компьютерную игру работа над ней шла три года дизайнеры рисовали персонажей и программисты писали код и исправляли ошибки игру выпустили на всех платформах геймеры по всему миру оценили её высоко", words: ["команда", "программистов", "создавала", "новую", "компьютерную", "игру", "работа", "над", "ней", "шла", "три", "года", "дизайнеры", "рисовали", "персонажей", "и", "программисты", "писали", "код", "и", "исправляли", "ошибки", "игру", "выпустили", "на", "всех", "платформах", "геймеры", "по", "всему", "миру", "оценили", "её", "высоко"] },
+    { text: "вдалёкойгалактикежилмаленькийроботспаркионмечталнаучитьсятанцеватьнотолькопрограммыдляработыназаводеоднаждыонвстретилдевочкулизукотораяпоказалаемурадостьдвижениятеперьонсамыйвесёлыйробот", correct: "в далёкой галактике жил маленький робот спарки он мечтал научиться танцевать но только программы для работы на заводе однажды он встретил девочку лизу которая показала ему радость движения теперь он самый весёлый робот", words: ["в", "далёкой", "галактике", "жил", "маленький", "робот", "спарки", "он", "мечтал", "научиться", "танцевать", "но", "только", "программы", "для", "работы", "на", "заводе", "однажды", "он", "встретил", "девочку", "лизу", "которая", "показала", "ему", "радость", "движения", "теперь", "он", "самый", "весёлый", "робот"] },
+    { text: "учёныеобнаружилиновуюпланетувдальнемкосмосеонанаходитсявобитаемойзонеимеетатмосферуиводучерездесятьлетпланируетсяотправитьтудазондисследоватьповерхность", correct: "учёные обнаружили новую планету в дальнем космосе она находится в обитаемой зоне имеет атмосферу и воду через десять лет планируется отправить туда зонд исследовать поверхность", words: ["учёные", "обнаружили", "новую", "планету", "в", "дальнем", "космосе", "она", "находится", "в", "обитаемой", "зоне", "имеет", "атмосферу", "и", "воду", "через", "десять", "лет", "планируется", "отправить", "туда", "зонд", "исследовать", "поверхность"] }
+  ];
+
+  // Добиваем до 20 текстов для сложного уровня
+  while (textsHard.length < 20) {
+    textsHard.push({
+      text: "путешественникиотправилисьвкругосветноепутешествиенаяхтеонипосетилимногостранпознакомилисьсразнымикультурамиивкуснойкухнейкаждаястранаудивлялаихчемтоновымивоспоминаниянавсюжизнь", 
+      correct: "путешественники отправились в кругосветное путешествие на яхте они посетили много стран познакомились с разными культурами и вкусной кухней каждая страна удивляла их чем то новым воспоминания на всю жизнь",
+      words: ["путешественники", "отправились", "в", "кругосветное", "путешествие", "на", "яхте", "они", "посетили", "много", "стран", "познакомились", "с", "разными", "культурами", "и", "вкусной", "кухней", "каждая", "страна", "удивляла", "их", "чем", "то", "новым", "воспоминания", "на", "всю", "жизнь"]
+    });
+  }
+  const allMedium = [...textsMedium];
+  const allHard = [...textsHard];
+  
+  // Получаем текст в зависимости от уровня
+  let task;
+  if (state.level === 1) {
+    task = textsEasy[Math.floor(Math.random() * textsEasy.length)];
+  } else if (state.level === 2) {
+    task = allMedium[Math.floor(Math.random() * allMedium.length)];
+  } else {
+    task = allHard[Math.floor(Math.random() * allHard.length)];
+  }
+  
+  currentSplitTask = task;
+  
+  // Определяем размер шрифта (в 2 раза больше стандартного для удобного нажатия)
+  let fontSize = "36px";
+  let letterSpacing = "6px";
+  if (state.level === 2) {
+    fontSize = "30px";
+    letterSpacing = "5px";
+  } else if (state.level === 3) {
+    fontSize = "24px";
+    letterSpacing = "4px";
+  }
+  
+  // Разбиваем текст на буквы для интерактивного разделения
+  const chars = task.text.split('');
+  
+  // Создаём HTML с буквами и местами для вставки разделителей
+  let textWithSpaces = '';
+  for (let i = 0; i < chars.length; i++) {
+    textWithSpaces += `<span class="split-char" data-index="${i}" style="display: inline-block;">${chars[i]}</span>`;
+    // Добавляем место для разделителя между буквами (кроме последней)
+    if (i < chars.length - 1) {
+      textWithSpaces += `<span class="split-position" data-pos="${i}" data-active="false" style="display: inline-block; width: 30px; text-align: center; color: #ccc; cursor: pointer; font-weight: bold;">⬤</span>`;
+    }
+  }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">📝 Раздели текст на слова</div>
+    <div class="task-title">📝 Раздели текст на слова ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: В тексте нет пробелов. Найди правильный вариант разделения на слова.
+      📖 Задача: В тексте нет пробелов. Нажимай на кружочки (⬤) между буквами, чтобы поставить разделитель. 
+      Раздели слова так, чтобы получился осмысленный текст!
     </div>
-    <div class="flipped-text" style="transform: none; font-size: 28px; text-align: center; font-family: monospace; background: white; padding: 25px; border-radius: 20px;">
-      ${task.text}
+    <div class="split-text-container" style="text-align: center; margin: 30px 0; padding: 30px; background: white; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow-x: auto;">
+      <div class="split-text" style="font-size: ${fontSize}; letter-spacing: ${letterSpacing}; font-family: monospace; line-height: 1.8; word-break: break-word; white-space: normal; max-width: 100%; display: block;">
+        ${textWithSpaces}
+      </div>
     </div>
-    <div class="options-list">
-      ${task.options.map(opt => `<button class="option-btn" data-answer="${opt}">${opt}</button>`).join("")}
+    <div class="split-controls" style="display: flex; justify-content: center; gap: 15px; margin: 20px 0;">
+      <button id="resetSplitBtn" class="btn-secondary" style="width: auto; padding: 10px 24px;">🔄 Сбросить разделители</button>
+      <button id="checkSplitBtn" class="btn-primary" style="width: auto; padding: 10px 32px;">✅ Проверить</button>
     </div>
-    <button id="checkBtn" class="btn-primary">✅ Проверить</button>
   `;
-  setupSimpleChoice(task.correct);
+  
+  // Добавляем стили для интерактивных элементов
+  const style = document.createElement('style');
+  style.textContent = `
+    .split-position {
+      display: inline-block;
+      width: 30px;
+      text-align: center;
+      color: #ccc;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.2s ease;
+      user-select: none;
+      font-size: 20px;
+    }
+    .split-position:hover {
+      color: #667eea;
+      transform: scale(1.2);
+    }
+    .split-position.active {
+      color: #10B981;
+    }
+    .split-char {
+      display: inline-block;
+      font-weight: 500;
+    }
+    .split-text {
+      user-select: none;
+      display: block;
+      word-break: break-all;
+      white-space: normal;
+      line-height: 2.2;
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Инициализируем массив активных позиций разделителей
+  currentSplitPositions = new Array(chars.length - 1).fill(false);
+  
+  // Находим правильные позиции для разделения
+  const correctPositions = [];
+  let currentPos = 0;
+  for (let i = 0; i < task.words.length; i++) {
+    currentPos += task.words[i].length;
+    if (i < task.words.length - 1) {
+      correctPositions.push(currentPos - 1);
+    }
+  }
+  
+  // Обработчики для позиций разделителей
+  const splitPositions = document.querySelectorAll('.split-position');
+  splitPositions.forEach((pos, idx) => {
+    pos.onclick = () => {
+      // Переключаем состояние разделителя
+      currentSplitPositions[idx] = !currentSplitPositions[idx];
+      if (currentSplitPositions[idx]) {
+        pos.classList.add('active');
+        pos.textContent = '|';
+        pos.style.color = '#10B981';
+      } else {
+        pos.classList.remove('active');
+        pos.textContent = '⬤';
+        pos.style.color = '#ccc';
+      }
+    };
+  });
+  
+  // Сброс разделителей
+  document.getElementById('resetSplitBtn').onclick = () => {
+    currentSplitPositions.fill(false);
+    splitPositions.forEach(pos => {
+      pos.classList.remove('active');
+      pos.textContent = '⬤';
+      pos.style.color = '#ccc';
+    });
+    showToast("🔄 Разделители сброшены", "success");
+  };
+  
+  // Проверка результата
+  document.getElementById('checkSplitBtn').onclick = () => {
+    let isCorrect = true;
+    
+    // Проверяем все правильные позиции
+    for (let i = 0; i < correctPositions.length; i++) {
+      const pos = correctPositions[i];
+      if (!currentSplitPositions[pos]) {
+        isCorrect = false;
+        break;
+      }
+    }
+    
+    // Проверяем, что нет лишних разделителей
+    if (isCorrect) {
+      for (let i = 0; i < currentSplitPositions.length; i++) {
+        if (currentSplitPositions[i] && !correctPositions.includes(i)) {
+          isCorrect = false;
+          break;
+        }
+      }
+    }
+    
+    if (isCorrect) {
+      // Подсвечиваем правильные разделители зелёным
+      splitPositions.forEach((pos, idx) => {
+        if (correctPositions.includes(idx)) {
+          pos.classList.add('active');
+          pos.textContent = '|';
+          pos.style.color = '#10B981';
+        }
+      });
+      successAction();
+      showToast("✅ Правильно! Ты правильно разделил текст на слова!", "success");
+      
+      splitWordsTimeout = setTimeout(() => {
+        renderSplitWords();
+      }, 1500);
+    } else {
+      // Подсвечиваем ошибки
+      for (let i = 0; i < correctPositions.length; i++) {
+        const posIdx = correctPositions[i];
+        if (!currentSplitPositions[posIdx] && splitPositions[posIdx]) {
+          splitPositions[posIdx].style.color = '#EF4444';
+          splitPositions[posIdx].style.backgroundColor = '#fee2e2';
+          setTimeout(() => {
+            if (splitPositions[posIdx]) {
+              splitPositions[posIdx].style.color = '#ccc';
+              splitPositions[posIdx].style.backgroundColor = 'transparent';
+            }
+          }, 800);
+        }
+      }
+      
+      for (let i = 0; i < currentSplitPositions.length; i++) {
+        if (currentSplitPositions[i] && !correctPositions.includes(i) && splitPositions[i]) {
+          splitPositions[i].style.color = '#EF4444';
+          splitPositions[i].style.backgroundColor = '#fee2e2';
+          setTimeout(() => {
+            if (splitPositions[i]) {
+              splitPositions[i].style.color = '#10B981';
+              splitPositions[i].style.backgroundColor = 'transparent';
+            }
+          }, 800);
+        }
+      }
+      
+      failAction();
+      const remaining = correctPositions.length - correctPositions.filter(p => currentSplitPositions[p]).length;
+      if (remaining > 0) {
+        showToast(`❌ Неправильно! Нужно поставить ${remaining} разделитель(ей) в правильных местах`, "error");
+      } else {
+        showToast(`❌ Неправильно! Есть лишние разделители`, "error");
+      }
+    }
+  };
 }
 
 // 6. Прочитай слово от самой маленькой к самой большой букве
+let sizeSortTimeout = null;
+
 function renderSizeSort() {
+  // Очищаем предыдущий таймаут
+  if (sizeSortTimeout) {
+    clearTimeout(sizeSortTimeout);
+    sizeSortTimeout = null;
+  }
+  
+  // ===== ЛЁГКИЙ УРОВЕНЬ (3 буквы, все буквы разные) - 30 слов =====
+  const wordsEasy = [
+    { word: "кот", letters: ["к", "о", "т"] },
+    { word: "дом", letters: ["д", "о", "м"] },
+    { word: "лес", letters: ["л", "е", "с"] },
+    { word: "сад", letters: ["с", "а", "д"] },
+    { word: "мир", letters: ["м", "и", "р"] },
+    { word: "сон", letters: ["с", "о", "н"] },
+    { word: "сыр", letters: ["с", "ы", "р"] },
+    { word: "лук", letters: ["л", "у", "к"] },
+    { word: "жук", letters: ["ж", "у", "к"] },
+    { word: "мяч", letters: ["м", "я", "ч"] },
+    { word: "меч", letters: ["м", "е", "ч"] },
+    { word: "пол", letters: ["п", "о", "л"] },
+    { word: "ток", letters: ["т", "о", "к"] },
+    { word: "рок", letters: ["р", "о", "к"] },
+    { word: "бак", letters: ["б", "а", "к"] },
+    { word: "мак", letters: ["м", "а", "к"] },
+    { word: "рак", letters: ["р", "а", "к"] },
+    { word: "бык", letters: ["б", "ы", "к"] },
+    { word: "вол", letters: ["в", "о", "л"] },
+    { word: "год", letters: ["г", "о", "д"] },
+    { word: "бег", letters: ["б", "е", "г"] },
+    { word: "воз", letters: ["в", "о", "з"] },
+    { word: "лак", letters: ["л", "а", "к"] },
+    { word: "суп", letters: ["с", "у", "п"] },
+    { word: "зуб", letters: ["з", "у", "б"] },
+    { word: "нос", letters: ["н", "о", "с"] },
+    { word: "рот", letters: ["р", "о", "т"] },
+    { word: "бок", letters: ["б", "о", "к"] },
+    { word: "два", letters: ["д", "в", "а"] },
+    { word: "три", letters: ["т", "р", "и"] }
+  ];
+
+  // ===== СРЕДНИЙ УРОВЕНЬ (5 букв, все буквы разные) - 30 слов =====
+  const wordsMedium = [
+    { word: "мышка", letters: ["м", "ы", "ш", "к", "а"] },
+    { word: "птица", letters: ["п", "т", "и", "ц", "а"] },
+    { word: "рыбка", letters: ["р", "ы", "б", "к", "а"] },
+    { word: "утка", letters: ["у", "т", "к", "а"] },
+    { word: "лиса", letters: ["л", "и", "с", "а"] },
+    { word: "волк", letters: ["в", "о", "л", "к"] },
+    { word: "заяц", letters: ["з", "а", "я", "ц"] },
+    { word: "ёжик", letters: ["ё", "ж", "и", "к"] },
+    { word: "белка", letters: ["б", "е", "л", "к", "а"] },
+    { word: "луна", letters: ["л", "у", "н", "а"] },
+    { word: "снег", letters: ["с", "н", "е", "г"] },
+    { word: "гриб", letters: ["г", "р", "и", "б"] },
+    { word: "ягода", letters: ["я", "г", "о", "д", "а"] },
+    { word: "цветы", letters: ["ц", "в", "е", "т", "ы"] },
+    { word: "груша", letters: ["г", "р", "у", "ш", "а"] },
+    { word: "вишня", letters: ["в", "и", "ш", "н", "я"] },
+    { word: "слива", letters: ["с", "л", "и", "в", "а"] },
+    { word: "арбуз", letters: ["а", "р", "б", "у", "з"] },
+    { word: "дыня", letters: ["д", "ы", "н", "я"] },
+    { word: "лимон", letters: ["л", "и", "м", "о", "н"] },
+    { word: "мишка", letters: ["м", "и", "ш", "к", "а"] },
+    { word: "белка", letters: ["б", "е", "л", "к", "а"] }
+  ];
+
+  // ===== СЛОЖНЫЙ УРОВЕНЬ (7 букв, все буквы разные) - 30 слов =====
+  const wordsHard = [
+    { word: "девушка", letters: ["д", "е", "в", "у", "ш", "к", "а"] },
+    { word: "мальчик", letters: ["м", "а", "л", "ь", "ч", "и", "к"] },
+    { word: "подушка", letters: ["п", "о", "д", "у", "ш", "к", "а"] },
+    { word: "варежка", letters: ["в", "а", "р", "е", "ж", "к"] },
+    { word: "полдник", letters: ["п", "о", "л", "д", "н", "и", "к"] },
+    { word: "берёзка", letters: ["б", "е", "р", "ё", "з", "к", "а"] },
+    { word: "пятёрка", letters: ["п", "я", "т", "ё", "р", "к", "а"] },
+    { word: "рисунок", letters: ["р", "и", "с", "у", "н", "о", "к"] },
+    { word: "самолёт", letters: ["с", "а", "м", "о", "л", "ё", "т"] },
+    { word: "поездка", letters: ["п", "о", "е", "з", "д", "к", "а"] },
+    { word: "радость", letters: ["р", "а", "д", "о", "с", "т", "ь"] },
+    { word: "чемпион", letters: ["ч", "е", "м", "п", "и", "о", "н"] }
+  ];
+
+  // Получаем слово в зависимости от уровня
+  let currentWord;
+  if (state.level === 1) {
+    currentWord = wordsEasy[Math.floor(Math.random() * wordsEasy.length)];
+  } else if (state.level === 2) {
+    currentWord = wordsMedium[Math.floor(Math.random() * wordsMedium.length)];
+  } else {
+    currentWord = wordsHard[Math.floor(Math.random() * wordsHard.length)];
+  }
+  
+  // Перемешиваем буквы для отображения
+  const displayLetters = [...currentWord.letters];
+  for (let i = displayLetters.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [displayLetters[i], displayLetters[j]] = [displayLetters[j], displayLetters[i]];
+  }
+  
+  // Генерируем размеры: ПЕРВАЯ буква в слове — САМАЯ БОЛЬШАЯ, последняя — САМАЯ МАЛЕНЬКАЯ
+  const baseSize = 90; // максимальный размер для первой буквы
+  const minSize = 28;  // минимальный размер для последней буквы
+  const step = (baseSize - minSize) / (currentWord.letters.length - 1);
+  
+  // Размеры для каждой позиции в слове (от первой к последней — убывают)
+  const sizesByPosition = [];
+  for (let i = 0; i < currentWord.letters.length; i++) {
+    const size = Math.round(baseSize - (i * step));
+    sizesByPosition.push(size);
+  }
+  
+  // Для отображения: берём перемешанные буквы, каждой букве даём размер согласно её позиции в ОРИГИНАЛЬНОМ слове
+  const lettersHtml = [];
+  for (let i = 0; i < displayLetters.length; i++) {
+    const letter = displayLetters[i];
+    // Находим позицию этой буквы в исходном слове
+    let originalIndex = currentWord.letters.indexOf(letter);
+    const size = sizesByPosition[originalIndex];
+    lettersHtml.push(`<span style="display: inline-block; font-size: ${size}px; margin: 0 8px; font-family: monospace; font-weight: bold; vertical-align: middle;">${letter}</span>`);
+  }
+  
+  // Дополнительно перемешиваем порядок отображения букв с их размерами
+  for (let i = lettersHtml.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [lettersHtml[i], lettersHtml[j]] = [lettersHtml[j], lettersHtml[i]];
+  }
+  
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">📏 Прочитай по размеру</div>
+    <div class="task-title">📏 Прочитай по размеру ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: Буквы разного размера. Прочитай слово, начиная с самой маленькой буквы и заканчивая самой большой.
+      📖 Задача: Прочитай слово, начиная с самой большой буквы и заканчивая самой маленькой.
+      <br>
     </div>
-    <div class="flipped-text" style="transform: none; font-size: 24px; text-align: center; word-break: keep-all; background: white; padding: 25px; border-radius: 20px;">
-      <span style="font-size: 14px;">р</span>
-      <span style="font-size: 28px;">о</span>
-      <span style="font-size: 20px;">в</span>
-      <span style="font-size: 36px;">к</span>
-      <span style="font-size: 18px;">ё</span>
+    <div class="size-sort-letters" style="text-align: center; background: white; padding: 40px; border-radius: 20px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+      ${lettersHtml.join('')}
     </div>
-    <div class="options-list">
-      <button class="option-btn" data-answer="ковёр">ковёр</button>
-      <button class="option-btn" data-answer="ворке">ворке</button>
-      <button class="option-btn" data-answer="рёвок">рёвок</button>
+    <div style="display: flex; justify-content: center; margin: 20px 0;">
+      <input type="text" id="sizeSortAnswer" class="answer-input" placeholder="Введи получившееся слово" style="width: 350px; text-align: center; font-size: 24px; padding: 15px; border-radius: 60px;">
     </div>
-    <button id="checkBtn" class="btn-primary">✅ Проверить</button>
+    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
+      <button id="checkSizeSortBtn" class="btn-primary" style="width: auto; padding: 12px 32px;">✅ Проверить</button>
+    </div>
   `;
-  setupSimpleChoice("ковёр");
+  
+  const checkBtn = document.getElementById("checkSizeSortBtn");
+  const answerInput = document.getElementById("sizeSortAnswer");
+  
+  checkBtn.onclick = () => {
+    const answer = answerInput.value.trim().toLowerCase();
+    
+    if (!answer) {
+      showToast("Введи слово!", "error");
+      return;
+    }
+    
+    if (answer === currentWord.word) {
+      successAction();
+      showToast("✅ Правильно! Ты прочитал слово по размеру букв!", "success");
+      
+      sizeSortTimeout = setTimeout(() => {
+        renderSizeSort();
+      }, 1500);
+    } else {
+      failAction();
+      showToast(`❌ Неправильно! Правильный ответ: ${currentWord.word}`, "error");
+      answerInput.value = '';
+      answerInput.focus();
+    }
+  };
+  
+  // Enter для отправки
+  answerInput.onkeypress = (e) => {
+    if (e.key === "Enter") {
+      checkBtn.click();
+    }
+  };
 }
 
 // 7. Фиджитал: Перевёрнутое письмо (с таблицей)
