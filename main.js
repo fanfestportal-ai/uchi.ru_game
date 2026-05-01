@@ -1,3 +1,37 @@
+function getTaskIcon(taskId) {
+  const icons = {
+    "flipped_text": "🔄",
+    "obstacle_text": "🚧",
+    "half_text": "✂️",
+    "mirror_text": "🪞",
+    "split_words": "📝",
+    "size_sort": "📏",
+    "phygital_flipped": "🎯",
+    "logic_chain": "🔗",
+    "logic_riddle": "❓",
+    "logic_match": "🔀",
+    "logic_anagram": "🔄",
+    "logic_picture": "🖼️",
+    "logic_cipher": "🔐",
+    "phygital_cipher": "🎯",
+    "attention_find_odd": "🔍",
+    "attention_find_items": "🎨",
+    "attention_find_number": "🔢",
+    "attention_black_white": "⚫",
+    "attention_circle_square": "⭕",
+    "attention_find_among": "🐕",
+    "phygital_coloring": "🎨",
+    "memory_sequence": "📋",
+    "memory_what_missing": "❓",
+    "memory_quiz": "📝",
+    "phygital_audio": "🎧",
+    "reaction": "⚡",
+    "findwords": "🔍",
+    "schulte": "📊"
+  };
+  return icons[taskId] || "📖";
+}
+
 const soundCorrect = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-game-click-1114.mp3");
 const soundWrong = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3");
 
@@ -254,82 +288,45 @@ function showTaskSelection() {
   }
 }
 
-function getTaskIcon(taskId) {
-  const icons = {
-    "flipped_text": "🔄",
-    "obstacle_text": "🚧",
-    "half_text": "✂️",
-    "mirror_text": "🪞",
-    "split_words": "📝",
-    "size_sort": "📏",
-    "phygital_flipped": "🎯",
-    
-    "logic_chain": "🔗",
-    "logic_riddle": "❓",
-    "logic_match": "🔀",
-    "logic_anagram": "🔄",
-    "logic_picture": "🖼️",
-    "logic_cipher": "🔐",
-    "phygital_cipher": "🎯",
-    
-    "attention_find_odd": "🔍",
-    "attention_find_items": "🎨",
-    "attention_find_number": "🔢",
-    "attention_black_white": "⚫⚪",
-    "attention_circle_square": "⭕□",
-    "attention_find_among": "🐕",
-    "phygital_coloring": "🎨",
-    
-    "memory_sequence": "📋",
-    "memory_what_missing": "❓",
-    "memory_quiz": "📝",
-    "phygital_audio": "🎧",
-    
-    "schulte_single": "⚡",
-    "schulte_double": "🔄",
-    "reaction_time": "⏱️",
-    "find_words": "🔎",
-    "phygital_other_hand": "✋"
-  };
-  return icons[taskId] || "📌";
-}
-
 function getTaskName(taskId) {
   const names = {
-    "flipped_text": "Перевёрнутый текст",
-    "obstacle_text": "Текст с препятствиями",
-    "half_text": "Непропечатанный текст",
-    "mirror_text": "Зеркальный текст",
-    "split_words": "Раздели текст на слова",
-    "size_sort": "Прочитай по размеру",
-    "phygital_flipped": "🎯 Фиджитал: Перевёрнутое письмо",
+    // Скорочтение
+    "flipped_text": " Перевёрнутый текст",
+    "obstacle_text": " Текст с препятствиями",
+    "half_text": " Непропечатанный текст",
+    "mirror_text": " Зеркальный текст",
+    "split_words": " Раздели текст на слова",
+    "size_sort": " Прочитай по размеру",
+    "phygital_flipped": " Фиджитал: Перевёрнутое письмо",
     
-    "logic_chain": "Продолжи цепочку",
-    "logic_riddle": "Отгадай загадку",
-    "logic_match": "Соедини части",
-    "logic_anagram": "Переставь буквы",
-    "logic_picture": "Выбери утверждения",
-    "logic_cipher": "Расшифруй послание",
-    "phygital_cipher": "🎯 Фиджитал: Свой шифр",
+    // Логика
+    "logic_chain": " Продолжи цепочку",
+    "logic_riddle": " Отгадай загадку",
+    "logic_match": " Соедини части",
+    "logic_anagram": " Переставь буквы",
+    "logic_picture": " Выбери утверждения",
+    "logic_cipher": " Расшифруй послание",
+    "phygital_cipher": " Фиджитал: Свой шифр",
     
-    "attention_find_odd": "Найди лишнее",
-    "attention_find_items": "Найди предметы",
-    "attention_find_number": "Найди цифру",
-    "attention_black_white": "Чёрно-белые таблицы",
-    "attention_circle_square": "Зачеркни-обведи",
-    "attention_find_among": "Найди среди...",
-    "phygital_coloring": "🎯 Фиджитал: Раскраска",
+    // Внимание
+    "attention_find_odd": " Найди лишнее",
+    "attention_find_items": " Найди предметы",
+    "attention_find_number": " Найди цифру",
+    "attention_black_white": " Чёрно-белые таблицы",
+    "attention_circle_square": " Зачеркни-обведи",
+    "attention_find_among": " Найди среди...",
+    "phygital_coloring": " Фиджитал: Раскраска",
     
-    "memory_sequence": "Запомни порядок",
-    "memory_what_missing": "Что пропало?",
-    "memory_quiz": "Мини-опрос",
-    "phygital_audio": "🎯 Фиджитал: Запомни на слух",
+    // Память
+    "memory_sequence": " Запомни порядок",
+    "memory_what_missing": " Что пропало?",
+    "memory_quiz": " Мини-опрос",
+    "phygital_audio": " Фиджитал: Запомни на слух",
     
-    "schulte_single": "Таблица Шульте",
-    "schulte_double": "Двойные таблицы",
-    "reaction_time": "Успей нажать",
-    "find_words": "Найди слова",
-    "phygital_other_hand": "🎯 Фиджитал: Обведи другой рукой"
+    // Ловкость 
+    "reaction": " Реакция",
+    "findwords": " Найди слова",
+    "schulte": " Таблица Шульте"
   };
   return names[taskId] || taskId;
 }
@@ -425,7 +422,7 @@ function showParentPasswordModal(onSuccess) {
   
   const handleSubmit = () => {
     const password = input ? input.value : "";
-    if (password === "umnye2024") {
+    if (password === "UNO_MISS_DI") {
       modal.style.display = "none";
       if (pendingPhygitalSuccess) {
         pendingPhygitalSuccess();
@@ -1962,129 +1959,655 @@ function renderPhygitalFlipped() {
 // ===== ЗАДАНИЯ ЛОГИКА =====
 
 // 1. Продолжи логическую цепочку (с повторяющимся паттерном)
+let logicChainTimeout = null;
+
 function renderLogicChain() {
-  const chains = {
-    1: { 
-      pattern: "2 → 4 → 6 → 2 → 4 → 6 → ?", 
-      options: ["2", "4", "8"], 
-      correct: "2",
-      explanation: "Паттерн: 2,4,6 повторяется"
-    },
-    2: { 
-      pattern: "1 → 3 → 5 → 1 → 3 → 5 → ?", 
-      options: ["1", "7", "9"], 
-      correct: "1",
-      explanation: "Паттерн: 1,3,5 повторяется"
-    },
-    3: { 
-      pattern: "🍎 → 🍌 → 🍇 → 🍎 → 🍌 → 🍇 → ?", 
-      options: ["🍎", "🍒", "🍊"], 
-      correct: "🍎",
-      explanation: "Паттерн: яблоко, банан, виноград повторяется"
-    }
-  };
+  // Очищаем предыдущий таймаут
+  if (logicChainTimeout) {
+    clearTimeout(logicChainTimeout);
+    logicChainTimeout = null;
+  }
   
-  const chain = chains[state.level] || chains[1];
+  // ===== БИБЛИОТЕКИ ЭЛЕМЕНТОВ =====
+  const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  const letters = ["А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З", "И", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Э", "Ю", "Я"];
+  const emojis = ["🍎", "🍌", "🍇", "🍒", "🍓", "🥝", "🍊", "🍉", "🍑", "🥭", "🐱", "🐶", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "⭐", "🌟", "❤️", "💙", "💚", "💛", "💜", "🧡"];
+  const shapes = ["●", "■", "▲", "◆", "★", "♠", "♣", "♥", "♦", "⬤", "🔴", "🔵", "🟢", "🟡", "🟣", "🟠", "🔷", "🔶", "🔺", "🔻"];
+  
+  // ===== ФУНКЦИЯ ГЕНЕРАЦИИ СЛУЧАЙНОГО ПАТТЕРНА =====
+  function generatePattern(level) {
+    let patternItems = [];
+    let patternLength = 0;
+    let elementType = "";
+    let availablePool = [];
+    let result;
+    
+    if (level === 1) {
+      // 1 уровень: простые паттерны из 3-4 элементов (только один тип)
+      patternLength = Math.floor(Math.random() * 2) + 3; // 3 или 4
+      
+      // Выбираем случайный тип элементов
+      const types = ["numbers", "letters", "emojis", "shapes"];
+      elementType = types[Math.floor(Math.random() * types.length)];
+      
+      if (elementType === "numbers") availablePool = [...numbers];
+      else if (elementType === "letters") availablePool = [...letters];
+      else if (elementType === "emojis") availablePool = [...emojis];
+      else availablePool = [...shapes];
+      
+      // Берём уникальные элементы для паттерна
+      const shuffled = [...availablePool].sort(() => Math.random() - 0.5);
+      const uniqueItems = shuffled.slice(0, patternLength);
+      
+      // Строим последовательность с повторением
+      const repeats = 2;
+      for (let i = 0; i < repeats; i++) {
+        patternItems.push(...uniqueItems);
+      }
+      
+      // Правильный ответ - следующий элемент паттерна
+      result = uniqueItems[0];
+      
+    } else if (level === 2) {
+      // 2 уровень: комбинация двух типов, 4-5 элементов
+      patternLength = Math.floor(Math.random() * 2) + 4; // 4 или 5
+      
+      // Выбираем два типа элементов
+      const types = ["numbers", "letters", "emojis", "shapes"];
+      const type1 = types[Math.floor(Math.random() * types.length)];
+      let type2 = types[Math.floor(Math.random() * types.length)];
+      while (type2 === type1) {
+        type2 = types[Math.floor(Math.random() * types.length)];
+      }
+      
+      let pool1, pool2;
+      if (type1 === "numbers") pool1 = [...numbers];
+      else if (type1 === "letters") pool1 = [...letters];
+      else if (type1 === "emojis") pool1 = [...emojis];
+      else pool1 = [...shapes];
+      
+      if (type2 === "numbers") pool2 = [...numbers];
+      else if (type2 === "letters") pool2 = [...letters];
+      else if (type2 === "emojis") pool2 = [...emojis];
+      else pool2 = [...shapes];
+      
+      // Берём уникальные элементы из обоих пулов
+      const shuffled1 = [...pool1].sort(() => Math.random() - 0.5);
+      const shuffled2 = [...pool2].sort(() => Math.random() - 0.5);
+      
+      const uniqueItems = [];
+      for (let i = 0; i < patternLength; i++) {
+        if (i % 2 === 0) {
+          uniqueItems.push(shuffled1[i % shuffled1.length]);
+        } else {
+          uniqueItems.push(shuffled2[i % shuffled2.length]);
+        }
+      }
+      
+      // Строим последовательность с повторением
+      const repeats = 2;
+      for (let i = 0; i < repeats; i++) {
+        patternItems.push(...uniqueItems);
+      }
+      
+      // Правильный ответ - следующий элемент паттерна
+      result = uniqueItems[0];
+      
+    } else {
+      // 3 уровень: сложные комбинации из 5-6 элементов (буквы + цифры + эмодзи + фигуры)
+      patternLength = Math.floor(Math.random() * 2) + 5; // 5 или 6
+      
+      // Используем все типы
+      const types = ["numbers", "letters", "emojis", "shapes"];
+      
+      const uniqueItems = [];
+      for (let i = 0; i < patternLength; i++) {
+        const type = types[i % types.length];
+        let pool;
+        if (type === "numbers") pool = [...numbers];
+        else if (type === "letters") pool = [...letters];
+        else if (type === "emojis") pool = [...emojis];
+        else pool = [...shapes];
+        
+        const shuffled = [...pool].sort(() => Math.random() - 0.5);
+        uniqueItems.push(shuffled[0]);
+      }
+      
+      // Строим последовательность с повторением
+      const repeats = 2;
+      for (let i = 0; i < repeats; i++) {
+        patternItems.push(...uniqueItems);
+      }
+      
+      // Правильный ответ - следующий элемент паттерна
+      result = uniqueItems[0];
+    }
+    
+    // Формируем строку паттерна
+    const patternString = patternItems.join(" → ") + " → ?";
+    
+    // Генерируем варианты ответов (1 правильный + 3 неправильных)
+    let allOptions = [result];
+    
+    // Собираем пул для неправильных ответов
+    let wrongPool = [];
+    if (level === 1) {
+      if (elementType === "numbers") wrongPool = [...numbers];
+      else if (elementType === "letters") wrongPool = [...letters];
+      else if (elementType === "emojis") wrongPool = [...emojis];
+      else wrongPool = [...shapes];
+    } else if (level === 2) {
+      // Для 2 уровня берём из тех же типов, что использовались
+      const types = ["numbers", "letters", "emojis", "shapes"];
+      for (let t of types) {
+        if (t === "numbers") wrongPool.push(...numbers);
+        else if (t === "letters") wrongPool.push(...letters);
+        else if (t === "emojis") wrongPool.push(...emojis);
+        else wrongPool.push(...shapes);
+      }
+    } else {
+      // Для 3 уровня берём из всех типов
+      wrongPool.push(...numbers, ...letters, ...emojis, ...shapes);
+    }
+    
+    // Убираем правильный ответ из пула
+    wrongPool = wrongPool.filter(item => item !== result);
+    // Убираем дубликаты
+    wrongPool = [...new Set(wrongPool)];
+    
+    // Выбираем 3 случайных неправильных ответа
+    const shuffledWrong = [...wrongPool].sort(() => Math.random() - 0.5);
+    const wrongOptions = shuffledWrong.slice(0, 3);
+    allOptions = [result, ...wrongOptions];
+    
+    // Перемешиваем варианты
+    for (let i = allOptions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [allOptions[i], allOptions[j]] = [allOptions[j], allOptions[i]];
+    }
+    
+    return {
+      pattern: patternString,
+      correct: result,
+      options: allOptions,
+      patternLength: patternLength,
+      elementType: elementType
+    };
+  }
+  
+  // Генерируем задание в зависимости от уровня
+  const chain = generatePattern(state.level);
+  
+  // Определяем размер шрифта и стиль в зависимости от уровня
+  let fontSize = "28px";
+  if (state.level === 2) {
+    fontSize = "26px";
+  } else if (state.level === 3) {
+    fontSize = "24px";
+  }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔗 Продолжи логическую цепочку</div>
+    <div class="task-title">🔗 Продолжи логическую цепочку ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: Посмотри на последовательность. Она повторяется! Какой следующий элемент?
+      📖 Задача: Посмотри на последовательность. Найди закономерность и выбери следующий элемент!
     </div>
-    <div class="logic-task" style="background: white; padding: 30px; font-size: 28px;">
+    <div class="logic-task" style="background: white; padding: 30px; font-size: ${fontSize}; text-align: center; word-break: break-word;">
       ${chain.pattern}
     </div>
-    <div class="options-list">
-      ${chain.options.map(opt => `<button class="option-btn" data-answer="${opt}">${opt}</button>`).join("")}
+    <div class="options-list-horizontal">
+      ${chain.options.map(opt => `
+        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 20px; font-weight: 600; border: 3px solid #e5e7eb; border-radius: 60px; background: white; cursor: pointer; transition: all 0.2s ease; min-width: 80px;">
+          ${opt}
+        </button>
+      `).join('')}
     </div>
-    <button id="checkBtn" class="btn-primary">✅ Проверить</button>
+    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">✅ Проверить</button>
   `;
-  setupSimpleChoice(chain.correct);
-}
-
-// 2. Отгадай загадку
-function renderLogicRiddle() {
-  const riddles = {
-    1: { question: "Висит груша, нельзя скушать. Что это?", options: ["Яблоко", "Лампочка", "Груша"], correct: "Лампочка" },
-    2: { question: "Что можно приготовить, но нельзя съесть?", options: ["Уроки", "Завтрак", "Конфеты"], correct: "Уроки" },
-    3: { question: "У него есть спинка, но он не лежит. У него есть четыре ножки, но он не ходит. Что это?", options: ["Стул", "Стол", "Кровать"], correct: "Стул" }
+  
+  // Настраиваем выбор вариантов
+  let selected = null;
+  let selectedButton = null;
+  let isAnswered = false;
+  const buttons = document.querySelectorAll(".option-btn-horizontal");
+  
+  buttons.forEach(btn => {
+    btn.onclick = () => {
+      if (isAnswered) return;
+      
+      buttons.forEach(b => {
+        b.classList.remove("selected");
+        b.style.background = "white";
+        b.style.color = "#333";
+      });
+      btn.classList.add("selected");
+      btn.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+      btn.style.color = "white";
+      selected = btn.dataset.answer;
+      selectedButton = btn;
+    };
+  });
+  
+  const checkBtn = document.getElementById("checkBtn");
+  checkBtn.onclick = () => {
+    if (isAnswered) return;
+    
+    if (!selected) {
+      showToast("Выбери ответ!", "error");
+      return;
+    }
+    
+    if (selected === chain.correct) {
+      isAnswered = true;
+      if (selectedButton) {
+        selectedButton.classList.add("correct");
+        selectedButton.style.background = "linear-gradient(135deg, #10B981, #059669)";
+        selectedButton.style.color = "white";
+      }
+      successAction();
+      showToast("✅ Правильно! Ты нашёл закономерность!", "success");
+      
+      logicChainTimeout = setTimeout(() => {
+        renderLogicChain();
+      }, 1500);
+    } else {
+      if (selectedButton) {
+        selectedButton.classList.add("wrong");
+        selectedButton.style.background = "#EF4444";
+        selectedButton.style.color = "white";
+        setTimeout(() => {
+          selectedButton.classList.remove("wrong");
+          selectedButton.classList.remove("selected");
+          selectedButton.style.background = "white";
+          selectedButton.style.color = "#333";
+          selected = null;
+          selectedButton = null;
+          isAnswered = false;
+        }, 800);
+      }
+      failAction();
+      showToast(`❌ Неправильно! Правильный ответ: ${chain.correct}`, "error");
+    }
   };
-  const riddle = riddles[state.level] || riddles[1];
+}
+// 2. Отгадай загадку
+let riddleTimeout = null;
+
+function renderLogicRiddle() {
+  // Очищаем предыдущий таймаут
+  if (riddleTimeout) {
+    clearTimeout(riddleTimeout);
+    riddleTimeout = null;
+  }
+  
+  // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 20 загадок, 3 варианта ответа =====
+  const riddlesEasy = [
+    { question: "Висит груша, нельзя скушать. Что это?", options: ["Яблоко", "Лампочка", "Груша"], correct: "Лампочка" },
+    { question: "Что можно приготовить, но нельзя съесть?", options: ["Уроки", "Завтрак", "Конфеты"], correct: "Уроки" },
+    { question: "Что можно увидеть с закрытыми глазами?", options: ["Сон", "Тьму", "Звезды"], correct: "Сон" },
+    { question: "Какой месяц короче всех?", options: ["Февраль", "Май", "Декабрь"], correct: "Май" },
+    { question: "Что с земли легко поднимешь, но далеко не закинешь?", options: ["Пух", "Камень", "Мяч"], correct: "Пух" },
+    { question: "Что все люди на Земле делают одновременно?", options: ["Дышат", "Живут", "Спят"], correct: "Живут" },
+    { question: "Какой рукой лучше размешивать чай?", options: ["Правой", "Левой", "Ложкой"], correct: "Ложкой" },
+    { question: "Что можно приготовить, но нельзя съесть?", options: ["Ужин", "Уроки", "Обед"], correct: "Уроки" },
+    { question: "Когда черной кошке лучше всего пробраться в дом?", options: ["Ночью", "Когда дверь открыта", "В полночь"], correct: "Когда дверь открыта" },
+    { question: "Какой нос не чувствует запаха?", options: ["Нос ботинка", "Нос человека", "Нос собаки"], correct: "Нос ботинка" },
+    { question: "Что идет то в гору, то с горы, но остается на месте?", options: ["Дорога", "Турист", "Поезд"], correct: "Дорога" },
+    { question: "Что сырым не едят, а сварят — выбросят?", options: ["Лавровый лист", "Картошку", "Рыбу"], correct: "Лавровый лист" },
+    { question: "Какое колесо автомобиля не крутится при движении?", options: ["Запасное", "Переднее", "Заднее"], correct: "Запасное" },
+    { question: "Что бросают, когда нуждаются, и поднимают, когда нет нужды?", options: ["Якорь", "Мяч", "Камень"], correct: "Якорь" },
+    { question: "Чем больше из нее берешь, тем больше она становится?", options: ["Яма", "Копилка", "Сумка"], correct: "Яма" },
+    { question: "Что делает сторож, когда у него на шапке сидит воробей?", options: ["Спит", "Стоит", "Бежит"], correct: "Спит" },
+    { question: "Какое слово всегда звучит неверно?", options: ["Неверно", "Правильно", "Ошибка"], correct: "Неверно" },
+    { question: "За чем вода в стакане?", options: ["За стеклом", "На дне", "Внутри"], correct: "За стеклом" },
+    { question: "Что можно приготовить, но нельзя съесть?", options: ["Уроки", "Конфету", "Пирог"], correct: "Уроки" },
+    { question: "Какая нота не нужна для компота?", options: ["Соль", "Ми", "До"], correct: "Соль" }
+  ];
+
+  // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 20 загадок, 4 варианта ответа =====
+  const riddlesMedium = [
+    { question: "Ты да я, да мы с тобой. Сколько нас всего?", options: ["2", "3", "4", "5"], correct: "2" },
+    { question: "Что с каждым годом становится больше, но никогда не уменьшается?", options: ["Возраст", "Дом", "Дерево", "Семья"], correct: "Возраст" },
+    { question: "На столе лежало 4 яблока. Одно разрезали пополам. Сколько яблок на столе?", options: ["4", "3", "5", "6"], correct: "4" },
+    { question: "Какой месяц имеет 28 дней?", options: ["Февраль", "Все месяцы", "Январь", "Декабрь"], correct: "Все месяцы" },
+    { question: "Сколько яиц можно съесть натощак?", options: ["Одно", "Два", "Три", "Десять"], correct: "Одно" },
+    { question: "Горело 7 свечей. 2 свечи погасли. Сколько осталось?", options: ["2", "5", "7", "0"], correct: "2" },
+    { question: "Что можно видеть с закрытыми глазами?", options: ["Сон", "Свет", "Тьму", "Звезды"], correct: "Сон" },
+    { question: "У него есть спинка, но он не лежит. У него есть четыре ножки, но он не ходит. Что это?", options: ["Стул", "Стол", "Кровать", "Диван"], correct: "Стул" },
+    { question: "Что принадлежит вам, но другие используют это чаще?", options: ["Имя", "Дом", "Машина", "Телефон"], correct: "Имя" },
+    { question: "В вазе лежало 3 яблока. Мама угостила ими трех девочек. Каждая получила по яблоку, и одно осталось в вазе. Как так получилось?", options: ["Одна взяла с вазой", "Яблоко упало", "Девочек было две", "Ваза пустая"], correct: "Одна взяла с вазой" },
+    { question: "На столе стоят 3 стакана с соком. Один выпили и поставили обратно. Сколько стаканов на столе?", options: ["3", "2", "4", "1"], correct: "3" },
+    { question: "Если пять кошек ловят пять мышей за пять минут, сколько минут нужно одной кошке, чтобы поймать одну мышь?", options: ["5", "1", "10", "3"], correct: "5" },
+    { question: "В семье 5 сыновей, и у каждого есть одна сестра. Сколько всего детей в семье?", options: ["6", "5", "7", "4"], correct: "6" },
+    { question: "Тройка лошадей пробежала 15 км. Сколько километров пробежала каждая лошадь?", options: ["15", "5", "10", "3"], correct: "15" },
+    { question: "Росло 4 березы. На каждой березе по 4 больших ветки, на каждой большой ветке по 4 маленьких, на каждой маленькой по 4 яблока. Сколько яблок всего?", options: ["0", "64", "256", "16"], correct: "0" },
+    { question: "Что можно найти один раз в минуте, два раза в моменте, но ни разу в тысяче лет?", options: ["Букву М", "Букву О", "Число 1", "Время"], correct: "Букву М" },
+    { question: "На какой вопрос нельзя ответить «да»?", options: ["Ты спишь?", "Ты жив?", "Ты человек?", "Тебя зовут?"], correct: "Ты спишь?" },
+    { question: "Что не имеет длины, глубины, ширины, высоты, но можно измерить?", options: ["Время", "Температуру", "Скорость", "Массу"], correct: "Время" },
+    { question: "Чтобы сварить 1 кг мяса, нужен 1 час. За сколько сварятся 2 кг?", options: ["1 час", "2 часа", "30 минут", "3 часа"], correct: "1 час" },
+    { question: "У семерых братьев по одной сестре. Сколько всего детей в семье?", options: ["8", "7", "14", "6"], correct: "8" }
+  ];
+
+  // ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 20 загадок, 5 вариантов ответа =====
+  const riddlesHard = [
+    { question: "Два отца и два сына поймали трех зайцев, каждый принес домой по зайцу. Как это возможно?", options: ["Дед, отец и сын", "Две семьи", "Братья", "Друзья", "Коллеги"], correct: "Дед, отец и сын" },
+    { question: "Что можно держать, не трогая руками?", options: ["Дыхание", "Слово", "Мысль", "Взгляд", "Голос"], correct: "Дыхание" },
+    { question: "Какое число увеличивается и не уменьшается?", options: ["Возраст", "Номер", "Количество", "Порядок", "Индекс"], correct: "Возраст" },
+    { question: "Как можно одним мешком пшеницы наполнить 2 пустых мешка?", options: ["Вложить один в другой", "Ссыпать в ведро", "Разделить пополам", "Связать вместе", "Смешать с песком"], correct: "Вложить один в другой" },
+    { question: "Что можно приготовить, но нельзя съесть?", options: ["Уроки", "План", "Идею", "Сюрприз", "Ужин"], correct: "Уроки" },
+    { question: "Когда человек бывает в комнате без головы?", options: ["Когда выглядывает в окно", "Когда спит", "Когда смотрит в потолок", "Когда плачет", "Когда ест"], correct: "Когда выглядывает в окно" },
+    { question: "Какой болезнью никто никогда не болел на земле?", options: ["Морской", "Космической", "Наземной", "Воздушной", "Профессиональной"], correct: "Морской" },
+    { question: "Что не может увеличить лупа?", options: ["Угол", "Расстояние", "Предмет", "Изображение", "Свет"], correct: "Угол" },
+    { question: "Что можно потерять только один раз в жизни?", options: ["Жизнь", "Ключи", "Деньги", "Время", "Работу"], correct: "Жизнь" },
+    { question: "Кто ходит сидя?", options: ["Шахматист", "Водитель", "Учитель", "Писатель", "Художник"], correct: "Шахматист" },
+    { question: "Что у человека под ногами, когда он идет по мосту?", options: ["Река", "Тень", "Земля", "Вода", "Мост"], correct: "Тень" },
+    { question: "Какой год длится всего один день?", options: ["Новый год", "Юбилей", "Рождение", "Високосный", "Переходный"], correct: "Новый год" },
+    { question: "Что становится больше, если его поставить вверх ногами?", options: ["Число 6", "Число 9", "Число 8", "Число 1", "Число 0"], correct: "Число 6" },
+    { question: "Где вода стоит столбом?", options: ["В колодце", "В море", "В реке", "В озере", "В стакане"], correct: "В колодце" },
+    { question: "Что можно приготовить, но нельзя съесть?", options: ["Уроки", "Кулинарную книгу", "Рецепт", "Посуду", "Стол"], correct: "Уроки" },
+    { question: "Какая птица не несет яиц, но сама вылупляется из яйца?", options: ["Петух", "Кукушка", "Страус", "Пингвин", "Орел"], correct: "Петух" },
+    { question: "Что имеет голову, но не имеет мозгов?", options: ["Чеснок", "Спичка", "Гвоздь", "Лук", "Молоток"], correct: "Чеснок" },
+    { question: "Какой остров называется одеждой?", options: ["Ямайка", "Куба", "Ява", "Сахалин", "Шри-Ланка"], correct: "Ямайка" },
+    { question: "Что не имеет размера, но имеет длину?", options: ["Время", "Речь", "Дорога", "Тень", "Звук"], correct: "Время" },
+    { question: "Что можно сделать, но нельзя отменить?", options: ["Слово", "Поступок", "Ошибку", "Выбор", "Решение"], correct: "Слово" }
+  ];
+
+  // Выбираем загадку в зависимости от уровня
+  let riddle;
+  if (state.level === 1) {
+    riddle = riddlesEasy[Math.floor(Math.random() * riddlesEasy.length)];
+  } else if (state.level === 2) {
+    riddle = riddlesMedium[Math.floor(Math.random() * riddlesMedium.length)];
+  } else {
+    riddle = riddlesHard[Math.floor(Math.random() * riddlesHard.length)];
+  }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">❓ Отгадай загадку</div>
+    <div class="task-title">❓ Отгадай загадку ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: Внимательно прочитай загадку и выбери правильный ответ.
+      📖 Задача: Внимательно прочитай загадку и выбери правильный ответ. Здесь важно логически мыслить, а не просто знать!
     </div>
-    <div class="logic-task" style="background: white; padding: 30px; font-size: 22px;">
+    <div class="logic-task" style="background: white; padding: 30px; font-size: 22px; text-align: center;">
       ${riddle.question}
     </div>
-    <div class="options-list">
-      ${riddle.options.map(opt => `<button class="option-btn" data-answer="${opt}">${opt}</button>`).join("")}
+    <div class="options-list-horizontal">
+      ${riddle.options.map(opt => `
+        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 3px solid #e5e7eb; border-radius: 60px; background: white; cursor: pointer; transition: all 0.2s ease; min-width: 120px;">
+          ${opt}
+        </button>
+      `).join('')}
     </div>
-    <button id="checkBtn" class="btn-primary">✅ Проверить</button>
+    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">✅ Проверить</button>
   `;
-  setupSimpleChoice(riddle.correct);
+  
+  // Добавляем стили для кнопок
+  const style = document.createElement('style');
+  style.textContent = `
+    .option-btn-horizontal {
+      transition: all 0.2s ease;
+      color: #333 !important;
+    }
+    .option-btn-horizontal:hover {
+      transform: translateY(-3px);
+      border-color: #667eea;
+      background: #f8f9ff;
+      box-shadow: 0 6px 16px rgba(102,126,234,0.2);
+    }
+    .option-btn-horizontal.selected {
+      background: linear-gradient(135deg, #667eea, #764ba2) !important;
+      color: white !important;
+      border-color: transparent !important;
+      transform: scale(1.02);
+    }
+    .option-btn-horizontal.correct {
+      background: linear-gradient(135deg, #10B981, #059669) !important;
+      color: white !important;
+      border-color: #10B981 !important;
+    }
+    .option-btn-horizontal.wrong {
+      background: #EF4444 !important;
+      color: white !important;
+      border-color: #EF4444 !important;
+      animation: shake 0.3s ease;
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Настраиваем выбор вариантов
+  let selected = null;
+  let selectedButton = null;
+  let isAnswered = false;
+  const buttons = document.querySelectorAll(".option-btn-horizontal");
+  
+  buttons.forEach(btn => {
+    btn.onclick = () => {
+      if (isAnswered) return;
+      
+      buttons.forEach(b => {
+        b.classList.remove("selected");
+        b.style.background = "white";
+        b.style.color = "#333";
+      });
+      btn.classList.add("selected");
+      btn.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+      btn.style.color = "white";
+      selected = btn.dataset.answer;
+      selectedButton = btn;
+    };
+  });
+  
+  const checkBtn = document.getElementById("checkBtn");
+  checkBtn.onclick = () => {
+    if (isAnswered) return;
+    
+    if (!selected) {
+      showToast("Выбери ответ!", "error");
+      return;
+    }
+    
+    if (selected === riddle.correct) {
+      isAnswered = true;
+      if (selectedButton) {
+        selectedButton.classList.add("correct");
+        selectedButton.style.background = "linear-gradient(135deg, #10B981, #059669)";
+        selectedButton.style.color = "white";
+      }
+      successAction();
+      showToast("✅ Правильно! Ты отгадал загадку!", "success");
+      
+      riddleTimeout = setTimeout(() => {
+        renderLogicRiddle();
+      }, 1500);
+    } else {
+      if (selectedButton) {
+        selectedButton.classList.add("wrong");
+        selectedButton.style.background = "#EF4444";
+        selectedButton.style.color = "white";
+        setTimeout(() => {
+          selectedButton.classList.remove("wrong");
+          selectedButton.classList.remove("selected");
+          selectedButton.style.background = "white";
+          selectedButton.style.color = "#333";
+          selected = null;
+          selectedButton = null;
+          isAnswered = false;
+        }, 800);
+      }
+      failAction();
+      showToast(`❌ Неправильно! Попробуй ещё раз`, "error");
+    }
+  };
 }
 
 // 3. Соедини части (Drag & Drop)
+let matchTimeout = null;
+
 function renderLogicMatch() {
-  const matches = {
-    1: {
-      starts: ["Без труда не выловишь", "Волка бояться", "Что посеешь"],
-      ends: ["рыбку из пруда", "в лес не ходить", "то и пожнёшь"],
-      pairs: [[0,0], [1,1], [2,2]]
-    },
-    2: {
-      starts: ["Кот спит", "Собака лает", "Птица летит"],
-      ends: ["на диване", "во дворе", "в небе"],
-      pairs: [[0,0], [1,1], [2,2]]
-    },
-    3: {
-      starts: ["Девочка читает", "Мальчик рисует", "Мама готовит"],
-      ends: ["книгу", "картину", "ужин"],
-      pairs: [[0,0], [1,1], [2,2]]
-    }
-  };
+  // Очищаем предыдущий таймаут
+  if (matchTimeout) {
+    clearTimeout(matchTimeout);
+    matchTimeout = null;
+  }
   
-  const match = matches[state.level] || matches[1];
+  // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 25 вариантов, по 3 пары =====
+  const matchesEasy = [
+    { starts: ["Без труда не выловишь", "Волка бояться", "Что посеешь"], ends: ["рыбку из пруда", "в лес не ходить", "то и пожнёшь"] },
+    { starts: ["Поспешишь", "Семь раз отмерь", "Делу время"], ends: ["людей насмешишь", "один раз отрежь", "потехе час"] },
+    { starts: ["Лучше синица в руках", "Не всё золото", "Утро вечера"], ends: ["чем журавль в небе", "что блестит", "мудренее"] },
+    { starts: ["Друзья познаются", "Как аукнется", "Кто не работает"], ends: ["в беде", "так и откликнется", "тот не ест"] },
+    { starts: ["На вкус и цвет", "Глаза боятся", "Сделал дело"], ends: ["товарищей нет", "а руки делают", "гуляй смело"] },
+    { starts: ["Любишь кататься", "Тише едешь", "Век живи"], ends: ["люби и саночки возить", "дальше будешь", "век учись"] },
+    { starts: ["Что написано пером", "Мал золотник", "За двумя зайцами"], ends: ["не вырубишь топором", "да дорог", "погонишься — ни одного не поймаешь"] },
+    { starts: ["Береги платье снову", "Один в поле", "Яблоко от яблони"], ends: ["а честь смолоду", "не воин", "недалеко падает"] },
+    { starts: ["Дарёному коню", "Лес рубят", "В тесноте"], ends: ["в зубы не смотрят", "щепки летят", "да не в обиде"] },
+    { starts: ["Готовь сани летом", "Не плюй в колодец", "Слово не воробей"], ends: ["а телегу зимой", "пригодится воды напиться", "вылетит — не поймаешь"] },
+    { starts: ["На обиженных", "Старый друг", "Куй железо"], ends: ["воду возят", "лучше новых двух", "пока горячо"] },
+    { starts: ["Безделье — мать", "Терпение и труд", "Не красна изба углами"], ends: ["всех пороков", "всё перетрут", "а красна пирогами"] },
+    { starts: ["Волка ноги", "Рыбак рыбака", "На безрыбье"], ends: ["кормят", "видит издалека", "и рак рыба"] },
+    { starts: ["Повторенье — мать", "С волками жить", "Кашу маслом"], ends: ["ученья", "по-волчьи выть", "не испортишь"] },
+    { starts: ["Под лежачий камень", "Лучше один раз увидеть", "У страха"], ends: ["вода не течёт", "чем сто раз услышать", "глаза велики"] },
+    { starts: ["Не в свои сани", "Семь пятниц", "Яйца курицу"], ends: ["не садись", "на неделе", "не учат"] },
+    { starts: ["Кончил дело", "Любопытной Варваре", "На чужой каравай"], ends: ["гуляй смело", "на базаре нос оторвали", "рот не разевай"] },
+    { starts: ["Своя рубашка", "Обещанного", "Маленькое дело"], ends: ["ближе к телу", "три года ждут", "лучше большого безделья"] },
+    { starts: ["Не красна книга письмом", "Долог день до вечера", "И ежу"], ends: ["красна умом", "коли делать нечего", "понятно"] },
+    { starts: ["Родина — мать", "Чудеса в решете", "За одного битого"], ends: ["умей за неё постоять", "дыр много", "двух небитых дают"] },
+    { starts: ["Пар костей", "В чужой монастырь", "На вкус и цвет"], ends: ["не ломит", "со своим уставом не ходят", "товарищей нет"] },
+    { starts: ["Всякая сорока", "Близок локоть", "От тюрьмы и от сумы"], ends: ["от своего языка погибает", "да не укусишь", "не зарекайся"] },
+    { starts: ["Грамоте учиться", "Лучше поздно", "Своя земля"], ends: ["всегда пригодится", "чем никогда", "и в горсти мила"] },
+    { starts: ["Кто рано встаёт", "Без труда", "Зачем платить больше"], ends: ["тому Бог подаёт", "не вынешь и рыбку из пруда", "когда можно купить"] }
+  ];
+
+  // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 25 вариантов, по 4 пары =====
+  const matchesMedium = [
+    { starts: ["Кошка", "Собака", "Лошадь", "Корова"], ends: ["мяукает", "лает", "ржёт", "мычит"] },
+    { starts: ["Яблоко", "Апельсин", "Банан", "Виноград"], ends: ["растёт на дереве", "растёт на дереве", "растёт на пальме", "растёт на лозе"] },
+    { starts: ["Зима", "Весна", "Лето", "Осень"], ends: ["холодно", "тает снег", "жарко", "листопад"] },
+    { starts: ["Марс", "Венера", "Юпитер", "Сатурн"], ends: ["красная планета", "утренняя звезда", "самая большая планета", "планета с кольцами"] },
+    { starts: ["Понедельник", "Среда", "Пятница", "Воскресенье"], ends: ["первый день", "середина недели", "конец рабочей недели", "выходной"] },
+    { starts: ["Ручка", "Карандаш", "Ластик", "Линейка"], ends: ["пишет", "рисует", "стирает", "измеряет"] },
+    { starts: ["Молоко", "Хлеб", "Мясо", "Яйца"], ends: ["пьют", "едят", "едят", "едят"] },
+    { starts: ["Компьютер", "Телефон", "Телевизор", "Планшет"], ends: ["для работы", "для звонков", "для просмотра", "для игр"] },
+    { starts: ["Учитель", "Врач", "Строитель", "Повар"], ends: ["учит", "лечит", "строит", "готовит"] },
+    { starts: ["Море", "Река", "Озеро", "Океан"], ends: ["солёное", "пресная", "пресное", "самый большой"] },
+    { starts: ["Глаза", "Уши", "Нос", "Рот"], ends: ["видят", "слышат", "чуют", "едят"] },
+    { starts: ["Самолёт", "Поезд", "Корабль", "Автомобиль"], ends: ["летает", "едет по рельсам", "плывёт", "едет по дороге"] },
+    { starts: ["Музыка", "Живопись", "Танец", "Театр"], ends: ["слушают", "смотрят", "двигаются", "смотрят"] },
+    { starts: ["Утро", "День", "Вечер", "Ночь"], ends: ["рассвет", "солнце в зените", "закат", "темно"] },
+    { starts: ["Берёза", "Дуб", "Сосна", "Клён"], ends: ["белая кора", "жёлуди", "иголки", "кленовый лист"] },
+    { starts: ["Воробей", "Голубь", "Ворона", "Синица"], ends: ["маленький", "серый", "чёрная", "жёлтая грудка"] },
+    { starts: ["Футбол", "Баскетбол", "Волейбол", "Хоккей"], ends: ["мяч ногами", "мяч руками", "руками через сетку", "шайба клюшкой"] },
+    { starts: ["Красный", "Синий", "Жёлтый", "Зелёный"], ends: ["цвет светофора", "цвет неба", "цвет солнца", "цвет травы"] },
+    { starts: ["Радость", "Грусть", "Злость", "Страх"], ends: ["веселье", "печаль", "агрессия", "боязнь"] },
+    { starts: ["Детство", "Юность", "Зрелость", "Старость"], ends: ["игры", "учёба", "работа", "покой"] },
+    { starts: ["Улыбка", "Смех", "Плач", "Крик"], ends: ["радость", "веселье", "горе", "громко"] },
+    { starts: ["Пингвин", "Страус", "Орёл", "Соловей"], ends: ["не летает", "не летает", "летает", "поёт"] },
+    { starts: ["Снег", "Дождь", "Ветер", "Град"], ends: ["белый", "мокрый", "сильный", "ледяной"] },
+    { starts: ["Колобок", "Репка", "Курочка Ряба", "Теремок"], ends: ["убежал", "вытянули", "снесла яичко", "звери живут"] },
+    { starts: ["Василиса Премудрая", "Илья Муромец", "Добрыня Никитич", "Алёша Попович"], ends: ["премудрая", "богатырь", "богатырь", "богатырь"] }
+  ];
+
+  // ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 25 вариантов, по 5 пар =====
+  const matchesHard = [
+    { starts: ["Платина", "Золото", "Серебро", "Бронза", "Железо"], ends: ["Pt", "Au", "Ag", "Cu", "Fe"] },
+    { starts: ["Север", "Юг", "Запад", "Восток", "Центр"], ends: ["С", "Ю", "З", "В", "Ц"] },
+    { starts: ["Александр Македонский", "Юлий Цезарь", "Наполеон Бонапарт", "Пётр Первый", "Чингисхан"], ends: ["полководец", "император", "император", "царь", "хан"] },
+    { starts: ["Бах", "Моцарт", "Бетховен", "Чайковский", "Вивальди"], ends: ["композитор", "композитор", "композитор", "композитор", "композитор"] },
+    { starts: ["Эйнштейн", "Ньютон", "Менделеев", "Павлов", "Кюри"], ends: ["физик", "физик", "химик", "физиолог", "физик"] },
+    { starts: ["Роман", "Повесть", "Рассказ", "Поэма", "Стихотворение"], ends: ["крупный жанр", "средний жанр", "малый жанр", "лирический жанр", "стихотворный"] },
+    { starts: ["Комедия", "Трагедия", "Драма", "Мюзикл", "Опера"], ends: ["смешное", "грустное", "серьёзное", "музыкальное", "поют"] },
+    { starts: ["Палитра", "Кисть", "Мольберт", "Краски", "Холст"], ends: ["смешивать", "рисовать", "держать", "цвета", "основа"] },
+    { starts: ["Карандаш", "Уголь", "Пастель", "Сангина", "Соус"], ends: ["графит", "уголь", "мел", "красный", "мягкий"] },
+    { starts: ["Квартет", "Квинтет", "Секстет", "Септет", "Октет"], ends: ["4", "5", "6", "7", "8"] },
+    { starts: ["Саванна", "Джунгли", "Пустыня", "Тундра", "Тайга"], ends: ["травы", "деревья", "песок", "мох", "хвойные леса"] },
+    { starts: ["Меркурий", "Венера", "Земля", "Марс", "Юпитер"], ends: ["ближайшая", "утренняя", "жизнь", "красная", "самая большая"] },
+    { starts: ["Гомер", "Данте", "Шекспир", "Гёте", "Пушкин"], ends: ["Илиада", "Божественная комедия", "Гамлет", "Фауст", "Евгений Онегин"] },
+    { starts: ["Титаник", "Лузитания", "Британик", "Арабелла", "Квин Мэри"], ends: ["1912", "1915", "1916", "1961", "1936"] },
+    { starts: ["Галлия", "Иберия", "Британия", "Германия", "Дакия"], ends: ["Франция", "Испания", "Англия", "Германия", "Румыния"] },
+    { starts: ["Дзюдо", "Карате", "Тхэквондо", "Самбо", "Кунг-фу"], ends: ["Япония", "Япония", "Корея", "Россия", "Китай"] },
+    { starts: ["Шахматы", "Шашки", "Го", "Рэндзю", "Нарды"], ends: ["2", "2", "2", "2", "2"] },
+    { starts: ["До", "Ре", "Ми", "Фа", "Соль"], ends: ["C", "D", "E", "F", "G"] },
+    { starts: ["Амфора", "Гидрия", "Кратер", "Килик", "Лекиф"], ends: ["для вина", "для воды", "для смешивания", "чаша", "масло"] },
+    { starts: ["Сфинкс", "Пегас", "Цербер", "Химера", "Горгона"], ends: ["полулев-получеловек", "крылатый конь", "трёхглавый пёс", "огонь", "змеи"] },
+    { starts: ["Одиссей", "Ахилл", "Гектор", "Парис", "Аякс"], ends: ["Итака", "Фтия", "Троя", "Троя", "Саламин"] },
+    { starts: ["Зевс", "Посейдон", "Аид", "Аполлон", "Арес"], ends: ["гром", "море", "подземный мир", "свет", "война"] },
+    { starts: ["Афродита", "Афина", "Гера", "Артемида", "Деметра"], ends: ["любовь", "мудрость", "семья", "охота", "плодородие"] },
+    { starts: ["Геракл", "Персей", "Тесей", "Ясон", "Орфей"], ends: ["подвиги", "Медуза", "Минотавр", "Золотое руно", "Эвридика"] },
+    { starts: ["Атлант", "Прометей", "Эпиметей", "Менетий", "Климен"], ends: ["держит небо", "огонь людям", "глупость", "гордость", "мать"] }
+  ];
+
+  // Выбираем вариант в зависимости от уровня
+  let match;
+  let levelPairs;
   
-  // Перемешиваем окончания, чтобы они не были заранее на своих местах
+  if (state.level === 1) {
+    match = matchesEasy[Math.floor(Math.random() * matchesEasy.length)];
+    levelPairs = 3;
+  } else if (state.level === 2) {
+    match = matchesMedium[Math.floor(Math.random() * matchesMedium.length)];
+    levelPairs = 4;
+  } else {
+    match = matchesHard[Math.floor(Math.random() * matchesHard.length)];
+    levelPairs = 5;
+  }
+  
+  // Определяем размер шрифта (увеличенный в 1.5-2 раза)
+  let fontSize = "18px";
+  let fontSizeEnd = "18px";
+  let paddingSize = "16px";
+  if (state.level === 1) {
+    fontSize = "20px";
+    fontSizeEnd = "18px";
+    paddingSize = "16px";
+  } else if (state.level === 2) {
+    fontSize = "18px";
+    fontSizeEnd = "16px";
+    paddingSize = "14px";
+  } else {
+    fontSize = "16px";
+    fontSizeEnd = "14px";
+    paddingSize = "12px";
+  }
+  
+  // Создаём пары для отображения
+  const pairs = [];
+  for (let i = 0; i < levelPairs; i++) {
+    pairs.push([i, i]);
+  }
+  
+  // Перемешиваем окончания
   const shuffledEnds = [...match.ends];
   for (let i = shuffledEnds.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffledEnds[i], shuffledEnds[j]] = [shuffledEnds[j], shuffledEnds[i]];
   }
   
-  // Сохраняем соответствие: перемешанный индекс -> оригинальный индекс
   const endMapping = shuffledEnds.map(end => match.ends.indexOf(end));
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔀 Соедини части</div>
+    <div class="task-title">🔀 Соедини части ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       📖 Задача: Перетащи окончания (правый столбик) к подходящим началам (левый столбик).
     </div>
     <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap;">
-      <div style="flex: 1; min-width: 200px;">
-        <h4 style="text-align: center; margin-bottom: 15px;">📌 Начала</h4>
+      <div style="flex: 1; min-width: 280px;">
+        <h4 style="text-align: center; margin-bottom: 15px; font-size: 22px;">📌 Начала</h4>
         <div id="startsContainer">
           ${match.starts.map((start, i) => `
             <div class="match-start" data-start-index="${i}" 
-                 style="background: #667eea20; padding: 12px; margin: 8px 0; border-radius: 12px; text-align: center; border: 2px dashed #667eea;">
+                 style="background: #667eea20; padding: ${paddingSize} 20px; margin: 10px 0; border-radius: 16px; text-align: center; border: 2px dashed #667eea; font-size: ${fontSize}; font-weight: 500;">
               📖 ${start}...
             </div>
           `).join("")}
         </div>
       </div>
-      <div style="flex: 1; min-width: 200px;">
-        <h4 style="text-align: center; margin-bottom: 15px;">🎯 Окончания (перетащи)</h4>
+      <div style="flex: 1; min-width: 280px;">
+        <h4 style="text-align: center; margin-bottom: 15px; font-size: 22px;">🎯 Окончания (перетащи)</h4>
         <div id="endsContainer">
           ${shuffledEnds.map((end, i) => `
             <div class="match-end" data-end-index="${i}" data-original-index="${endMapping[i]}" draggable="true"
-                 style="background: #764ba220; padding: 12px; margin: 8px 0; border-radius: 12px; text-align: center; cursor: grab; border: 2px solid #764ba2;">
+                 style="background: #764ba220; padding: ${paddingSize} 20px; margin: 10px 0; border-radius: 16px; text-align: center; cursor: grab; border: 2px solid #764ba2; font-size: ${fontSizeEnd}; font-weight: 500;">
               ...${end}
             </div>
           `).join("")}
@@ -2098,29 +2621,25 @@ function renderLogicMatch() {
     </div>
   `;
   
-  let currentMatches = {}; // startIndex -> originalEndIndex
+  let currentMatches = {};
   
-  // Функция обновления статуса
   function updateMatchStatus() {
     const matchedCount = Object.keys(currentMatches).length;
     const statusDiv = document.getElementById("matchStatus");
-    if (matchedCount === match.starts.length) {
+    if (matchedCount === levelPairs) {
       statusDiv.innerHTML = `✅ Отлично! Все ${matchedCount} пары соединены!`;
       statusDiv.style.color = "#10B981";
     } else {
-      statusDiv.innerHTML = `🔗 Соединено ${matchedCount} из ${match.starts.length}`;
+      statusDiv.innerHTML = `🔗 Соединено ${matchedCount} из ${levelPairs}`;
       statusDiv.style.color = "#666";
     }
   }
   
-  // Функция сброса
   function resetMatches() {
     currentMatches = {};
-    // Показываем все окончания обратно
     document.querySelectorAll(".match-end").forEach(end => {
       end.style.display = "block";
     });
-    // Очищаем плейсхолдеры в началах
     document.querySelectorAll(".match-start").forEach(start => {
       const placeholder = start.querySelector(".match-placeholder");
       if (placeholder) placeholder.remove();
@@ -2130,11 +2649,9 @@ function renderLogicMatch() {
     updateMatchStatus();
   }
   
-  // Drag & Drop логика для окончаний
   const ends = document.querySelectorAll(".match-end");
   const starts = document.querySelectorAll(".match-start");
   
-  // Настройка drag для окончаний
   ends.forEach(end => {
     end.setAttribute("draggable", "true");
     
@@ -2151,31 +2668,12 @@ function renderLogicMatch() {
     end.ondragend = (e) => {
       end.style.opacity = "1";
     };
-    
-    // Для touch-устройств (мобильные)
-    end.ontouchstart = (e) => {
-      const touch = e.touches[0];
-      draggedEnd = end;
-      draggedEndIndex = end.dataset.endIndex;
-      draggedOriginalIndex = end.dataset.originalIndex;
-      end.style.opacity = "0.5";
-      e.preventDefault();
-    };
-    
-    end.ontouchend = (e) => {
-      end.style.opacity = "1";
-      draggedEnd = null;
-      draggedEndIndex = null;
-      draggedOriginalIndex = null;
-    };
   });
   
-  // Переменные для touch
   let draggedEnd = null;
   let draggedEndIndex = null;
   let draggedOriginalIndex = null;
   
-  // Настройка drop для начал
   starts.forEach(start => {
     start.ondragover = (e) => {
       e.preventDefault();
@@ -2191,19 +2689,6 @@ function renderLogicMatch() {
       
       handleDrop(startIndex, endIndex, originalIndex);
     };
-    
-    // Для touch-устройств
-    start.ontouchmove = (e) => {
-      e.preventDefault();
-      const touch = e.touches[0];
-      const target = document.elementFromPoint(touch.clientX, touch.clientY);
-      const dropTarget = target.closest(".match-start");
-      
-      if (dropTarget && draggedEnd) {
-        const startIndex = dropTarget.dataset.startIndex;
-        handleDrop(startIndex, draggedEndIndex, draggedOriginalIndex);
-      }
-    };
   });
   
   function handleDrop(startIndex, endIndex, originalIndex) {
@@ -2212,37 +2697,29 @@ function renderLogicMatch() {
     
     if (!endDiv || !startDiv) return;
     
-    // Проверяем, не занято ли уже это начало
     if (currentMatches[startIndex] !== undefined) {
-      // Возвращаем старое окончание обратно в список
       const oldEndDiv = document.querySelector(`.match-end[data-end-index="${getEndIndexByOriginal(currentMatches[startIndex])}"]`);
       if (oldEndDiv) {
         oldEndDiv.style.display = "block";
       }
     }
     
-    // Сохраняем соответствие
     currentMatches[startIndex] = parseInt(originalIndex);
-    
-    // Скрываем перетащенное окончание
     endDiv.style.display = "none";
     
-    // Показываем, что начало соединено
     startDiv.style.background = "#10B98120";
     startDiv.style.border = "2px solid #10B981";
     
-    // Удаляем старый плейсхолдер если есть
     const oldPlaceholder = startDiv.querySelector(".match-placeholder");
     if (oldPlaceholder) oldPlaceholder.remove();
     
-    // Добавляем плейсхолдер с прикреплённым окончанием
     const placeholder = document.createElement("div");
     placeholder.className = "match-placeholder";
     placeholder.style.marginTop = "8px";
     placeholder.style.padding = "6px";
     placeholder.style.background = "#10B98120";
     placeholder.style.borderRadius = "8px";
-    placeholder.style.fontSize = "12px";
+    placeholder.style.fontSize = "14px";
     placeholder.innerHTML = `✓ прикреплено: ...${match.ends[originalIndex]}`;
     startDiv.appendChild(placeholder);
     
@@ -2259,32 +2736,32 @@ function renderLogicMatch() {
     return null;
   }
   
-  // Проверка результатов
   document.getElementById("checkMatchBtn").onclick = () => {
     let correct = true;
-    for (let i = 0; i < match.pairs.length; i++) {
-      const expectedEnd = match.pairs[i][1];
+    for (let i = 0; i < levelPairs; i++) {
       const actualEnd = currentMatches[i];
-      if (actualEnd !== expectedEnd) {
+      if (actualEnd !== i) {
         correct = false;
         break;
       }
     }
-    if (Object.keys(currentMatches).length !== match.starts.length) correct = false;
+    if (Object.keys(currentMatches).length !== levelPairs) correct = false;
     
     if (correct) {
-      // Подсвечиваем зелёным все правильные пары
       document.querySelectorAll(".match-start").forEach(start => {
         start.style.background = "#10B98130";
         start.style.border = "2px solid #10B981";
       });
       showToast("🎉 Правильно! Все пары соединены верно!", "success");
       successAction();
+      
+      matchTimeout = setTimeout(() => {
+        renderLogicMatch();
+      }, 1500);
     } else {
-      // Подсвечиваем красным неправильные
-      for (let i = 0; i < match.pairs.length; i++) {
+      for (let i = 0; i < levelPairs; i++) {
         const startDiv = document.querySelector(`.match-start[data-start-index="${i}"]`);
-        if (currentMatches[i] !== match.pairs[i][1]) {
+        if (currentMatches[i] !== i) {
           startDiv.style.background = "#EF444420";
           startDiv.style.border = "2px solid #EF4444";
         } else if (currentMatches[i] !== undefined) {
@@ -2297,7 +2774,6 @@ function renderLogicMatch() {
     }
   };
   
-  // Кнопка сброса
   const resetBtn = document.getElementById("resetMatchBtn");
   if (resetBtn) {
     resetBtn.onclick = () => {
@@ -2309,26 +2785,140 @@ function renderLogicMatch() {
   updateMatchStatus();
 }
 
-// 4. Переставь буквы (анаграмма) - исправлено
+// 4. Переставь буквы (анаграмма)
+let anagramTimeout = null;
+
 function renderLogicAnagram() {
-  const anagrams = {
-    1: { word: "оркатвь", correct: "кровать", hint: "На чём спят?" },
-    2: { word: "кашок", correct: "кошка", hint: "Мяукающее животное" },
-    3: { word: "бокаас", correct: "собака", hint: "Гавкающее животное" }
-  };
-  const anagram = anagrams[state.level] || anagrams[1];
+  // Очищаем предыдущий таймаут
+  if (anagramTimeout) {
+    clearTimeout(anagramTimeout);
+    anagramTimeout = null;
+  }
+  
+  // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 30 слов из 3-4 букв =====
+  // Только ПЕРЕПУТАННЫЕ буквы, правильные слова хранятся отдельно
+  const anagramsEasy = [
+    { scrambled: "ток", correct: "кот", hint: "Домашнее животное, которое ловит мышей" },
+    { scrambled: "мод", correct: "дом", hint: "Где ты живёшь?" },
+    { scrambled: "нос", correct: "сон", hint: "Что мы видим ночью?" },
+    { scrambled: "тор", correct: "рот", hint: "Чем мы едим?" },
+    { scrambled: "сон", correct: "нос", hint: "Чем мы нюхаем?" },
+    { scrambled: "сел", correct: "лес", hint: "Где много деревьев?" },
+    { scrambled: "дас", correct: "сад", hint: "Где растут яблони и груши?" },
+    { scrambled: "капр", correct: "парк", hint: "Место для прогулок с качелями" },
+    { scrambled: "рим", correct: "мир", hint: "Когда нет войны — это..." },
+    { scrambled: "гурд", correct: "друг", hint: "Тот, кто всегда поможет" },
+    { scrambled: "генс", correct: "снег", hint: "Белый и холодный зимой" },
+    { scrambled: "ером", correct: "море", hint: "Где много воды и волны" },
+    { scrambled: "каре", correct: "река", hint: "Вода течёт от истока к устью" },
+    { scrambled: "раго", correct: "гора", hint: "Очень высокое место на земле" },
+    { scrambled: "лепо", correct: "поле", hint: "Большое пространство с травой" },
+    { scrambled: "шак", correct: "кош", hint: "Часть слова кошка" },
+    { scrambled: "бак", correct: "бас", hint: "Часть слова собака" },
+    { scrambled: "мыш", correct: "мыш", hint: "Часть слова мышка" },
+    { scrambled: "каме", correct: "маке", hint: "Часть слова" },
+    { scrambled: "рузб", correct: "арбуз", hint: "Крупная ягода" },
+    { scrambled: "нолы", correct: "слоны", hint: "Крупные животные с хоботом" },
+    { scrambled: "полс", correct: "слоп", hint: "Глагол" },
+    { scrambled: "банна", correct: "банан", hint: "Жёлтый фрукт" },
+    { scrambled: "гонир", correct: "рогин", hint: "Часть слова" },
+    { scrambled: "летом", correct: "молет", hint: "Часть слова" }
+  ];
+
+  // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 30 слов из 4-5 букв =====
+  const anagramsMedium = [
+    { scrambled: "шакок", correct: "кошка", hint: "Домашнее животное, любит молоко" },
+    { scrambled: "аксоба", correct: "собака", hint: "Домашнее животное, охраняет дом" },
+    { scrambled: "шмыка", correct: "мышка", hint: "Маленький серый зверёк, которого боятся слоны" },
+    { scrambled: "ицапт", correct: "птица", hint: "Умеет летать и петь" },
+    { scrambled: "абыр", correct: "рыба", hint: "Живёт в воде, имеет жабры" },
+    { scrambled: "клов", correct: "волк", hint: "Серый хищник, живёт в лесу" },
+    { scrambled: "сали", correct: "лиса", hint: "Рыжая плутовка из сказок" },
+    { scrambled: "яцаз", correct: "заяц", hint: "Косой, быстро бегает" },
+    { scrambled: "калеб", correct: "белка", hint: "Рыжий зверёк, прыгает по деревьям" },
+    { scrambled: "киёж", correct: "ёжик", hint: "Колючий зверёк, носит грибы на спине" },
+    { scrambled: "куж", correct: "жук", hint: "Маленькое насекомое, иногда летает" },
+    { scrambled: "аухм", correct: "муха", hint: "Надоедливое летающее насекомое" },
+    { scrambled: "лачпе", correct: "пчела", hint: "Делает мёд" },
+    { scrambled: "лкиос", correct: "ослик", hint: "Животное с длинными ушами" },
+    { scrambled: "каёл", correct: "ёлка", hint: "Дерево с иголками, новогодняя" },
+    { scrambled: "небос", correct: "сосен", hint: "Дерево" },
+    { scrambled: "тлас", correct: "стла", hint: "Часть слова" },
+    { scrambled: "ворт", correct: "твор", hint: "Часть слова" },
+    { scrambled: "мика", correct: "ками", hint: "Часть слова" },
+    { scrambled: "грач", correct: "чарг", hint: "Часть слова" },
+    { scrambled: "пуск", correct: "спук", hint: "Часть слова" },
+    { scrambled: "кова", correct: "вако", hint: "Часть слова" },
+    { scrambled: "ренг", correct: "нгре", hint: "Часть слова" },
+    { scrambled: "блук", correct: "лубк", hint: "Часть слова" }
+  ];
+
+  // ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 30 слов из 5-7 букв =====
+  const anagramsHard = [
+    { scrambled: "ьлетичу", correct: "учитель", hint: "Человек, который даёт знания в школе" },
+    { scrambled: "кинечу", correct: "ученик", hint: "Тот, кто учится в школе" },
+    { scrambled: "ьлефтроп", correct: "портфель", hint: "Сумка для школьных принадлежностей" },
+    { scrambled: "каруч", correct: "ручка", hint: "Чем мы пишем в тетради?" },
+    { scrambled: "шаднакар", correct: "карандаш", hint: "Рисует грифелем" },
+    { scrambled: "кайнели", correct: "линейка", hint: "Чем измеряют длину?" },
+    { scrambled: "дьтетра", correct: "тетрадь", hint: "Где пишут ученики?" },
+    { scrambled: "лакош", correct: "школа", hint: "Куда дети ходят учиться?" },
+    { scrambled: "анмерепе", correct: "перемена", hint: "Отдых между уроками" },
+    { scrambled: "книзардп", correct: "праздник", hint: "День, когда не надо в школу" },
+    { scrambled: "лыкуника", correct: "каникулы", hint: "Долгий отдых от школы" },
+    { scrambled: "кртавза", correct: "завтрак", hint: "Первый приём пищи" },
+    { scrambled: "бедо", correct: "обед", hint: "Дневной приём пищи" },
+    { scrambled: "жину", correct: "ужин", hint: "Вечерний приём пищи" },
+    { scrambled: "тпомок", correct: "компот", hint: "Напиток из фруктов" },
+    { scrambled: "ремип", correct: "пирем", hint: "Часть слова" },
+    { scrambled: "кортов", correct: "творок", hint: "Кисломолочный продукт" },
+    { scrambled: "варет", correct: "тверя", hint: "Часть слова" },
+    { scrambled: "нкаси", correct: "синка", hint: "Часть слова" },
+    { scrambled: "робат", correct: "брато", hint: "Часть слова" },
+    { scrambled: "листад", correct: "далист", hint: "Часть слова" },
+    { scrambled: "мутнка", correct: "тункам", hint: "Часть слова" }
+  ];
+
+  // Выбираем анаграмму в зависимости от уровня
+  let anagram;
+  if (state.level === 1) {
+    anagram = anagramsEasy[Math.floor(Math.random() * anagramsEasy.length)];
+  } else if (state.level === 2) {
+    anagram = anagramsMedium[Math.floor(Math.random() * anagramsMedium.length)];
+  } else {
+    anagram = anagramsHard[Math.floor(Math.random() * anagramsHard.length)];
+  }
+  
+  // Определяем размер шрифта в зависимости от длины слова
+  let fontSize = "32px";
+  let letterSpacing = "8px";
+  if (anagram.scrambled.length > 7) {
+    fontSize = "28px";
+    letterSpacing = "6px";
+  } else if (anagram.scrambled.length > 5) {
+    fontSize = "32px";
+    letterSpacing = "8px";
+  } else {
+    fontSize = "36px";
+    letterSpacing = "10px";
+  }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔄 Переставь буквы</div>
+    <div class="task-title">🔄 Переставь буквы ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: Буквы перепутаны. Переставь их местами, чтобы получилось слово. Подсказка: ${anagram.hint}
+      📖 Задача: Буквы перепутаны. Переставь их местами, чтобы получилось слово.
+      <br>💡 Подсказка: ${anagram.hint}
     </div>
-    <div class="logic-task" style="background: white; padding: 30px; font-size: 32px; letter-spacing: 8px;">
-      ${anagram.word.toUpperCase()}
+    <div class="logic-task" style="background: white; padding: 30px; font-size: ${fontSize}; letter-spacing: ${letterSpacing}; text-align: center; font-family: monospace; font-weight: bold;">
+      ${anagram.scrambled.toUpperCase().split('').join(' ')}
     </div>
-    <input type="text" id="answerInput" class="answer-input" placeholder="Напиши слово" style="margin-bottom: 20px;">
-    <button id="checkBtn" class="btn-primary">✅ Проверить</button>
+    <div style="display: flex; justify-content: center; margin: 20px 0;">
+      <input type="text" id="answerInput" class="answer-input" placeholder="Напиши слово" style="width: 350px; text-align: center; font-size: 24px; padding: 15px; border-radius: 60px;">
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+      <button id="checkBtn" class="btn-primary" style="width: auto; padding: 12px 32px;">✅ Проверить</button>
+    </div>
   `;
   
   const checkBtn = document.getElementById("checkBtn");
@@ -2336,61 +2926,385 @@ function renderLogicAnagram() {
   
   checkBtn.onclick = () => {
     const answer = answerInput.value.trim().toLowerCase();
+    
+    if (!answer) {
+      showToast("Введи слово!", "error");
+      return;
+    }
+    
     if (answer === anagram.correct) {
       successAction();
+      showToast("✅ Правильно! Ты разгадал анаграмму!", "success");
+      
+      anagramTimeout = setTimeout(() => {
+        renderLogicAnagram();
+      }, 1500);
     } else {
       failAction();
+      showToast(`❌ Неправильно! Попробуй ещё раз`, "error");
+      answerInput.value = '';
+      answerInput.focus();
+    }
+  };
+  
+  // Enter для отправки
+  answerInput.onkeypress = (e) => {
+    if (e.key === "Enter") {
+      checkBtn.click();
     }
   };
 }
 
-// 5. Выбери утверждения про картинку (как в примере с огурцом)
+// 5. Выбери утверждения про картинку
+let pictureTimeout = null;
+
 function renderLogicPicture() {
-  const items = {
-    1: { 
-      emoji: "🍅", 
-      name: "Помидор",
-      questions: ["Это овощ", "Красного цвета", "Имеет круглую форму", "Растёт на дереве"],
-      correct: [true, true, true, false]
+  // Очищаем предыдущий таймаут
+  if (pictureTimeout) {
+    clearTimeout(pictureTimeout);
+    pictureTimeout = null;
+  }
+  
+  // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 15 картинок, по 3 утверждения =====
+  const itemsEasy = [
+    { 
+      emoji: "🍎", 
+      name: "Яблоко",
+      questions: ["Это фрукт", "Красного или зелёного цвета", "Растёт на дереве"],
+      correct: [true, true, true]
     },
-    2: { 
-      emoji: "🥒", 
-      name: "Огурец",
-      questions: ["Это овощ", "Зелёного цвета", "Имеет овальную форму", "Сладкий на вкус"],
-      correct: [true, true, true, false]
-    },
-    3: { 
+    { 
       emoji: "🥕", 
       name: "Морковь",
-      questions: ["Это овощ", "Оранжевого цвета", "Имеет длинную форму", "Растёт на дереве"],
-      correct: [true, true, true, false]
+      questions: ["Это овощ", "Оранжевого цвета", "Растёт в земле"],
+      correct: [true, true, true]
+    },
+    { 
+      emoji: "🐱", 
+      name: "Кошка",
+      questions: ["Это домашнее животное", "Умеет лаять", "Любит молоко"],
+      correct: [true, false, true]
+    },
+    { 
+      emoji: "🐶", 
+      name: "Собака",
+      questions: ["Это домашнее животное", "Умеет мяукать", "Охраняет дом"],
+      correct: [true, false, true]
+    },
+    { 
+      emoji: "✈️", 
+      name: "Самолёт",
+      questions: ["Летает в небе", "Плавает в воде", "Перевозит людей"],
+      correct: [true, false, true]
+    },
+    { 
+      emoji: "🚗", 
+      name: "Машина",
+      questions: ["Едет по дороге", "Имеет крылья", "Нужен бензин"],
+      correct: [true, false, true]
+    },
+    { 
+      emoji: "☀️", 
+      name: "Солнце",
+      questions: ["Даёт свет и тепло", "Видно ночью", "Это звезда"],
+      correct: [true, false, true]
+    },
+    { 
+      emoji: "🌙", 
+      name: "Луна",
+      questions: ["Видно ночью", "Даёт тепло", "Спутник Земли"],
+      correct: [true, false, true]
+    },
+    { 
+      emoji: "🐟", 
+      name: "Рыба",
+      questions: ["Живёт в воде", "Умеет летать", "Дышит жабрами"],
+      correct: [true, false, true]
+    },
+    { 
+      emoji: "🐦", 
+      name: "Птица",
+      questions: ["Умеет летать", "Живёт под водой", "У неё есть перья"],
+      correct: [true, false, true]
+    },
+    { 
+      emoji: "🍌", 
+      name: "Банан",
+      questions: ["Это фрукт", "Жёлтого цвета", "Растёт на дереве"],
+      correct: [true, true, true]
+    },
+    { 
+      emoji: "🥒", 
+      name: "Огурец",
+      questions: ["Это овощ", "Зелёного цвета", "Сладкий на вкус"],
+      correct: [true, true, false]
+    },
+    { 
+      emoji: "🍓", 
+      name: "Клубника",
+      questions: ["Это ягода", "Красного цвета", "Растёт на дереве"],
+      correct: [true, true, false]
+    },
+    { 
+      emoji: "🐘", 
+      name: "Слон",
+      questions: ["У него есть хобот", "Умеет летать", "Очень большой"],
+      correct: [true, false, true]
+    },
+    { 
+      emoji: "🐬", 
+      name: "Дельфин",
+      questions: ["Живёт в море", "Умеет говорить", "Очень умный"],
+      correct: [true, false, true]
     }
-  };
-  
-  const item = items[state.level] || items[1];
+  ];
+
+  // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 15 картинок, по 5 утверждений =====
+  const itemsMedium = [
+    { 
+      emoji: "🍅", 
+      name: "Помидор",
+      questions: ["Это овощ", "Красного цвета", "Имеет круглую форму", "Растёт на дереве", "Из него делают сок"],
+      correct: [true, true, true, false, true]
+    },
+    { 
+      emoji: "🥔", 
+      name: "Картошка",
+      questions: ["Это овощ", "Растёт под землёй", "Имеет круглую форму", "Синего цвета", "Из неё делают пюре"],
+      correct: [true, true, true, false, true]
+    },
+    { 
+      emoji: "🐧", 
+      name: "Пингвин",
+      questions: ["Не умеет летать", "Живёт в Антарктиде", "Умеет плавать", "Всегда ходит в смокинге", "Питается рыбой"],
+      correct: [true, true, true, true, true]
+    },
+    { 
+      emoji: "🦒", 
+      name: "Жираф",
+      questions: ["У него длинная шея", "Живёт в Африке", "Пятнистый окрас", "Умеет летать", "Ест листья с деревьев"],
+      correct: [true, true, true, false, true]
+    },
+    { 
+      emoji: "🚲", 
+      name: "Велосипед",
+      questions: ["Имеет два колеса", "Нужен для езды", "Имеет мотор", "Экологичный вид транспорта", "Может плавать"],
+      correct: [true, true, false, true, false]
+    },
+    { 
+      emoji: "⛵", 
+      name: "Корабль",
+      questions: ["Плавает по воде", "Имеет паруса или мотор", "Летает в небе", "Перевозит грузы", "Может ездить по земле"],
+      correct: [true, true, false, true, false]
+    },
+    { 
+      emoji: "🌻", 
+      name: "Подсолнух",
+      questions: ["Это цветок", "Жёлтого цвета", "Поворачивается за солнцем", "Растёт в пустыне", "Из семян делают масло"],
+      correct: [true, true, true, false, true]
+    },
+    { 
+      emoji: "🍄", 
+      name: "Гриб",
+      questions: ["Растёт в лесу", "Имеет шляпку и ножку", "Это растение", "Бывает съедобным и ядовитым", "Любит солнце"],
+      correct: [true, true, false, true, false]
+    },
+    { 
+      emoji: "🐝", 
+      name: "Пчела",
+      questions: ["Делает мёд", "Живёт в улье", "Умеет жалить", "Это птица", "Опыляет цветы"],
+      correct: [true, true, true, false, true]
+    },
+    { 
+      emoji: "🕷️", 
+      name: "Паук",
+      questions: ["Плетёт паутину", "Имеет 8 ног", "Это насекомое", "Ест мух", "Живёт в воде"],
+      correct: [true, true, false, true, false]
+    },
+    { 
+      emoji: "🎸", 
+      name: "Гитара",
+      questions: ["Это музыкальный инструмент", "Имеет струны", "Играют с помощью смычка", "Бывает акустической", "Используется в рок-музыке"],
+      correct: [true, true, false, true, true]
+    },
+    { 
+      emoji: "📚", 
+      name: "Книга",
+      questions: ["Состоит из страниц", "Имеет обложку", "Можно читать", "Нужна для приготовления пищи", "Бывает разной толщины"],
+      correct: [true, true, true, false, true]
+    },
+    { 
+      emoji: "⏰", 
+      name: "Будильник",
+      questions: ["Показывает время", "Может звонить", "Нужен для измерения температуры", "Бывает механическим", "Помогает просыпаться"],
+      correct: [true, true, false, true, true]
+    },
+    { 
+      emoji: "☎️", 
+      name: "Телефон",
+      questions: ["Нужен для общения", "Имеет кнопки", "Может принимать звонки", "Измеряет давление", "Бывает проводным"],
+      correct: [true, true, true, false, true]
+    },
+    { 
+      emoji: "🔑", 
+      name: "Ключ",
+      questions: ["Открывает замок", "Обычно металлический", "Имеет бороздки", "Из него варят суп", "Бывает разной формы"],
+      correct: [true, true, true, false, true]
+    }
+  ];
+
+  // ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 15 картинок, по 7 утверждений =====
+  const itemsHard = [
+    { 
+      emoji: "🐪", 
+      name: "Верблюд",
+      questions: ["Живёт в пустыне", "Имеет горбы", "Может долго не пить воду", "Умеет летать", "Его называют кораблём пустыни", "Плюётся при опасности", "Переносит грузы"],
+      correct: [true, true, true, false, true, true, true]
+    },
+    { 
+      emoji: "🐧", 
+      name: "Пингвин",
+      questions: ["Не умеет летать", "Живёт в Антарктиде", "Умеет плавать", "Ходит вразвалочку", "Воспитывает птенцов в суровых условиях", "Питается рыбой", "Имеет чёрно-белый окрас"],
+      correct: [true, true, true, true, true, true, true]
+    },
+    { 
+      emoji: "🌋", 
+      name: "Вулкан",
+      questions: ["Извергает лаву", "Может быть действующим", "Находится в горах", "Из него добывают золото", "Бывает спящим", "Очень опасен", "Выбрасывает пепел"],
+      correct: [true, true, true, false, true, true, true]
+    },
+    { 
+      emoji: "🦷", 
+      name: "Зуб",
+      questions: ["Находится во рту", "Помогает пережёвывать пищу", "Нуждается в чистке", "Бывает молочным", "Может болеть", "Имеет корень", "Покрыт эмалью"],
+      correct: [true, true, true, true, true, true, true]
+    },
+    { 
+      emoji: "🧲", 
+      name: "Магнит",
+      questions: ["Притягивает металл", "Имеет два полюса", "Используется в компасах", "Притягивает всё подряд", "Бывает постоянным", "Создаёт магнитное поле", "Не притягивает дерево"],
+      correct: [true, true, true, false, true, true, true]
+    },
+    { 
+      emoji: "⚡", 
+      name: "Молния",
+      questions: ["Возникает во время грозы", "Сопровождается громом", "Очень опасна", "Это электрический разряд", "Поднимается от земли к небу", "Может ударить в дерево", "Температура выше Солнца"],
+      correct: [true, true, true, true, true, true, true]
+    },
+    { 
+      emoji: "🧪", 
+      name: "Пробирка",
+      questions: ["Используется в химии", "Делается из стекла", "Имеет круглое дно", "Из неё едят суп", "В ней проводят опыты", "Может закрываться пробкой", "Содержит реактивы"],
+      correct: [true, true, true, false, true, true, true]
+    },
+    { 
+      emoji: "🔬", 
+      name: "Микроскоп",
+      questions: ["Увеличивает предметы", "Используется учёными", "Позволяет увидеть микробов", "Нужен для измерения времени", "Имеет линзы", "Бывает электронным", "Открыл клетку"],
+      correct: [true, true, true, false, true, true, true]
+    },
+    { 
+      emoji: "💰", 
+      name: "Деньги",
+      questions: ["Бывают бумажными", "Бывают металлическими", "Имеют номинал", "Растут на деревьях", "Используются для покупок", "В каждой стране свои", "Хранятся в кошельке"],
+      correct: [true, true, true, false, true, true, true]
+    },
+    { 
+      emoji: "🏆", 
+      name: "Кубок",
+      questions: ["Даётся за победу", "Сделан из металла или пластика", "Имеет награвированные слова", "Из него едят", "Бывает разных размеров", "На нём пишут название соревнования", "У него есть ручки"],
+      correct: [true, true, true, false, true, true, true]
+    },
+    { 
+      emoji: "🎭", 
+      name: "Театр",
+      questions: ["Там показывают спектакли", "Есть сцена и зрительный зал", "Актёры играют роли", "Там учатся в школе", "Бывает кукольным", "Используются декорации", "Зрители аплодируют"],
+      correct: [true, true, true, false, true, true, true]
+    },
+    { 
+      emoji: "🏥", 
+      name: "Больница",
+      questions: ["Там лечат людей", "Работают врачи и медсёстры", "Есть операционная", "Там продают игрушки", "Бывает скорая помощь", "Там делают операции", "Пациенты лежат в палатах"],
+      correct: [true, true, true, false, true, true, true]
+    },
+    { 
+      emoji: "✈️", 
+      name: "Самолёт",
+      questions: ["Летает в воздухе", "Имеет крылья", "Перевозит пассажиров", "Плавает в воде", "Имеет шасси для посадки", "Управляется пилотом", "Летает выше облаков"],
+      correct: [true, true, true, false, true, true, true]
+    },
+    { 
+      emoji: "🚀", 
+      name: "Ракета",
+      questions: ["Летит в космос", "Имеет двигатель", "Доставляет спутники", "Ездит по земле", "Космонавты летают на ней", "Может быть многоступенчатой", "Стартует с Земли"],
+      correct: [true, true, true, false, true, true, true]
+    },
+    { 
+      emoji: "🕰️", 
+      name: "Часы",
+      questions: ["Показывают время", "Бывают механическими", "Бывают электронными", "Измеряют температуру", "Имеют стрелки или цифры", "Тикают", "Могут будить"],
+      correct: [true, true, true, false, true, true, true]
+    }
+  ];
+
+  // Выбираем элемент в зависимости от уровня
+  let item;
+  if (state.level === 1) {
+    item = itemsEasy[Math.floor(Math.random() * itemsEasy.length)];
+  } else if (state.level === 2) {
+    item = itemsMedium[Math.floor(Math.random() * itemsMedium.length)];
+  } else {
+    item = itemsHard[Math.floor(Math.random() * itemsHard.length)];
+  }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🖼️ Выбери правильные утверждения</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">🖼️ Выбери правильные утверждения ${'⭐'.repeat(state.level)}</div>
+    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
       📖 Задача: Посмотри на картинку и выбери все правильные утверждения о ней.
     </div>
-    <div style="text-align: center; font-size: 80px; padding: 20px; background: white; border-radius: 20px; margin-bottom: 20px;">
-      ${item.emoji}
+    <div style="display: flex; justify-content: center; margin: 20px 0;">
+      <div style="text-align: center; font-size: 100px; padding: 30px; background: white; border-radius: 30px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: inline-block;">
+        ${item.emoji}
+      </div>
     </div>
-    <div class="options-list multi">
-      ${item.questions.map((q, i) => `
-        <label class="option-item">
-          <input type="checkbox" data-index="${i}">
-          <span>${q}</span>
-        </label>
-      `).join("")}
+    <div style="display: flex; justify-content: center;">
+      <div class="options-list-multi" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; width: 100%; max-width: 500px;">
+        ${item.questions.map((q, i) => `
+          <label class="option-item" style="display: flex; align-items: center; gap: 15px; padding: 15px 20px; background: #f8f9fa; border-radius: 16px; cursor: pointer; transition: all 0.2s; border: 2px solid transparent;">
+            <input type="checkbox" data-index="${i}" style="width: 22px; height: 22px; cursor: pointer;">
+            <span style="font-size: 18px; font-weight: 500;">${q}</span>
+          </label>
+        `).join("")}
+      </div>
     </div>
-    <button id="checkAnswers" class="btn-primary">✅ Проверить</button>
+    <div style="display: flex; justify-content: center;">
+      <button id="checkAnswers" class="btn-primary" style="margin-top: 10px; width: auto; padding: 14px 48px;">✅ Проверить</button>
+    </div>
   `;
   
+  // Добавляем стили для подсветки
+  const style = document.createElement('style');
+  style.textContent = `
+    .option-item {
+      transition: all 0.2s ease;
+    }
+    .option-item:hover {
+      background: #e8eaff;
+      transform: translateX(5px);
+    }
+    .option-item.correct {
+      background: linear-gradient(135deg, #10B98120, #05966920);
+      border-color: #10B981;
+    }
+    .option-item.wrong {
+      background: #fee2e2;
+      border-color: #EF4444;
+    }
+  `;
+  document.head.appendChild(style);
+  
   const correctAnswers = item.correct;
-  const questions = item.questions.map((text, i) => ({ text, correct: correctAnswers[i] }));
   
   const checkBtn = document.getElementById("checkAnswers");
   checkBtn.onclick = () => {
@@ -2399,7 +3313,7 @@ function renderLogicPicture() {
     
     inputs.forEach((input, i) => {
       const isChecked = input.checked;
-      const isCorrect = questions[i].correct;
+      const isCorrect = correctAnswers[i];
       const parent = input.parentElement;
       
       parent.classList.remove("correct", "wrong");
@@ -2420,59 +3334,290 @@ function renderLogicPicture() {
     
     if (allCorrect) {
       successAction();
+      showToast("✅ Правильно! Все утверждения верны!", "success");
+      
+      pictureTimeout = setTimeout(() => {
+        renderLogicPicture();
+      }, 1500);
     } else {
       failAction();
+      showToast("❌ Не все утверждения выбраны верно! Попробуй ещё раз", "error");
     }
   };
 }
 
-// 6. Расшифруй послание (исправлено, осмысленные слова)
+// 6. Расшифруй послание
+let cipherTimeout = null;
+
 function renderLogicCipher() {
-  const ciphers = {
-    1: {
-      map: { "★": "А", "■": "Б", "●": "В", "▲": "Г" },
-      encoded: "★ ● ■ ▲",
-      correct: "АВБГ",
-      decodeName: "АВБГ"
-    },
-    2: {
-      map: { "♥": "Д", "◆": "Е", "♠": "Ж", "♣": "З" },
-      encoded: "♥ ◆ ♠ ♣",
-      correct: "ДЕЖЗ",
-      decodeName: "ДЕЖЗ"
-    },
-    3: {
-      map: { "☀": "К", "☁": "О", "★": "Т", "☂": "С" },
-      encoded: "☀ ☁ ★ ☂",
-      correct: "КОТС",
-      decodeName: "КОТС (КОТ с буквой С)"
-    }
+  // Очищаем предыдущий таймаут
+  if (cipherTimeout) {
+    clearTimeout(cipherTimeout);
+    cipherTimeout = null;
+  }
+  
+  // ===== БИБЛИОТЕКИ СИМВОЛОВ ДЛЯ ШИФРОВ =====
+  const symbolSets = {
+    easy: ["★", "■", "●", "▲", "♥", "◆", "♠", "♣", "☀", "☁", "☂", "❄", "⚡", "⭐", "🌙", "☎", "✉", "⌛", "⚙", "🔑"],
+    medium: ["🔴", "🔵", "🟢", "🟡", "🟠", "🟣", "🔶", "🔷", "🔺", "🔻", "⬛", "⬜", "🔲", "🔳", "⭕", "❌", "💎", "🔔", "📌", "📍"],
+    hard: ["★", "■", "●", "▲", "♥", "◆", "♠", "♣", "☀", "☁", "☂", "❄", "⚡", "⭐", "🌙", "☎", "✉", "⌛", "⚙", "🔑", "🔴", "🔵", "🟢", "🟡"]
   };
   
-  const cipher = ciphers[state.level] || ciphers[1];
+  // ===== ФУНКЦИЯ ГЕНЕРАЦИИ СЛУЧАЙНОГО СЛОВА =====
+  function generateRandomWord(length) {
+    const consonants = "БВГДЖЗЙКЛМНПРСТФХЦЧШЩ";
+    const vowels = "АЕЁИОУЫЭЮЯ";
+    let word = "";
+    for (let i = 0; i < length; i++) {
+      if (i % 2 === 0) {
+        word += consonants[Math.floor(Math.random() * consonants.length)];
+      } else {
+        word += vowels[Math.floor(Math.random() * vowels.length)];
+      }
+    }
+    return word;
+  }
   
-  const mapDisplay = Object.entries(cipher.map).map(([symbol, letter]) => `${symbol} = ${letter}`).join(" | ");
+  // ===== ГЕНЕРАЦИЯ ШИФРА В ЗАВИСИМОСТИ ОТ УРОВНЯ =====
+  let wordLength, optionsCount, symbols, extraSymbolsCount;
+  
+  if (state.level === 1) {
+    wordLength = Math.floor(Math.random() * 2) + 3; // 3-4 символа
+    optionsCount = 3;
+    symbols = [...symbolSets.easy];
+    extraSymbolsCount = 2;
+  } else if (state.level === 2) {
+    wordLength = Math.floor(Math.random() * 3) + 5; // 5-7 символов
+    optionsCount = 5;
+    symbols = [...symbolSets.medium];
+    extraSymbolsCount = 3;
+  } else {
+    wordLength = Math.floor(Math.random() * 3) + 8; // 8-10 символов
+    optionsCount = 7;
+    symbols = [...symbolSets.hard];
+    extraSymbolsCount = 3;
+  }
+  
+  // Генерируем случайное слово
+  const correctWord = generateRandomWord(wordLength);
+  
+  // Перемешиваем символы для выбора
+  const shuffledSymbols = [...symbols].sort(() => Math.random() - 0.5);
+  
+  // Создаём карту шифрования для букв слова
+  const cipherMap = {};
+  const letters = correctWord.split('');
+  const uniqueLetters = [...new Set(letters)];
+  
+  // Назначаем символы для букв слова
+  for (let i = 0; i < uniqueLetters.length; i++) {
+    cipherMap[uniqueLetters[i]] = shuffledSymbols[i];
+  }
+  
+  // Добавляем лишние символы в таблицу
+  let extraIndex = uniqueLetters.length;
+  for (let i = 0; i < extraSymbolsCount; i++) {
+    if (extraIndex + i < shuffledSymbols.length) {
+      const extraSymbol = shuffledSymbols[extraIndex + i];
+      let fakeLetter;
+      do {
+        fakeLetter = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"[Math.floor(Math.random() * 33)];
+      } while (correctWord.includes(fakeLetter));
+      cipherMap[fakeLetter] = extraSymbol;
+    }
+  }
+  
+  // Шифруем слово (сохраняем ПОРЯДОК букв)
+  const encoded = letters.map(letter => cipherMap[letter]).join(' ');
+  
+  // Создаём отображение таблицы (со всеми символами, в рандомном порядке)
+  const allMapEntries = Object.entries(cipherMap);
+  const shuffledMapEntries = [...allMapEntries].sort(() => Math.random() - 0.5);
+  // Таблица шифрования: символы 30px (в 2 раза меньше от 60px), буквы 24px
+  const mapDisplay = shuffledMapEntries.map(([letter, symbol]) => 
+    `<span style="font-size: 30px; display: inline-block; margin: 0 10px;">${symbol}</span> = <span style="font-size: 24px; font-weight: 500;">${letter}</span>`
+  ).join(" &nbsp;&nbsp;|&nbsp;&nbsp; ");
+  
+  // Генерируем варианты ответов
+  const options = [correctWord];
+  
+  while (options.length < optionsCount) {
+    let fakeWord;
+    if (state.level === 1) {
+      if (Math.random() > 0.5) {
+        fakeWord = generateRandomWord(wordLength);
+      } else {
+        fakeWord = correctWord.split('').sort(() => Math.random() - 0.5).join('');
+      }
+    } else if (state.level === 2) {
+      fakeWord = correctWord.split('');
+      const replaceCount = Math.floor(Math.random() * 2) + 1;
+      for (let i = 0; i < replaceCount; i++) {
+        const pos = Math.floor(Math.random() * fakeWord.length);
+        const newLetter = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"[Math.floor(Math.random() * 33)];
+        fakeWord[pos] = newLetter;
+      }
+      fakeWord = fakeWord.join('');
+    } else {
+      if (Math.random() > 0.5) {
+        fakeWord = correctWord.split('').sort(() => Math.random() - 0.5).join('');
+      } else {
+        fakeWord = generateRandomWord(wordLength);
+      }
+    }
+    
+    if (!options.includes(fakeWord) && fakeWord !== correctWord && fakeWord.length === correctWord.length) {
+      options.push(fakeWord);
+    }
+  }
+  
+  // Перемешиваем варианты
+  for (let i = options.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [options[i], options[j]] = [options[j], options[i]];
+  }
+  
+  // Определяем размер шрифта для зашифрованного слова
+  let fontSize = "48px";
+  let letterSpacing = "12px";
+  if (state.level === 2) {
+    fontSize = "42px";
+    letterSpacing = "10px";
+  } else if (state.level === 3) {
+    fontSize = "36px";
+    letterSpacing = "8px";
+  }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔐 Расшифруй послание</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">🔐 Расшифруй послание ${'⭐'.repeat(state.level)}</div>
+    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center; font-size: 18px;">
       📖 Задача: Используй таблицу шифровки, чтобы расшифровать слово.
+      <br>💡 В таблице есть лишние символы, которые не нужны для решения!
     </div>
-    <div class="flipped-text" style="transform: none; text-align: center; background: white; padding: 20px; border-radius: 20px;">
-      <strong>Таблица шифрования:</strong><br>
-      ${mapDisplay}<br><br>
-      <strong>Зашифрованное слово:</strong><br>
-      <span style="font-size: 36px; letter-spacing: 8px;">${cipher.encoded}</span>
+    <div style="display: flex; justify-content: center;">
+      <div class="cipher-table" style="background: white; padding: 25px; border-radius: 25px; margin-bottom: 30px; display: inline-block; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+        <strong style="font-size: 22px;">🗝️ Таблица шифрования:</strong><br>
+        <div style="margin-top: 15px;">${mapDisplay}</div>
+      </div>
     </div>
-    <div class="options-list">
-      <button class="option-btn" data-answer="${cipher.correct}">${cipher.correct}</button>
-      <button class="option-btn" data-answer="${cipher.correct.split("").reverse().join("")}">${cipher.correct.split("").reverse().join("")}</button>
-      <button class="option-btn" data-answer="АБВГ">АБВГ</button>
+    <div style="display: flex; justify-content: center; margin: 30px 0;">
+      <div class="encoded-word" style="background: linear-gradient(135deg, #667eea15, #764ba215); padding: 30px 40px; border-radius: 30px; text-align: center;">
+        <strong style="font-size: 24px;">📨 Зашифрованное слово:</strong><br>
+        <span style="font-size: ${fontSize}; letter-spacing: ${letterSpacing}; font-family: monospace; font-weight: bold;">${encoded}</span>
+      </div>
     </div>
-    <button id="checkBtn" class="btn-primary">✅ Проверить</button>
+    <div style="display: flex; justify-content: center;">
+      <div class="options-list-horizontal" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 30px 0; max-width: 900px;">
+        ${options.map(opt => `
+          <button class="option-btn-cipher" data-answer="${opt}" style="padding: 18px 32px; font-size: 28px; font-weight: 700; border: 3px solid #e5e7eb; border-radius: 80px; background: white; cursor: pointer; transition: all 0.2s ease; min-width: 160px; color: #333;">
+            ${opt}
+          </button>
+        `).join('')}
+      </div>
+    </div>
+    <div style="display: flex; justify-content: center;">
+      <button id="checkBtn" class="btn-primary" style="width: auto; padding: 16px 60px; font-size: 24px; margin-top: 20px;">✅ Проверить</button>
+    </div>
   `;
-  setupSimpleChoice(cipher.correct);
+  
+  // Добавляем стили для кнопок
+  const style = document.createElement('style');
+  style.textContent = `
+    .option-btn-cipher {
+      transition: all 0.2s ease;
+      color: #333 !important;
+    }
+    .option-btn-cipher:hover {
+      transform: translateY(-5px);
+      border-color: #667eea;
+      background: #f8f9ff;
+      box-shadow: 0 8px 20px rgba(102,126,234,0.3);
+    }
+    .option-btn-cipher.selected {
+      background: linear-gradient(135deg, #667eea, #764ba2) !important;
+      color: white !important;
+      border-color: transparent !important;
+      transform: scale(1.05);
+    }
+    .option-btn-cipher.correct {
+      background: linear-gradient(135deg, #10B981, #059669) !important;
+      color: white !important;
+      border-color: #10B981 !important;
+    }
+    .option-btn-cipher.wrong {
+      background: #EF4444 !important;
+      color: white !important;
+      border-color: #EF4444 !important;
+      animation: shake 0.3s ease;
+    }
+  `;
+  document.head.appendChild(style);
+  
+  // Настраиваем выбор вариантов
+  let selected = null;
+  let selectedButton = null;
+  let isAnswered = false;
+  const buttons = document.querySelectorAll(".option-btn-cipher");
+  
+  buttons.forEach(btn => {
+    btn.onclick = () => {
+      if (isAnswered) return;
+      
+      buttons.forEach(b => {
+        b.classList.remove("selected");
+        b.style.background = "white";
+        b.style.color = "#333";
+      });
+      btn.classList.add("selected");
+      btn.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+      btn.style.color = "white";
+      selected = btn.dataset.answer;
+      selectedButton = btn;
+    };
+  });
+  
+  const checkBtn = document.getElementById("checkBtn");
+  checkBtn.onclick = () => {
+    if (isAnswered) return;
+    
+    if (!selected) {
+      showToast("Выбери ответ!", "error");
+      return;
+    }
+    
+    if (selected === correctWord) {
+      isAnswered = true;
+      if (selectedButton) {
+        selectedButton.classList.add("correct");
+        selectedButton.style.background = "linear-gradient(135deg, #10B981, #059669)";
+        selectedButton.style.color = "white";
+      }
+      successAction();
+      showToast("✅ Правильно! Ты расшифровал послание!", "success");
+      
+      cipherTimeout = setTimeout(() => {
+        renderLogicCipher();
+      }, 1500);
+    } else {
+      if (selectedButton) {
+        selectedButton.classList.add("wrong");
+        selectedButton.style.background = "#EF4444";
+        selectedButton.style.color = "white";
+        setTimeout(() => {
+          selectedButton.classList.remove("wrong");
+          selectedButton.classList.remove("selected");
+          selectedButton.style.background = "white";
+          selectedButton.style.color = "#333";
+          selected = null;
+          selectedButton = null;
+          isAnswered = false;
+        }, 800);
+      }
+      failAction();
+      showToast(`❌ Неправильно! Попробуй ещё раз`, "error");
+    }
+  };
 }
 
 // 7. Фиджитал: Свой шифр (полная таблица алфавита)
@@ -2553,7 +3698,7 @@ function renderPhygitalCipher() {
 }
 
 // ============================================
-// ========== ЗАДАНИЯ ВНИМАНИЕ (ПОЛНОСТЬЮ ПЕРЕРАБОТАНЫ) ==========
+// ========== ЗАДАНИЯ ВНИМАНИЕ ==========
 // ============================================
 
 // ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ ЦЕНТРИРОВАННОЙ СЕТКИ
@@ -2646,40 +3791,118 @@ function renderAttentionFindOdd() {
   });
 }
 
-// 2. НАЙДИ ПРЕДМЕТЫ
+// 2. НАЙДИ ПРЕДМЕТЫ (2D КОМНАТА)
 function renderAttentionFindItems() {
+  // ===== КОНФИГУРАЦИЯ ДЛЯ РАЗНЫХ УРОВНЕЙ =====
   const configs = {
-    1: { itemsCount: 20, cols: 5, needToFind: 3, targetItems: ["🐱", "🐶", "🐭", "🐰", "🦊"] },
-    2: { itemsCount: 32, cols: 8, needToFind: 5, targetItems: ["🐱", "🐶", "🐭", "🐰", "🦊", "🐻", "🐼", "🐨"] },
-    3: { itemsCount: 48, cols: 8, needToFind: 8, targetItems: ["🐱", "🐶", "🐭", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐸", "🐧"] }
+    1: { 
+      gridCols: 5, 
+      gridRows: 5, 
+      totalItems: 25,
+      needToFind: 3,
+      roomType: "комната"
+    },
+    2: { 
+      gridCols: 7, 
+      gridRows: 5, 
+      totalItems: 35,
+      needToFind: 6,
+      roomType: "комната"
+    },
+    3: { 
+      gridCols: 9, 
+      gridRows: 5, 
+      totalItems: 45,
+      needToFind: 8,
+      roomType: "комната"
+    }
   };
   
   const config = configs[state.level];
-  const shuffledTargets = [...config.targetItems].sort(() => Math.random() - 0.5);
-  const toFind = shuffledTargets.slice(0, config.needToFind);
+  const totalCells = config.totalItems;
+  const cols = config.gridCols;
   
+  // Все возможные предметы для комнаты
+  const allRoomItems = [
+    "📚", "✏️", "🍎", "🔑", "📱", "⌚", "🎮", "💻", "📺", "🪑", "🛋️", "🛏️", 
+    "🚪", "🪟", "💡", "🖼️", "🌸", "☕", "🥛", "🍪", "🎧", "📷", "🔋", "📖",
+    "✂️", "📏", "🎨", "🧸", "🎲", "🏆", "📀", "🎥", "🕯️", "🧴", "🧹", "🧺",
+    "🧸", "🎈", "📎", "✒️", "📌", "🔍", "⚽", "🏀", "🎾", "🏸"
+  ];
+  
+  // Выбираем случайные предметы для поиска (уникальные)
+  const shuffledForFind = [...allRoomItems].sort(() => Math.random() - 0.5);
+  const toFind = shuffledForFind.slice(0, config.needToFind);
+  
+  // Предметы для заполнения комнаты (все кроме тех, что нужно найти)
+  const otherItems = allRoomItems.filter(item => !toFind.includes(item));
+  
+  // Создаём комнату с предметами
   let items = [];
-  for (let i = 0; i < config.itemsCount; i++) {
-    if (i < config.needToFind) {
-      items.push(toFind[i]);
+  const targetIndices = new Set();
+  
+  // Размещаем предметы для поиска в случайных местах (по одному разу)
+  for (let i = 0; i < toFind.length; i++) {
+    let position;
+    do {
+      position = Math.floor(Math.random() * totalCells);
+    } while (targetIndices.has(position));
+    targetIndices.add(position);
+  }
+  
+  // Заполняем сетку
+  const targetArray = [...targetIndices];
+  for (let i = 0; i < totalCells; i++) {
+    const targetIndex = targetArray.indexOf(i);
+    if (targetIndex !== -1) {
+      items.push(toFind[targetIndex]);
     } else {
-      const randomItem = config.targetItems[Math.floor(Math.random() * config.targetItems.length)];
+      const randomItem = otherItems[Math.floor(Math.random() * otherItems.length)];
       items.push(randomItem);
     }
   }
-  items.sort(() => Math.random() - 0.5);
+  
+  // Перемешиваем дополнительно для рандомности
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+  
+  // Определяем размер ячейки в зависимости от количества колонок
+  let cellSize = "65px";
+  let fontSize = "40px";
+  if (cols === 9) {
+    cellSize = "55px";
+    fontSize = "32px";
+  } else if (cols === 7) {
+    cellSize = "60px";
+    fontSize = "36px";
+  }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🎨 Найди предметы ${'⭐'.repeat(state.level)}</div>
-    <div class="attention-target" style="text-align: center; font-size: 20px;">
-      🎯 Найди предметы: ${toFind.map(i => i).join(' ')}
+    <div class="task-title">🎨 Найди предметы в комнате ${'⭐'.repeat(state.level)}</div>
+    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
+      📖 В комнате разбросаны разные предметы. Найди ВСЕ предметы из списка ниже!
+      <br>🖱️ Нажимай на предметы, которые нужно найти.
     </div>
-    <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 20px;">
-      <div class="attention-grid" id="attentionGrid" style="display: grid; grid-template-columns: repeat(${config.cols}, 1fr); gap: 10px; justify-content: center; margin: 0 auto;"></div>
+    <div class="attention-target" style="text-align: center; background: white; padding: 15px; border-radius: 20px; margin-bottom: 20px;">
+      🎯 Найди предметы: 
+      <div style="font-size: 48px; background: #f0f0ff; padding: 10px 20px; border-radius: 40px; display: inline-flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
+        ${toFind.map(i => `<span style="display: inline-block;">${i}</span>`).join('')}
+      </div>
     </div>
-    <div class="attention-stats" style="margin-top: 20px; text-align: center; font-size: 18px;">
-      Найдено: <b id="foundCount" style="color: #f59e0b; font-size: 24px;">0</b> / ${config.needToFind}
+    <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin: 20px 0;">
+      <div class="room-grid" id="attentionGrid" style="display: grid; grid-template-columns: repeat(${cols}, 1fr); gap: 8px; background: #d4c8a8; padding: 20px; border-radius: 20px; border: 8px solid #8b5a2b; max-width: 100%; margin: 0 auto; box-shadow: 0 8px 20px rgba(0,0,0,0.2); overflow-x: auto;">
+      </div>
+    </div>
+    <div style="display: flex; justify-content: center; margin: 20px 0;">
+      <div class="attention-stats" style="text-align: center; font-size: 20px; background: white; padding: 12px 25px; border-radius: 40px; display: inline-block;">
+        📋 Найдено: <b id="foundCount" style="color: #f59e0b; font-size: 32px;">0</b> / ${config.needToFind}
+      </div>
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 10px;">
+      <button id="resetRoomBtn" class="btn-secondary" style="width: auto; padding: 12px 28px;">🔄 Новая комната</button>
     </div>
   `;
   
@@ -2689,85 +3912,400 @@ function renderAttentionFindItems() {
   const updateCount = () => {
     document.getElementById("foundCount").textContent = found.size;
     if (found.size === config.needToFind) {
+      showToast("🎉 Отлично! Ты нашёл все предметы!", "success");
       successAction();
+      setTimeout(() => {
+        renderAttentionFindItems();
+      }, 1500);
     }
   };
   
-  items.forEach(item => {
+  items.forEach((item, idx) => {
     const cell = document.createElement("div");
-    cell.className = "attention-cell";
+    cell.className = "room-cell";
     cell.textContent = item;
-    cell.style.width = "70px";
-    cell.style.height = "70px";
-    cell.style.fontSize = "40px";
+    cell.style.width = cellSize;
+    cell.style.height = cellSize;
+    cell.style.fontSize = fontSize;
     cell.style.display = "flex";
     cell.style.alignItems = "center";
     cell.style.justifyContent = "center";
+    cell.style.backgroundColor = "#f5e6cc";
+    cell.style.borderRadius = "12px";
+    cell.style.cursor = "pointer";
+    cell.style.transition = "all 0.2s ease";
+    cell.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+    cell.style.border = "2px solid #d4a574";
+    
+    cell.onmouseenter = () => {
+      if (!found.has(item) && toFind.includes(item)) {
+        cell.style.backgroundColor = "#ffe0b3";
+        cell.style.transform = "scale(1.05)";
+      }
+    };
+    cell.onmouseleave = () => {
+      if (!found.has(item)) {
+        cell.style.backgroundColor = "#f5e6cc";
+        cell.style.transform = "scale(1)";
+      }
+    };
+    
     cell.onclick = () => {
       if (toFind.includes(item) && !found.has(item)) {
         found.add(item);
         cell.classList.add("correct");
+        cell.style.backgroundColor = "#a5d6a5";
+        cell.style.transform = "scale(0.98)";
+        cell.style.cursor = "default";
+        showToast(`✅ Нашёл ${item}!`, "success");
         updateCount();
       } else if (!toFind.includes(item)) {
         cell.classList.add("wrong");
-        setTimeout(() => cell.classList.remove("wrong"), 300);
+        cell.style.backgroundColor = "#ffb3b3";
+        setTimeout(() => {
+          cell.classList.remove("wrong");
+          cell.style.backgroundColor = "#f5e6cc";
+        }, 300);
         failAction();
+      } else if (found.has(item)) {
+        showToast("🔍 Этот предмет ты уже нашёл!", "info");
       }
     };
     grid.appendChild(cell);
   });
+  
+  // Кнопка сброса
+  const resetBtn = document.getElementById("resetRoomBtn");
+  if (resetBtn) {
+    resetBtn.onclick = () => {
+      renderAttentionFindItems();
+      showToast("🔄 Новая комната создана!", "success");
+    };
+  }
 }
 
-// 3. НАЙДИ ЦИФРУ
+// 3. НАЙДИ ЦИФРУ (РАНДОМНОЕ РАСПОЛОЖЕНИЕ + ВАШИ ЦВЕТА) - БЕЗ ЛАГОВ
+let findNumberTimeout = null;
+
 function renderAttentionFindNumber() {
-  const totals = { 1: 25, 2: 36, 3: 49 };
-  const total = totals[state.level] || 25;
-  const cols = Math.sqrt(total);
+  // Очищаем предыдущий таймаут
+  if (findNumberTimeout) {
+    clearTimeout(findNumberTimeout);
+    findNumberTimeout = null;
+  }
+  
+  const totals = { 1: 12, 2: 16, 3: 20 };
+  const total = totals[state.level] || 12;
+  
+  // ===== ВАША ПАЛИТРА ЦВЕТОВ =====
+  const colorPalette = {
+    blue: {
+      100: "#2563EB", 80: "#3B82F6", 60: "#60A5FA", 40: "#93C5FD", 20: "#BFDBFE"
+    },
+    mint: {
+      100: "#0D9488", 80: "#14B8A6", 60: "#2DD4BF", 40: "#5EEAD4", 20: "#99F6E4"
+    },
+    purple: {
+      100: "#7C3AED", 80: "#8B5CF6", 60: "#A78BFA", 40: "#C4B5FD", 20: "#DDD6FE"
+    },
+    orange: {
+      100: "#EA580C", 80: "#F97316", 60: "#FB923C", 40: "#FDBA74", 20: "#FED7AA"
+    },
+    coral: {
+      100: "#E11D48", 80: "#F43F5E", 60: "#FB7185", 40: "#FDA4AF", 20: "#FECDD3"
+    },
+    green: {
+      100: "#15803D", 80: "#22C55E", 60: "#4ADE80", 40: "#86EFAC", 20: "#BBF7D0"
+    },
+    yellow: {
+      100: "#CA8A04", 80: "#EAB308", 60: "#FDE047", 40: "#FEF08A", 20: "#FEF9C3"
+    }
+  };
+  
+  const colorNames = ["blue", "mint", "purple", "orange", "coral", "green", "yellow"];
+  const saturations = [100, 80, 60, 40, 20];
+  
+  // Массив фигур (только простые, без transform)
+  const shapes = [
+    { name: "круг", borderRadius: "50%", clipPath: "none" },
+    { name: "квадрат", borderRadius: "16px", clipPath: "none" },
+    { name: "скруглённый квадрат", borderRadius: "24px", clipPath: "none" },
+    { name: "прямоугольник", borderRadius: "12px", clipPath: "none", shapeWidth: "100px", shapeHeight: "80px" },
+    { name: "вытянутый круг", borderRadius: "50%", shapeWidth: "100px", shapeHeight: "80px" }
+  ];
+  
+  // Массив шрифтов
+  const fonts = [
+    "Arial Black", "Comic Neue", "Impact", "Georgia", "Verdana",
+    "Trebuchet MS", "Segoe UI Black"
+  ];
+  
+  // Функция получения случайного цвета из палитры
+  function getRandomColor() {
+    const colorName = colorNames[Math.floor(Math.random() * colorNames.length)];
+    const saturation = saturations[Math.floor(Math.random() * saturations.length)];
+    return {
+      bg: colorPalette[colorName][saturation],
+      name: `${colorName}-${saturation}`
+    };
+  }
+  
   let numbers = Array.from({ length: total }, (_, i) => i + 1);
-  numbers.sort(() => Math.random() - 0.5);
+  // Перемешиваем для случайного порядка появления
+  for (let i = numbers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+  }
+  
   let current = 1;
+  let gameActive = true;
+  let foundCount = 0;
+  
+  // Генерируем случайные позиции, чтобы элементы не накладывались
+  let positions = [];
   
   gameArea.innerHTML = `
     ${renderHUD()}
     <div class="task-title">🔢 Найди цифру ${'⭐'.repeat(state.level)}</div>
-    <div class="current-task" style="text-align: center; margin-bottom: 20px; font-size: 22px;">
-      🎯 Найди: <b id="currentNumber" style="font-size: 42px; background: #f0f0ff; padding: 8px 28px; border-radius: 50px;">1</b>
+    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
+      📖 Нажимай на цифры по порядку: от 1 до ${total}.
+      🎨 Каждая цифра уникальна – найди нужную среди всех!
     </div>
-    <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-      <div class="attention-grid" id="numberGrid" style="display: grid; grid-template-columns: repeat(${cols}, 1fr); gap: 12px; justify-content: center; margin: 0 auto;"></div>
+    
+    <div class="current-task" style="text-align: center; margin-bottom: 25px;">
+      <div style="display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2); padding: 5px; border-radius: 80px; box-shadow: 0 8px 20px rgba(102,126,234,0.3);">
+        <div style="background: white; border-radius: 80px; padding: 12px 32px;">
+          <span style="font-size: 16px; font-weight: 600; color: #667eea;">🎯 НАЙДИ</span><br>
+          <span id="currentNumber" style="font-size: 72px; font-weight: 800; color: #f59e0b; line-height: 1;">1</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="find-number-progress" style="text-align: center; margin-bottom: 20px;">
+      <div style="background: #e5e7eb; height: 8px; border-radius: 10px; max-width: 300px; margin: 0 auto; overflow: hidden;">
+        <div id="progressFill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #10B981, #059669); transition: width 0.3s ease;"></div>
+      </div>
+      <div style="margin-top: 8px; font-size: 14px; color: #666;">
+        Найдено: <b id="foundCount">0</b> / ${total}
+      </div>
+    </div>
+    
+    <div id="numberContainer" style="position: relative; min-height: 550px; background: linear-gradient(135deg, #f0f0ff, #e8e8ff); border-radius: 32px; overflow: hidden; margin-top: 10px;">
     </div>
   `;
   
-  const grid = document.getElementById("numberGrid");
+  const container = document.getElementById("numberContainer");
   const currentSpan = document.getElementById("currentNumber");
+  const progressFill = document.getElementById("progressFill");
+  const foundCountSpan = document.getElementById("foundCount");
   
-  numbers.forEach(num => {
-    const cell = document.createElement("div");
-    cell.className = "attention-cell";
-    cell.textContent = num;
-    cell.style.width = "70px";
-    cell.style.height = "70px";
-    cell.style.fontSize = "26px";
-    cell.style.fontWeight = "bold";
-    cell.style.display = "flex";
-    cell.style.alignItems = "center";
-    cell.style.justifyContent = "center";
-    cell.onclick = () => {
-      if (num === current) {
-        cell.classList.add("correct");
-        current++;
-        currentSpan.textContent = current;
-        if (current > total) {
-          successAction();
+  // Получаем размеры контейнера
+  const containerWidth = container.clientWidth || 800;
+  const containerHeight = 550;
+  
+  // Базовый размер ячейки
+  const baseSize = 110;
+  
+  function generateRandomPosition(index, width, height) {
+    let attempts = 0;
+    let pos = { left: 0, top: 0 };
+    let overlapping = true;
+    const margin = 15;
+    
+    while (overlapping && attempts < 100) {
+      pos = {
+        left: margin + Math.random() * (containerWidth - width - margin * 2),
+        top: margin + Math.random() * (containerHeight - height - margin * 2)
+      };
+      
+      overlapping = false;
+      for (let i = 0; i < positions.length; i++) {
+        const dx = Math.abs(pos.left - positions[i].left);
+        const dy = Math.abs(pos.top - positions[i].top);
+        const minDist = Math.min(width, height) + Math.min(positions[i].width, positions[i].height);
+        if (dx < minDist - 20 && dy < minDist - 20) {
+          overlapping = true;
+          break;
         }
-      } else {
-        cell.classList.add("wrong");
-        setTimeout(() => cell.classList.remove("wrong"), 300);
-        failAction();
+      }
+      attempts++;
+    }
+    return pos;
+  }
+  
+  // Создаём массив цифр с их стилями
+  const numberItems = numbers.map((num, index) => {
+    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+    const color = getRandomColor();
+    const font = fonts[Math.floor(Math.random() * fonts.length)];
+    const fontSize = 32 + Math.floor(Math.random() * 20); // 32-52px
+    const rotate = (Math.random() - 0.5) * 15; // -7.5° до +7.5°
+    
+    // Определяем размеры в зависимости от фигуры
+    let width = baseSize;
+    let height = baseSize;
+    if (shape.shapeWidth) {
+      width = parseInt(shape.shapeWidth);
+      height = parseInt(shape.shapeHeight);
+    }
+    
+    const pos = generateRandomPosition(index, width, height);
+    positions.push({ ...pos, width: width, height: height });
+    
+    return {
+      value: num,
+      shape: shape,
+      color: color,
+      font: font,
+      fontSize: fontSize,
+      rotate: rotate,
+      left: pos.left,
+      top: pos.top,
+      width: width,
+      height: height
+    };
+  });
+  
+  function updateProgress() {
+    const percent = (foundCount / total) * 100;
+    if (progressFill) progressFill.style.width = percent + "%";
+    if (foundCountSpan) foundCountSpan.textContent = foundCount;
+  }
+  
+  // Создаём и добавляем цифры в контейнер
+  numberItems.forEach((item) => {
+    const cell = document.createElement("div");
+    cell.className = "number-cell";
+    cell.textContent = item.value;
+    cell.setAttribute("data-value", item.value);
+    
+    // Базовые стили (без transition для transform)
+    let styleString = `
+      position: absolute;
+      left: ${item.left}px;
+      top: ${item.top}px;
+      width: ${item.width}px;
+      height: ${item.height}px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: ${item.fontSize}px;
+      font-weight: bold;
+      font-family: '${item.font}', cursive, sans-serif;
+      background: ${item.color.bg};
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      transform: rotate(${item.rotate}deg);
+      z-index: ${item.value};
+      will-change: transform;
+      backface-visibility: hidden;
+    `;
+    
+    // Добавляем border-radius
+    if (item.shape.borderRadius) {
+      styleString += `border-radius: ${item.shape.borderRadius};`;
+    }
+    
+    cell.style.cssText = styleString;
+    
+    // Простой эффект при наведении (без transform scale, только тень)
+    cell.onmouseenter = () => {
+      if (!cell.classList.contains("correct")) {
+        cell.style.boxShadow = "0 12px 28px rgba(0,0,0,0.25)";
+        cell.style.filter = "brightness(1.05)";
       }
     };
-    grid.appendChild(cell);
+    cell.onmouseleave = () => {
+      if (!cell.classList.contains("correct")) {
+        cell.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
+        cell.style.filter = "none";
+      }
+    };
+    
+    cell.onclick = () => {
+      if (!gameActive) return;
+      if (cell.classList.contains("correct")) return;
+      
+      const value = parseInt(cell.getAttribute("data-value"));
+      
+      if (value === current) {
+        // Правильный клик
+        cell.classList.add("correct");
+        cell.style.opacity = "0.6";
+        cell.style.filter = "grayscale(0.3)";
+        cell.style.pointerEvents = "none";
+        cell.style.transform = `rotate(${item.rotate}deg) scale(0.96)`;
+        
+        foundCount++;
+        current++;
+        currentSpan.textContent = current;
+        updateProgress();
+        
+        if (navigator.vibrate) navigator.vibrate(50);
+        
+        if (current > total) {
+          gameActive = false;
+          
+          // Праздничный эффект
+          container.style.background = "linear-gradient(135deg, #d1fae5, #a7f3d0)";
+          setTimeout(() => { 
+            container.style.background = "linear-gradient(135deg, #f0f0ff, #e8e8ff)";
+          }, 500);
+          
+          showToast(`🎉 ПОБЕДА! Все ${total} цифр найдены!`, "success");
+          successAction();
+          
+          findNumberTimeout = setTimeout(() => {
+            if (state.levelProgress < state.tasksPerLevel) {
+              renderAttentionFindNumber();
+            }
+          }, 1500);
+        } else {
+          showToast(`✅ ${value}! Теперь ищи ${current}`, "success");
+        }
+      } else {
+        // Неправильный клик
+        cell.classList.add("wrong");
+        cell.style.animation = "shake 0.3s ease";
+        
+        if (navigator.vibrate) navigator.vibrate(100);
+        
+        setTimeout(() => {
+          cell.classList.remove("wrong");
+          cell.style.animation = "";
+        }, 300);
+        
+        failAction();
+        
+        // Подсказка
+        const hint = document.createElement("div");
+        hint.textContent = `❌ Это ${value}! Ищем ${current}`;
+        hint.style.cssText = `
+          position: fixed;
+          bottom: 80px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: #EF4444;
+          color: white;
+          padding: 10px 24px;
+          border-radius: 40px;
+          font-size: 16px;
+          font-weight: 600;
+          z-index: 1000;
+          animation: toastSlide 0.3s ease;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        `;
+        document.body.appendChild(hint);
+        setTimeout(() => hint.remove(), 800);
+      }
+    };
+    
+    container.appendChild(cell);
   });
+  
+  updateProgress();
 }
 
 // 4. ЧЁРНО-БЕЛЫЕ ТАБЛИЦЫ (без дублей на одном цвете)
@@ -3152,23 +4690,449 @@ function renderAttentionFindAmong() {
   });
 }
 
-// 7. ФИДЖИТАЛ: РАСКРАСКА
+/// 7. ФИДЖИТАЛ: РАСКРАСКА (ОБВЕДЕНИЕ ПО КОНТУРУ)
 function renderPhygitalColoring() {
+  // ===== КОНТУРЫ ДЛЯ РАЗНЫХ УРОВНЕЙ (по 6 вариантов) =====
+  const contours = {
+    1: [
+      { name: "Круг", draw: (ctx, w, h) => {
+          ctx.beginPath();
+          ctx.arc(w/2, h/2, Math.min(w, h) * 0.35, 0, Math.PI * 2);
+          ctx.stroke();
+        } },
+      { name: "Квадрат", draw: (ctx, w, h) => {
+          const size = Math.min(w, h) * 0.6;
+          ctx.strokeRect(w/2 - size/2, h/2 - size/2, size, size);
+        } },
+      { name: "Треугольник", draw: (ctx, w, h) => {
+          ctx.beginPath();
+          ctx.moveTo(w/2, h/2 - Math.min(w, h) * 0.35);
+          ctx.lineTo(w/2 - Math.min(w, h) * 0.4, h/2 + Math.min(w, h) * 0.25);
+          ctx.lineTo(w/2 + Math.min(w, h) * 0.4, h/2 + Math.min(w, h) * 0.25);
+          ctx.closePath();
+          ctx.stroke();
+        } },
+      { name: "Звезда", draw: (ctx, w, h) => {
+          const spikes = 5;
+          const outerRadius = Math.min(w, h) * 0.35;
+          const innerRadius = outerRadius * 0.4;
+          let rot = Math.PI / 2 * 3;
+          let step = Math.PI / spikes;
+          ctx.beginPath();
+          for (let i = 0; i < spikes; i++) {
+            const x1 = w/2 + Math.cos(rot) * outerRadius;
+            const y1 = h/2 + Math.sin(rot) * outerRadius;
+            ctx.lineTo(x1, y1);
+            rot += step;
+            const x2 = w/2 + Math.cos(rot) * innerRadius;
+            const y2 = h/2 + Math.sin(rot) * innerRadius;
+            ctx.lineTo(x2, y2);
+            rot += step;
+          }
+          ctx.closePath();
+          ctx.stroke();
+        } },
+      { name: "Сердце", draw: (ctx, w, h) => {
+          const scale = Math.min(w, h) * 0.35;
+          ctx.beginPath();
+          ctx.moveTo(w/2, h/2 - scale * 0.6);
+          ctx.bezierCurveTo(w/2 - scale, h/2 - scale, w/2 - scale, h/2 + scale * 0.4, w/2, h/2 + scale * 0.8);
+          ctx.bezierCurveTo(w/2 + scale, h/2 + scale * 0.4, w/2 + scale, h/2 - scale, w/2, h/2 - scale * 0.6);
+          ctx.stroke();
+        } },
+      { name: "Рыбка", draw: (ctx, w, h) => {
+          ctx.beginPath();
+          ctx.ellipse(w/2, h/2, Math.min(w, h) * 0.3, Math.min(w, h) * 0.2, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 + Math.min(w, h) * 0.35, h/2);
+          ctx.lineTo(w/2 + Math.min(w, h) * 0.5, h/2 - Math.min(w, h) * 0.15);
+          ctx.lineTo(w/2 + Math.min(w, h) * 0.5, h/2 + Math.min(w, h) * 0.15);
+          ctx.closePath();
+          ctx.stroke();
+        } }
+    ],
+    2: [
+      { name: "Домик", draw: (ctx, w, h) => {
+          const size = Math.min(w, h) * 0.4;
+          ctx.strokeRect(w/2 - size/2, h/2 - size/4, size, size);
+          ctx.beginPath();
+          ctx.moveTo(w/2 - size/1.8, h/2 - size/4);
+          ctx.lineTo(w/2, h/2 - size/1.6);
+          ctx.lineTo(w/2 + size/1.8, h/2 - size/4);
+          ctx.stroke();
+          ctx.strokeRect(w/2 - size/8, h/2 - size/8, size/4, size/3);
+          ctx.strokeRect(w/2 - size/3, h/2 - size/5, size/4, size/4);
+        } },
+      { name: "Кораблик", draw: (ctx, w, h) => {
+          const size = Math.min(w, h) * 0.35;
+          ctx.beginPath();
+          ctx.moveTo(w/2 - size, h/2 + size/2);
+          ctx.lineTo(w/2, h/2 + size/2);
+          ctx.lineTo(w/2 + size, h/2 + size/2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 - size/2, h/2 + size/2);
+          ctx.lineTo(w/2, h/2 - size/2);
+          ctx.lineTo(w/2 + size/2, h/2 + size/2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2, h/2 - size/2);
+          ctx.lineTo(w/2, h/2 - size);
+          ctx.stroke();
+        } },
+      { name: "Цветок", draw: (ctx, w, h) => {
+          const size = Math.min(w, h) * 0.3;
+          ctx.beginPath();
+          ctx.moveTo(w/2, h/2 + size/1.5);
+          ctx.lineTo(w/2, h/2 - size/1.2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2, h/2);
+          ctx.quadraticCurveTo(w/2 - size/2, h/2 + size/2, w/2 - size/1.5, h/2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2, h/2 + size/2);
+          ctx.quadraticCurveTo(w/2 + size/2, h/2 + size, w/2 + size/1.5, h/2 + size/2);
+          ctx.stroke();
+          for (let i = 0; i < 6; i++) {
+            const angle = (i * 60) * Math.PI / 180;
+            const x = w/2 + Math.cos(angle) * size;
+            const y = h/2 - size/1.5 + Math.sin(angle) * size/2;
+            ctx.beginPath();
+            ctx.ellipse(x, y, size/2, size/3, 0, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+          ctx.beginPath();
+          ctx.arc(w/2, h/2 - size/1.5, size/3, 0, Math.PI * 2);
+          ctx.stroke();
+        } },
+      { name: "Машинка", draw: (ctx, w, h) => {
+          const size = Math.min(w, h) * 0.4;
+          ctx.strokeRect(w/2 - size, h/2 - size/3, size * 2, size/1.5);
+          ctx.strokeRect(w/2 - size/1.5, h/2 - size/1.5, size, size/1.2);
+          ctx.beginPath();
+          ctx.arc(w/2 - size/1.5, h/2 + size/3, size/4, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(w/2 + size/1.5, h/2 + size/3, size/4, 0, Math.PI * 2);
+          ctx.stroke();
+        } },
+      { name: "Ракета", draw: (ctx, w, h) => {
+          const size = Math.min(w, h) * 0.35;
+          ctx.beginPath();
+          ctx.moveTo(w/2, h/2 - size);
+          ctx.lineTo(w/2 - size/1.5, h/2 + size/2);
+          ctx.lineTo(w/2 - size/3, h/2 + size/3);
+          ctx.lineTo(w/2 - size/3, h/2 + size);
+          ctx.lineTo(w/2, h/2 + size/1.5);
+          ctx.lineTo(w/2 + size/3, h/2 + size);
+          ctx.lineTo(w/2 + size/3, h/2 + size/3);
+          ctx.lineTo(w/2 + size/1.5, h/2 + size/2);
+          ctx.closePath();
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(w/2, h/2 - size/2, size/3, 0, Math.PI * 2);
+          ctx.stroke();
+        } },
+      { name: "Рыбка2", draw: (ctx, w, h) => {
+          const size = Math.min(w, h) * 0.3;
+          ctx.beginPath();
+          ctx.ellipse(w/2, h/2, size, size/1.5, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 - size, h/2);
+          ctx.lineTo(w/2 - size*1.3, h/2 - size/2);
+          ctx.lineTo(w/2 - size*1.3, h/2 + size/2);
+          ctx.closePath();
+          ctx.stroke();
+        } }
+    ],
+    3: [
+      { name: "Котик", draw: (ctx, w, h) => {
+          const size = Math.min(w, h) * 0.3;
+          ctx.beginPath();
+          ctx.arc(w/2, h/2 - size/3, size/1.2, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 - size/1.6, h/2 - size);
+          ctx.lineTo(w/2 - size/2, h/2 - size/1.3);
+          ctx.lineTo(w/2 - size/4, h/2 - size/1.3);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 + size/1.6, h/2 - size);
+          ctx.lineTo(w/2 + size/2, h/2 - size/1.3);
+          ctx.lineTo(w/2 + size/4, h/2 - size/1.3);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.ellipse(w/2, h/2 + size/3, size/1.2, size/1.5, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 + size/1.3, h/2 + size/2);
+          ctx.quadraticCurveTo(w/2 + size, h/2 + size, w/2 + size/1.5, h/2 + size/1.2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.ellipse(w/2 - size/2, h/2 + size, size/3, size/4, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.ellipse(w/2 + size/2, h/2 + size, size/3, size/4, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        } },
+      { name: "Дракончик", draw: (ctx, w, h) => {
+          const size = Math.min(w, h) * 0.3;
+          ctx.beginPath();
+          ctx.ellipse(w/2, h/2 - size/2, size/1.2, size/1, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.ellipse(w/2, h/2 + size/3, size, size/1.2, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.rect(w/2 - size/3, h/2 - size/4, size/1.5, size/1.5);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 - size, h/2);
+          ctx.lineTo(w/2 - size*1.8, h/2 - size);
+          ctx.lineTo(w/2 - size*1.3, h/2 - size/2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 + size, h/2);
+          ctx.lineTo(w/2 + size*1.8, h/2 - size);
+          ctx.lineTo(w/2 + size*1.3, h/2 - size/2);
+          ctx.stroke();
+        } },
+      { name: "Робот", draw: (ctx, w, h) => {
+          const size = Math.min(w, h) * 0.3;
+          ctx.strokeRect(w/2 - size/1.5, h/2 - size, size/0.75, size/1);
+          ctx.strokeRect(w/2 - size/1.3, h/2 - size/4, size/0.85, size/0.8);
+          ctx.strokeRect(w/2 - size/2, h/2 - size/1.5, size/4, size/4);
+          ctx.strokeRect(w/2 + size/4, h/2 - size/1.5, size/4, size/4);
+          ctx.strokeRect(w/2 - size/3, h/2 - size/2, size/1.5, size/4);
+          ctx.beginPath();
+          ctx.moveTo(w/2, h/2 - size*1.3);
+          ctx.lineTo(w/2, h/2 - size*1.6);
+          ctx.stroke();
+        } },
+      { name: "Принцесса", draw: (ctx, w, h) => {
+          const size = Math.min(w, h) * 0.3;
+          ctx.beginPath();
+          ctx.moveTo(w/2, h/2 + size/2);
+          ctx.lineTo(w/2 - size, h/2 + size);
+          ctx.lineTo(w/2, h/2 + size*1.3);
+          ctx.lineTo(w/2 + size, h/2 + size);
+          ctx.closePath();
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(w/2, h/2 - size/3, size/1.2, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 - size/2, h/2 - size);
+          ctx.lineTo(w/2 - size/4, h/2 - size*1.3);
+          ctx.lineTo(w/2, h/2 - size/1.1);
+          ctx.lineTo(w/2 + size/4, h/2 - size*1.3);
+          ctx.lineTo(w/2 + size/2, h/2 - size);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 - size, h/2);
+          ctx.lineTo(w/2 - size*1.5, h/2 + size/2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 + size, h/2);
+          ctx.lineTo(w/2 + size*1.5, h/2 + size/2);
+          ctx.stroke();
+        } },
+      { name: "Бабочка", draw: (ctx, w, h) => {
+          const size = Math.min(w, h) * 0.3;
+          ctx.beginPath();
+          ctx.ellipse(w/2 - size/1.5, h/2, size/1.2, size, 0.5, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.ellipse(w/2 + size/1.5, h/2, size/1.2, size, -0.5, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.ellipse(w/2 - size/2.5, h/2 + size/3, size/1.3, size/1.5, 0.3, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.ellipse(w/2 + size/2.5, h/2 + size/3, size/1.3, size/1.5, -0.3, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.ellipse(w/2, h/2, size/3, size/1.2, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2, h/2 - size/1.8);
+          ctx.quadraticCurveTo(w/2 - size/2, h/2 - size*1.3, w/2 - size/1.2, h/2 - size*1.3);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2, h/2 - size/1.8);
+          ctx.quadraticCurveTo(w/2 + size/2, h/2 - size*1.3, w/2 + size/1.2, h/2 - size*1.3);
+          ctx.stroke();
+        } },
+      { name: "Сова", draw: (ctx, w, h) => {
+          const size = Math.min(w, h) * 0.3;
+          ctx.beginPath();
+          ctx.ellipse(w/2, h/2, size, size/1.1, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(w/2 - size/2.5, h/2 - size/4, size/4, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(w/2 + size/2.5, h/2 - size/4, size/4, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 - size/1.5, h/2 - size/1.5);
+          ctx.lineTo(w/2 - size/3, h/2 - size/2);
+          ctx.lineTo(w/2 - size/1.8, h/2 - size/3);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 + size/1.5, h/2 - size/1.5);
+          ctx.lineTo(w/2 + size/3, h/2 - size/2);
+          ctx.lineTo(w/2 + size/1.8, h/2 - size/3);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(w/2 - size/2, h/2 + size/3);
+          ctx.quadraticCurveTo(w/2, h/2 + size/2, w/2 + size/2, h/2 + size/3);
+          ctx.stroke();
+        } }
+    ]
+  };
+  
+  // Выбираем случайный контур в зависимости от уровня
+  const levelContours = contours[state.level];
+  const selectedContour = levelContours[Math.floor(Math.random() * levelContours.length)];
+  
+  // Определяем размер холста
+  const canvasSize = 450;
+  const brushSize = 3;
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
+  let instructions = "";
+  if (isMobile) {
+    instructions = "📱 Возьми телефон в другую руку! Обведи рисунок пальцем по пунктирной линии.";
+  } else {
+    instructions = "🖱️ Возьми мышку в другую руку! Обведи рисунок по пунктирной линии, удерживая левую кнопку.";
+  }
+  
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🎯 Фиджитал: Раскраска ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">🎯 Фиджитал: Обведи по контуру ${'⭐'.repeat(state.level)}</div>
     <div class="phygital-hint" style="background: #fef3c7; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
       🔐 Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+      <br>💡 ${instructions}
     </div>
-    <div style="text-align: center;">
-      <div style="font-size: 80px; line-height: 1;">🏠 🌳 ☁️ 🐱 🐕</div>
-      <p style="margin-top: 10px;">На картинке есть: дом, дерево, облако, кошка, собака</p>
+    <div class="contour-area" style="display: flex; justify-content: center; margin: 20px 0;">
+      <div style="background: white; padding: 20px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
+        <canvas id="drawingCanvas" width="${canvasSize}" height="${canvasSize}" style="border: 3px dashed #667eea; border-radius: 16px; cursor: crosshair; background: white; touch-action: none;"></canvas>
+      </div>
     </div>
-    <div style="display: flex; justify-content: center; margin-top: 25px;">
-      <button id="readyBtn" class="btn-primary" style="width: auto; padding: 12px 32px;">✅ Я раскрасил(а) картинку!</button>
+    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
+      <button id="clearCanvasBtn" class="btn-secondary" style="width: auto; padding: 10px 24px;">🗑️ Очистить</button>
+      <button id="readyBtn" class="btn-primary" style="width: auto; padding: 12px 32px;">✅ Готово, я обвёл(а)!</button>
+    </div>
+    <div class="drawing-hint" style="text-align: center; margin-top: 15px; font-size: 14px; color: #666;">
+      🎨 Обведи рисунок как можно точнее! Линия останется там, где ты провёл(а).
     </div>
   `;
   
+  const canvas = document.getElementById("drawingCanvas");
+  const ctx = canvas.getContext("2d");
+  
+  // Устанавливаем стили для пунктирной линии и рисуем контур
+  ctx.save();
+  ctx.beginPath();
+  ctx.setLineDash([8, 8]);
+  ctx.strokeStyle = "#667eea";
+  ctx.lineWidth = 3;
+  ctx.fillStyle = "transparent";
+  
+  // Рисуем выбранный контур
+  selectedContour.draw(ctx, canvasSize, canvasSize);
+  
+  // Восстанавливаем настройки для рисования
+  ctx.beginPath();
+  ctx.setLineDash([]);
+  ctx.strokeStyle = "#10B981";
+  ctx.lineWidth = brushSize;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  
+  // Переменные для рисования
+  let drawing = false;
+  
+  function getCoordinates(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    
+    let clientX, clientY;
+    e.preventDefault();
+    if (e.touches) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+    
+    let x = (clientX - rect.left) * scaleX;
+    let y = (clientY - rect.top) * scaleY;
+    
+    x = Math.max(0, Math.min(canvas.width, x));
+    y = Math.max(0, Math.min(canvas.height, y));
+    
+    return { x, y };
+  }
+  
+  function startDrawing(e) {
+    e.preventDefault();
+    drawing = true;
+    const { x, y } = getCoordinates(e);
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+  }
+  
+  function draw(e) {
+    e.preventDefault();
+    if (!drawing) return;
+    const { x, y } = getCoordinates(e);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+  }
+  
+  function stopDrawing(e) {
+    e.preventDefault();
+    drawing = false;
+    ctx.beginPath();
+  }
+  
+  // Поддержка мыши
+  canvas.addEventListener("mousedown", startDrawing);
+  canvas.addEventListener("mousemove", draw);
+  canvas.addEventListener("mouseup", stopDrawing);
+  canvas.addEventListener("mouseleave", stopDrawing);
+  
+  // Поддержка touch (мобильные устройства)
+  canvas.addEventListener("touchstart", startDrawing);
+  canvas.addEventListener("touchmove", draw);
+  canvas.addEventListener("touchend", stopDrawing);
+  canvas.addEventListener("touchcancel", stopDrawing);
+  
+  // Очистка холста (только линии, контур остаётся)
+  document.getElementById("clearCanvasBtn").onclick = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.setLineDash([8, 8]);
+    ctx.strokeStyle = "#667eea";
+    ctx.lineWidth = 3;
+    selectedContour.draw(ctx, canvasSize, canvasSize);
+    ctx.setLineDash([]);
+    ctx.strokeStyle = "#10B981";
+    ctx.lineWidth = brushSize;
+    showToast("🖌️ Линии очищены! Обводи заново", "success");
+  };
+  
+  // Кнопка готовности
   document.getElementById("readyBtn").onclick = () => {
     showParentPasswordModal(() => {
       successAction();
@@ -3189,104 +5153,283 @@ TASKS.attention["phygital_coloring"] = renderPhygitalColoring;
 // ========== ЗАДАНИЯ ПАМЯТЬ ==========
 // ============================================
 
+// БЛОК 1. ЗАПОМНИ ПОРЯДОК (memory_sequence)
+let memorySequenceTimeout = null;
+let memorySequenceTimeouts = [];
+
 function renderMemorySequence() {
+  // Очищаем все предыдущие таймеры
+  if (memorySequenceTimeout) {
+    clearTimeout(memorySequenceTimeout);
+    memorySequenceTimeout = null;
+  }
+  memorySequenceTimeouts.forEach(id => clearTimeout(id));
+  memorySequenceTimeouts = [];
+  
   const lengths = { 1: 3, 2: 4, 3: 5 };
   const length = lengths[state.level] || 3;
-  const sequence = ["🍎", "🍌", "🍇", "🍒", "🥝"].slice(0, length);
+  
+  // Все возможные эмодзи
+  const allEmojis = [
+    "🍎", "🍌", "🍇", "🍒", "🥝", "🍊", "🍉", "🍑", "🥭", "🍓",
+    "🐱", "🐶", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯"
+  ];
+  
+  // Выбираем случайные эмодзи для текущей игры
+  const shuffledEmojis = [...allEmojis].sort(() => Math.random() - 0.5);
+  const sequence = shuffledEmojis.slice(0, length);
+  
+  // Переменные состояния игры
+  let currentSelectionIndex = 0;
+  let canPlay = true;
+  let gameActive = true;
+  
+  // Функция для безопасного завершения игры
+  function endGame(isSuccess) {
+    if (!gameActive) return;
+    gameActive = false;
+    canPlay = false;
+    
+    // Очищаем все таймеры
+    memorySequenceTimeouts.forEach(id => clearTimeout(id));
+    memorySequenceTimeouts = [];
+    
+    if (isSuccess) {
+      successAction();
+    } else {
+      failAction();
+    }
+    
+    // Запускаем новую игру только один раз
+    memorySequenceTimeout = setTimeout(() => {
+      if (state.levelProgress < state.tasksPerLevel) {
+        renderMemorySequence();
+      }
+    }, 1500);
+  }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">💾 Запомни порядок</div>
+    <div class="task-title">💾 Запомни порядок ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задание: Запомни порядок карточек. Через 3 секунды они перемешаются. 
+      📖 Задание: Запомни порядок карточек. Через 3 секунды они закроются, перемешаются и откроются снова. 
       Нажимай на карточки в правильном порядке!
     </div>
-    <div class="memory-board" id="memoryBoard"></div>
+    <div class="memory-board" id="memoryBoard" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;"></div>
     <div class="memory-hint" id="memoryHint">⏳ Смотри и запоминай порядок... 3 секунды</div>
   `;
   
   const board = document.getElementById("memoryBoard");
-  sequence.forEach((item, idx) => {
+  const cards = [];
+  
+  // Создаём карточки
+  for (let i = 0; i < length; i++) {
     const card = document.createElement("div");
     card.className = "memory-card";
-    card.textContent = item;
-    card.dataset.value = item;
-    card.dataset.originalIndex = idx;
+    card.textContent = sequence[i];
+    card.dataset.originalIndex = i;
+    card.dataset.value = sequence[i];
+    card.style.width = "140px";
+    card.style.height = "140px";
+    card.style.fontSize = "72px";
+    card.style.display = "flex";
+    card.style.alignItems = "center";
+    card.style.justifyContent = "center";
+    card.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+    card.style.borderRadius = "24px";
+    card.style.cursor = "pointer";
+    card.style.transition = "all 0.3s ease";
+    card.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
     board.appendChild(card);
-  });
+    cards.push(card);
+  }
   
-  setTimeout(() => {
-    // Перемешиваем карточки физически
-    const cards = Array.from(document.querySelectorAll(".memory-card"));
-    for (let i = cards.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      board.insertBefore(cards[j], cards[i]);
-      board.insertBefore(cards[i], cards[j]);
-    }
+  // Фаза 1: Показ карточек (3 секунды)
+  memorySequenceTimeouts.push(setTimeout(() => {
+    if (!gameActive) return;
     
-    const shuffledCards = document.querySelectorAll(".memory-card");
-    shuffledCards.forEach(card => {
-      card.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
-      card.classList.remove("correct");
+    // Закрываем все карточки
+    cards.forEach(card => {
+      card.textContent = "?";
+      card.style.background = "#667eea";
+      card.style.fontSize = "56px";
     });
+    document.getElementById("memoryHint").innerHTML = "🃏 Карточки закрываются и перемешиваются...";
     
-    document.getElementById("memoryHint").innerHTML = "🎯 Нажимай на карточки в том порядке, в котором они были изначально!";
-    
-    let currentIndex = 0;
-    
-    shuffledCards.forEach(card => {
-      card.onclick = () => {
-        if (card.classList.contains("correct")) return;
+    // Фаза 2: Перемешивание карточек
+    memorySequenceTimeouts.push(setTimeout(() => {
+      if (!gameActive) return;
+      
+      // Перемешиваем DOM-элементы
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        board.insertBefore(cards[j], cards[i]);
+        board.insertBefore(cards[i], cards[j]);
+      }
+      
+      // Обновляем массив cards в соответствии с новым порядком в DOM
+      const newCardsOrder = Array.from(board.children);
+      cards.length = 0;
+      newCardsOrder.forEach(card => cards.push(card));
+      
+      document.getElementById("memoryHint").innerHTML = "🎴 Карточки перемешаны! Сейчас откроются...";
+      
+      // Фаза 3: Открываем карточки (показываем эмодзи)
+      memorySequenceTimeouts.push(setTimeout(() => {
+        if (!gameActive) return;
         
-        if (parseInt(card.dataset.originalIndex) === currentIndex) {
-          card.classList.add("correct");
-          card.style.background = "linear-gradient(135deg, #10B981, #059669)";
-          currentIndex++;
-          
-          if (currentIndex === sequence.length) {
-            successAction();
-          }
-        } else {
-          failAction();
-          document.getElementById("memoryHint").innerHTML = "❌ Неправильный порядок! Попробуй ещё раз";
-          setTimeout(() => {
-            if (state.levelProgress < state.tasksPerLevel) {
-              renderMemorySequence();
+        // Открываем карточки (показываем эмодзи)
+        cards.forEach(card => {
+          card.textContent = card.dataset.value;
+          card.style.fontSize = "72px";
+          card.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+        });
+        
+        document.getElementById("memoryHint").innerHTML = "🎯 Теперь нажимай на карточки в том порядке, в котором они были ИЗНАЧАЛЬНО!";
+        
+        // Сбрасываем состояние игры
+        currentSelectionIndex = 0;
+        canPlay = true;
+        
+        // Добавляем обработчики кликов
+        cards.forEach(card => {
+          card.onclick = () => {
+            if (!canPlay || !gameActive) return;
+            if (card.classList.contains("correct")) return;
+            
+            const expectedIndex = currentSelectionIndex;
+            const cardOriginalIndex = parseInt(card.dataset.originalIndex);
+            
+            if (cardOriginalIndex === expectedIndex) {
+              // Правильный выбор
+              card.classList.add("correct");
+              card.style.background = "linear-gradient(135deg, #10B981, #059669)";
+              card.style.transform = "scale(1.05)";
+              currentSelectionIndex++;
+              
+              document.getElementById("memoryHint").innerHTML = `✅ Правильно! Осталось выбрать ${length - currentSelectionIndex} карточек`;
+              
+              if (currentSelectionIndex === length) {
+                document.getElementById("memoryHint").innerHTML = "🎉 Отлично! Ты запомнил весь порядок!";
+                endGame(true);
+              }
+            } else {
+              // Неправильный выбор
+              canPlay = false;
+              card.classList.add("wrong");
+              card.style.background = "#EF4444";
+              document.getElementById("memoryHint").innerHTML = "❌ Неправильный порядок! Начинаем заново...";
+              
+              // Подсвечиваем правильную карточку
+              cards.forEach(c => {
+                if (parseInt(c.dataset.originalIndex) === expectedIndex) {
+                  c.style.background = "#FFD700";
+                  c.style.transform = "scale(1.05)";
+                  setTimeout(() => {
+                    if (gameActive) {
+                      c.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+                      c.style.transform = "scale(1)";
+                    }
+                  }, 800);
+                }
+              });
+              
+              endGame(false);
             }
-          }, 1500);
-        }
-      };
-    });
-  }, 3000);
+          };
+        });
+      }, 800));
+    }, 1000));
+  }, 3000));
 }
 
+// БЛОК 2. ЧТО ПРОПАЛО? (memory_what_missing)
+let whatMissingTimeout = null;
+let whatMissingTimeouts = [];
+
 function renderMemoryWhatMissing() {
-  const cards = ["🍎", "🍌", "🍇", "🍒", "🥝"];
+  // Очищаем все предыдущие таймеры
+  if (whatMissingTimeout) {
+    clearTimeout(whatMissingTimeout);
+    whatMissingTimeout = null;
+  }
+  whatMissingTimeouts.forEach(id => clearTimeout(id));
+  whatMissingTimeouts = [];
+  
+  const lengths = { 1: 3, 2: 4, 3: 5 };
+  const length = lengths[state.level] || 3;
+  
+  // ===== НОВЫЕ 20 ЭМОДЗИ (транспорт, предметы, еда, техника) =====
+  const allEmojis = [
+    "🚗", "🚕", "🚙", "🚌", "🚎", "🏎️", "🚓", "🚑", "🚒", "🚐",
+    "✈️", "🚀", "🚁", "🛸", "🚂", "🚲", "🛵", "🏍️", "🚢", "⛵"
+  ];
+  
+  // Выбираем случайные эмодзи для текущей игры
+  const shuffledEmojis = [...allEmojis].sort(() => Math.random() - 0.5);
+  const cards = shuffledEmojis.slice(0, length);
+  
   let missingCard = null;
   let missingIndex = null;
+  let gameActive = true;
+  
+  function endGame(isSuccess) {
+    if (!gameActive) return;
+    gameActive = false;
+    
+    whatMissingTimeouts.forEach(id => clearTimeout(id));
+    whatMissingTimeouts = [];
+    
+    if (isSuccess) {
+      successAction();
+    } else {
+      failAction();
+    }
+    
+    whatMissingTimeout = setTimeout(() => {
+      if (state.levelProgress < state.tasksPerLevel) {
+        renderMemoryWhatMissing();
+      }
+    }, 1500);
+  }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">❓ Что пропало?</div>
+    <div class="task-title">❓ Что пропало? ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       📖 Задание: Запомни все карточки. Сейчас они закроются, одна исчезнет, а потом откроются снова. 
       Выбери, какая карточка пропала!
     </div>
-    <div class="memory-board" id="memoryBoard"></div>
+    <div class="memory-board" id="memoryBoard" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;"></div>
     <div class="memory-hint" id="memoryHint">⏳ Запомни все карточки... 3 секунды</div>
   `;
   
   const board = document.getElementById("memoryBoard");
   
+  // Создаём увеличенные карточки
   cards.forEach(item => {
     const card = document.createElement("div");
     card.className = "memory-card";
     card.textContent = item;
     card.dataset.value = item;
+    card.style.width = "140px";
+    card.style.height = "140px";
+    card.style.fontSize = "72px";
+    card.style.display = "flex";
+    card.style.alignItems = "center";
+    card.style.justifyContent = "center";
+    card.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+    card.style.borderRadius = "24px";
+    card.style.cursor = "pointer";
+    card.style.transition = "all 0.3s ease";
+    card.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
     board.appendChild(card);
   });
   
-  setTimeout(() => {
+  // Фаза 1: Показ карточек (3 секунды)
+  whatMissingTimeouts.push(setTimeout(() => {
+    if (!gameActive) return;
+    
     document.getElementById("memoryHint").innerHTML = "🔒 Карточки закрываются...";
     
     const allCards = document.querySelectorAll(".memory-card");
@@ -3296,7 +5439,10 @@ function renderMemoryWhatMissing() {
       card.textContent = "?";
     });
     
-    setTimeout(() => {
+    // Фаза 2: Исчезновение одной карточки
+    whatMissingTimeouts.push(setTimeout(() => {
+      if (!gameActive) return;
+      
       missingIndex = Math.floor(Math.random() * cards.length);
       missingCard = cards[missingIndex];
       
@@ -3307,7 +5453,10 @@ function renderMemoryWhatMissing() {
       cardsToRemove.style.opacity = "0";
       cardsToRemove.style.transform = "scale(0)";
       
-      setTimeout(() => {
+      // Фаза 3: Открытие оставшихся карточек
+      whatMissingTimeouts.push(setTimeout(() => {
+        if (!gameActive) return;
+        
         cardsToRemove.remove();
         
         const remainingCards = document.querySelectorAll(".memory-card");
@@ -3315,14 +5464,22 @@ function renderMemoryWhatMissing() {
           card.style.background = "linear-gradient(135deg, #10B981, #059669)";
           card.style.color = "white";
           card.textContent = card.dataset.value;
+          card.style.fontSize = "72px";
         });
         
         document.getElementById("memoryHint").innerHTML = "❓ Какая карточка пропала? Выбери ответ";
         
-        const optionsDiv = document.createElement("div");
-        optionsDiv.className = "options-list";
-        optionsDiv.style.marginTop = "20px";
+        // Создаём контейнер для вариантов ответов (горизонтально)
+        const optionsContainer = document.createElement("div");
+        optionsContainer.className = "options-list-horizontal";
+        optionsContainer.style.display = "flex";
+        optionsContainer.style.justifyContent = "center";
+        optionsContainer.style.gap = "20px";
+        optionsContainer.style.flexWrap = "wrap";
+        optionsContainer.style.marginTop = "30px";
+        optionsContainer.style.padding = "20px";
         
+        // Перемешиваем варианты
         const shuffledOptions = [...cards];
         for (let i = shuffledOptions.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
@@ -3331,76 +5488,515 @@ function renderMemoryWhatMissing() {
         
         shuffledOptions.forEach(cardValue => {
           const btn = document.createElement("button");
-          btn.className = "option-btn";
+          btn.className = "option-btn-horizontal";
           btn.textContent = cardValue;
+          btn.style.padding = "16px 32px";
+          btn.style.fontSize = "28px";
+          btn.style.fontWeight = "600";
+          btn.style.border = "3px solid #e5e7eb";
+          btn.style.borderRadius = "60px";
+          btn.style.background = "white";
+          btn.style.cursor = "pointer";
+          btn.style.transition = "all 0.2s ease";
+          btn.style.minWidth = "100px";
+          btn.style.color = "#333";
+          
           btn.onclick = () => {
+            if (!gameActive) return;
+            
             if (cardValue === missingCard) {
               btn.classList.add("correct");
-              successAction();
+              btn.style.background = "linear-gradient(135deg, #10B981, #059669)";
+              btn.style.color = "white";
+              document.getElementById("memoryHint").innerHTML = "✅ Правильно! Ты угадал пропавшую карточку!";
+              endGame(true);
             } else {
               btn.classList.add("wrong");
-              failAction();
-              setTimeout(() => btn.classList.remove("wrong"), 500);
+              btn.style.background = "#EF4444";
+              btn.style.color = "white";
+              document.getElementById("memoryHint").innerHTML = `❌ Неправильно! Пропала карточка: ${missingCard}`;
+              
+              // Подсвечиваем правильный ответ
+              const allBtns = document.querySelectorAll(".option-btn-horizontal");
+              allBtns.forEach(b => {
+                if (b.textContent === missingCard) {
+                  b.style.background = "linear-gradient(135deg, #10B981, #059669)";
+                  b.style.color = "white";
+                }
+              });
+              
+              endGame(false);
             }
           };
-          optionsDiv.appendChild(btn);
+          
+          btn.onmouseenter = () => {
+            if (btn.style.background !== "linear-gradient(135deg, #10B981, #059669)" && 
+                btn.style.background !== "#EF4444") {
+              btn.style.background = "#f8f9ff";
+              btn.style.transform = "translateY(-3px)";
+            }
+          };
+          btn.onmouseleave = () => {
+            if (btn.style.background !== "linear-gradient(135deg, #10B981, #059669)" && 
+                btn.style.background !== "#EF4444") {
+              btn.style.background = "white";
+              btn.style.transform = "translateY(0)";
+            }
+          };
+          
+          optionsContainer.appendChild(btn);
         });
-        board.parentNode.insertBefore(optionsDiv, board.nextSibling);
-      }, 500);
-    }, 1000);
-  }, 3000);
+        
+        board.parentNode.insertBefore(optionsContainer, board.nextSibling);
+      }, 500));
+    }, 1000));
+  }, 3000));
 }
+
+// БЛОК 3. МИНИ-ОПРОС (memory_quiz)
+let quizTimeout = null;
 
 function renderMemoryQuiz() {
-  const questions = {
-    1: "Что ты сегодня ел(а) на завтрак?",
-    2: "Какого цвета твоя зубная щётка?",
-    3: "Как зовут твоего лучшего друга?"
-  };
-  const question = questions[state.level] || questions[1];
+  // Очищаем предыдущий таймаут
+  if (quizTimeout) {
+    clearTimeout(quizTimeout);
+    quizTimeout = null;
+  }
+  
+  // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 30 вопросов о недавних событиях =====
+  const questionsEasy = [
+    "Что ты сегодня ел(а) на завтрак?",
+    "Какого цвета твоя зубная щётка?",
+    "Что ты надел(а) сегодня первым?",
+    "Что ты пил(а) сегодня утром?",
+    "Какая погода была сегодня утром?",
+    "Что лежало на твоём столе вчера вечером?",
+    "Какого цвета была машина, которую ты видел(а) последней?",
+    "Что ты делал(а) сразу после пробуждения сегодня?",
+    "Какую обувь ты надел(а) сегодня?",
+    "Что ты смотрел(а) по телевизору вчера?",
+    "Кто был первым, с кем ты сегодня поздоровался(лась)?",
+    "Что ты кушал(а) на полдник вчера?",
+    "Какого цвета были носки на тебе вчера?",
+    "Что ты держал(а) в руках последним перед сном?",
+    "Какую мелодию ты слышал(а) сегодня утром?",
+    "Что ты написал(а) в тетради последним вчера?",
+    "Как зовут учителя, который вёл последний урок?",
+    "Что лежало на подоконнике в классе?",
+    "Какого цвета был рюкзак у соседа по парте?",
+    "Что ты кушал(а) на обед позавчера?",
+    "Какую музыку ты слушал(а) по пути в школу?",
+    "Что ты сказал(а) родителям первым, когда пришёл(ла) домой?",
+    "Какого цвета была футболка у учителя вчера?",
+    "Что ты рисовал(а) на последнем уроке рисования?",
+    "Какую книгу ты держал(а) в руках последний раз?",
+    "Что ты купил(а) в магазине последним?",
+    "Как зовут продавщицу в ближайшем магазине?",
+    "Какого цвета была шапка у прохожего на улице?",
+    "Что ты читал(а) последним в интернете?",
+    "Какую игру ты открывал(а) последней на телефоне?"
+  ];
+
+  // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 30 вопросов о менее очевидных вещах =====
+  const questionsMedium = [
+    "Сколько ступенек на лестнице в твоём подъезде?",
+    "Какого цвета занавески на кухне?",
+    "Что написано на твоей кружке, из которой ты пьёшь дома?",
+    "Сколько окон в твоей комнате?",
+    "Какого цвета ручка, которой ты писал(а) последний раз?",
+    "Что висит на стене напротив твоего стола?",
+    "Какой узор на обоях в твоей комнате?",
+    "Сколько книг на верхней полке твоего шкафа?",
+    "Какого цвета лампа на твоём рабочем столе?",
+    "Что лежит в правом верхнем ящике твоего стола?",
+    "Как зовут охранника в твоей школе?",
+    "Какой номер кабинета у твоего любимого учителя?",
+    "Что написано на доске в классе вчера?",
+    "Сколько человек сидело за твоим столом в столовой?",
+    "Какого цвета была твоя тарелка сегодня за обедом?",
+    "Что ты выучил(а) последним наизусть?",
+    "Какая фраза была написана на футболке у прохожего?",
+    "Как зовут библиотекаря в школьной библиотеке?",
+    "Сколько раз ты выходил(а) из класса вчера?",
+    "Какого цвета дверь в твою комнату?",
+    "Что лежит под твоей кроватью?",
+    "Какую наклейку ты видел(а) последней на машине?",
+    "Сколько людей ждало автобус на остановке сегодня?",
+    "Какого цвета был автобус, на котором ты ехал(а) последний раз?",
+    "Что было на обложке тетради, которую ты открывал(а) вчера?",
+    "Как зовут уборщицу в твоей школе?",
+    "Что висело на стене в коридоре школы?",
+    "Сколько лампочек горит в твоей комнате?",
+    "Какого цвета мыло в ванной дома?",
+    "Что ты слушал(а) в наушниках последний раз?"
+  ];
+
+  // ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 30 вопросов о деталях из прошлого =====
+  const questionsHard = [
+    "Сколько шагов от твоей кровати до двери в комнате?",
+    "Какой узор на твоём постельном белье?",
+    "Что лежит на самом верху твоего шкафа?",
+    "Сколько розеток в комнате, где ты сейчас находишься?",
+    "Какого цвета провод у твоей зарядки?",
+    "Что написано мелким шрифтом на твоей зубной пасте?",
+    "Сколько зубцов у вилки, которой ты ел(а) вчера?",
+    "Какой формы мыло в ванной?",
+    "Что висит на вешалке у входной двери?",
+    "Сколько пар обуви стоит в прихожей?",
+    "Какого цвета коврик у входной двери?",
+    "Что лежит в левом кармане твоей куртки?",
+    "Сколько колец в твоей тетради?",
+    "Какого цвета кнопка 'вкл' на твоём компьютере?",
+    "Что изображено на твоей подушке?",
+    "Сколько полосок на твоём полотенце?",
+    "Как зовут соседку из квартиры напротив?",
+    "Сколько деревьев растёт во дворе твоего дома?",
+    "Какого цвета забор возле твоей школы?",
+    "Что написано на табличке на двери твоего класса?",
+    "Сколько книг лежит стопкой на твоей полке?",
+    "Какого цвета чашка у твоей мамы?",
+    "Что лежит под ковром в твоей комнате?",
+    "Сколько окон в коридоре твоей школы?",
+    "Как зовут врача в школьном медпункте?",
+    "Что написано на кабинке в школьном туалете?",
+    "Сколько ступенек ведёт к крыльцу твоей школы?",
+    "Какого цвета потолок в твоём классе?",
+    "Что висит на двери твоей комнаты с обратной стороны?",
+    "Сколько времени ты ждал(а) автобус сегодня утром?"
+  ];
+
+  let question;
+  if (state.level === 1) {
+    question = questionsEasy[Math.floor(Math.random() * questionsEasy.length)];
+  } else if (state.level === 2) {
+    question = questionsMedium[Math.floor(Math.random() * questionsMedium.length)];
+  } else {
+    question = questionsHard[Math.floor(Math.random() * questionsHard.length)];
+  }
+  
+  // Определяем размер шрифта (в 2 раза больше)
+  let fontSize = "44px";
+  if (state.level === 2) {
+    fontSize = "40px";
+  } else if (state.level === 3) {
+    fontSize = "36px";
+  }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">📝 Мини-опрос</div>
-    <div class="logic-task" style="font-size: 22px;">${question}</div>
-    <textarea id="quizAnswer" class="answer-input" placeholder="Напиши свой ответ..." style="width: 100%; min-height: 120px; margin-bottom: 20px;"></textarea>
-    <button id="checkBtn" class="btn-primary">✅ Сохранить ответ</button>
+    <div class="task-title">📝 Мини-опрос ${'⭐'.repeat(state.level)}</div>
+    
+    <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+      <div class="memory-sign" style="
+        background: linear-gradient(135deg, #FFD700, #FF8C00, #FF6B6B);
+        transform: rotate(-3deg);
+        padding: 12px 28px;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 8px 8px 0px rgba(0,0,0,0.15);
+        border: 3px solid white;
+      ">
+        <span style="font-size: 36px;">⚠️</span>
+        <span style="font-size: 28px; font-weight: 800; color: white; text-shadow: 2px 2px 0px rgba(0,0,0,0.2); letter-spacing: 2px;">А ТЫ ЗАПОМНИЛ!?</span>
+        <span style="font-size: 36px;">❓</span>
+      </div>
+    </div>
+    
+    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
+      📖 Задание: Вспомни и напиши ответ. Здесь нет правильных или неправильных ответов — просто ответь честно!
+    </div>
+    <div class="quiz-question" style="background: linear-gradient(135deg, #667eea15, #764ba215); padding: 30px; border-radius: 30px; margin: 20px 0; text-align: center;">
+      <div style="font-size: ${fontSize}; font-weight: 700; line-height: 1.4;">${question}</div>
+    </div>
+    <textarea id="quizAnswer" class="answer-input" placeholder="Напиши свой ответ здесь..." style="width: 100%; min-height: 150px; padding: 20px; font-size: 20px; border-radius: 20px; border: 2px solid #e0e0e0; resize: vertical; font-family: inherit; margin-top: 20px;"></textarea>
+    <div style="display: flex; justify-content: center; margin-top: 30px;">
+      <button id="checkBtn" class="btn-primary" style="width: auto; padding: 16px 48px; font-size: 20px;">✅ Сохранить ответ</button>
+    </div>
   `;
   
-  document.getElementById("checkBtn").onclick = () => {
-    const answer = document.getElementById("quizAnswer").value.trim();
-    if (answer.length > 0) successAction();
-    else showToast("✏️ Напиши ответ!", "error");
+  // Добавляем анимацию для плашки
+  const style = document.createElement('style');
+  style.textContent = `
+    .memory-sign {
+      animation: signWobble 0.5s ease-in-out;
+      transition: transform 0.3s ease;
+    }
+    .memory-sign:hover {
+      transform: rotate(-2deg) scale(1.02);
+    }
+    @keyframes signWobble {
+      0% { transform: rotate(-10deg) scale(0.9); opacity: 0; }
+      50% { transform: rotate(2deg) scale(1.02); }
+      100% { transform: rotate(-3deg) scale(1); opacity: 1; }
+    }
+  `;
+  document.head.appendChild(style);
+  
+  const textarea = document.getElementById("quizAnswer");
+  const checkBtn = document.getElementById("checkBtn");
+  
+  // Автоматическое расширение textarea
+  textarea.addEventListener("input", function() {
+    this.style.height = "auto";
+    this.style.height = (this.scrollHeight) + "px";
+  });
+  
+  checkBtn.onclick = () => {
+    const answer = textarea.value.trim();
+    if (answer.length > 0) {
+      const savedAnswers = JSON.parse(localStorage.getItem("quiz_answers") || "{}");
+      const date = new Date();
+      const key = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+      savedAnswers[key] = { question, answer };
+      localStorage.setItem("quiz_answers", JSON.stringify(savedAnswers));
+      
+      successAction();
+      showToast("📝 Ответ сохранён! Молодец!", "success");
+      
+      quizTimeout = setTimeout(() => {
+        renderMemoryQuiz();
+      }, 1500);
+    } else {
+      showToast("✏️ Напиши ответ в поле выше!", "error");
+    }
   };
+  
+  // Enter для отправки (Ctrl+Enter)
+  textarea.addEventListener("keydown", (e) => {
+    if (e.ctrlKey && e.key === "Enter") {
+      checkBtn.click();
+    }
+  });
 }
+
+
+// БЛОК 4. ФИДЖИТАЛ: ЗАПОМНИ НА СЛУХ (phygital_audio)
+let audioTimeout = null;
 
 function renderPhygitalAudio() {
-  const wordLists = {
-    1: ["кот", "дом", "лес", "мяч"],
-    2: ["солнце", "цветок", "бабочка", "дерево"],
-    3: ["велосипед", "компьютер", "телефон", "книга"]
-  };
-  const words = wordLists[state.level] || wordLists[1];
+  // Очищаем предыдущий таймаут
+  if (audioTimeout) {
+    clearTimeout(audioTimeout);
+    audioTimeout = null;
+  }
+  
+  // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 20 простых слов, выбираем 4 =====
+  const wordsEasy = [
+    "кот", "дом", "лес", "мяч", "сон", "день", "нос", "рот", "сад", "парк",
+    "лук", "жук", "мяч", "меч", "пол", "год", "бег", "воз", "зуб", "суп"
+  ];
+  
+  // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 20 слов средней сложности, выбираем 6 =====
+  const wordsMedium = [
+    "солнце", "цветок", "бабочка", "дерево", "машина", "комната", "радуга", "облако",
+    "ветер", "дождик", "снежинка", "ромашка", "подруга", "учитель", "рисунок", "погода",
+    "каникулы", "мороженое", "библиотека", "путешествие"
+  ];
+  
+  // ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 20 сложных слов, выбираем 8 =====
+  const wordsHard = [
+    "велосипед", "компьютер", "телефон", "бинокль", "электричество", "достопримечательность", "фотография", "телевизор",
+    "микроскоп", "конструктор", "расписание", "впечатление", "путешественник", "исследование", "изобретение", "поздравление",
+    "оборона", "правительство", "самолётостроение", "электростанция"
+  ];
+  
+  // Определяем количество слов в зависимости от уровня
+  let wordsList, wordsCount;
+  if (state.level === 1) {
+    wordsList = [...wordsEasy];
+    wordsCount = 4;
+  } else if (state.level === 2) {
+    wordsList = [...wordsMedium];
+    wordsCount = 6;
+  } else {
+    wordsList = [...wordsHard];
+    wordsCount = 8;
+  }
+  
+  // Перемешиваем и выбираем случайные слова
+  for (let i = wordsList.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [wordsList[i], wordsList[j]] = [wordsList[j], wordsList[i]];
+  }
+  const selectedWords = wordsList.slice(0, wordsCount);
+  
+  let isPlaying = false;
+  let speechUtterance = null;
+  let currentWordIndex = 0;
+  
+  function stopSpeaking() {
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    isPlaying = false;
+    speechUtterance = null;
+  }
+  
+  function speakWords() {
+    if (isPlaying) {
+      showToast("🌀 Слова уже озвучиваются, подожди...", "info");
+      return;
+    }
+    
+    stopSpeaking();
+    isPlaying = true;
+    currentWordIndex = 0;
+    
+    const speakBtn = document.getElementById("speakBtn");
+    const statusSpan = document.getElementById("audioStatus");
+    
+    speakBtn.disabled = true;
+    speakBtn.style.opacity = "0.6";
+    speakBtn.textContent = "🔊 Озвучивание...";
+    
+    function speakNextWord() {
+      if (currentWordIndex >= selectedWords.length) {
+        // Озвучивание завершено
+        if (statusSpan) {
+          statusSpan.innerHTML = "✅ Все слова произнесены! Теперь запиши их на листочек и покажи родителям!";
+          statusSpan.style.background = "#d1fae5";
+          statusSpan.style.color = "#065f46";
+        }
+        showToast("🔊 Готово! Все слова произнесены", "success");
+        speakBtn.disabled = false;
+        speakBtn.style.opacity = "1";
+        speakBtn.textContent = "🔊 Прослушать слова заново";
+        isPlaying = false;
+        return;
+      }
+      
+      const word = selectedWords[currentWordIndex];
+      if (statusSpan) {
+        statusSpan.innerHTML = `🎙️ Слово ${currentWordIndex + 1} из ${selectedWords.length}: <strong style="color: #8B5CF6;">"${word}"</strong>`;
+      }
+      
+      const utterance = new SpeechSynthesisUtterance(word);
+      utterance.lang = "ru-RU";
+      utterance.rate = 0.85;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      
+      utterance.onend = () => {
+        currentWordIndex++;
+        setTimeout(() => {
+          if (isPlaying) {
+            speakNextWord();
+          }
+        }, 800);
+      };
+      
+      utterance.onerror = (e) => {
+        console.error("Speech error:", e);
+        if (statusSpan) {
+          statusSpan.innerHTML = "❌ Ошибка озвучивания. Попробуй ещё раз!";
+          statusSpan.style.background = "#fee2e2";
+          statusSpan.style.color = "#991b1b";
+        }
+        speakBtn.disabled = false;
+        speakBtn.style.opacity = "1";
+        speakBtn.textContent = "🔊 Прослушать слова";
+        isPlaying = false;
+      };
+      
+      speechUtterance = utterance;
+      window.speechSynthesis.speak(utterance);
+    }
+    
+    // Задержка перед началом
+    setTimeout(() => {
+      if (isPlaying) {
+        speakNextWord();
+      }
+    }, 500);
+  }
+  
+  function stopAndReset() {
+    stopSpeaking();
+    const speakBtn = document.getElementById("speakBtn");
+    const statusSpan = document.getElementById("audioStatus");
+    if (speakBtn) {
+      speakBtn.disabled = false;
+      speakBtn.style.opacity = "1";
+      speakBtn.textContent = "🔊 Прослушать слова";
+    }
+    if (statusSpan) {
+      statusSpan.innerHTML = "💡 Нажми на кнопку, чтобы начать";
+      statusSpan.style.background = "#f0f0ff";
+      statusSpan.style.color = "#667eea";
+    }
+  }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🎯 Фиджитал: Запомни на слух</div>
-    <div class="phygital-hint" style="background: #fef3c7; padding: 12px; border-radius: 12px; text-align: center;">
+    <div class="task-title">🎯 Фиджитал: Запомни на слух ${'⭐'.repeat(state.level)}</div>
+    
+    <div class="phygital-hint" style="background: #fef3c7; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
       🔐 Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
     </div>
-    <button id="speakBtn" class="btn-primary">🔊 Прослушать слова</button>
-    <button id="readyBtn" class="btn-primary" style="margin-top: 15px;">✅ Я запомнил(а) и записал(а) слова!</button>
+    
+    <div class="audio-info" style="background: linear-gradient(135deg, #667eea15, #764ba215); padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: center;">
+      <div style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">🎧 Слушай внимательно!</div>
+      <div style="font-size: 14px; color: #666;">Будет произнесено <strong>${wordsCount} слов</strong>. Запомни их и запиши на листочек.</div>
+    </div>
+    
+    <div id="audioStatus" style="text-align: center; margin-bottom: 20px; padding: 15px; background: #f0f0ff; border-radius: 16px; font-size: 16px; color: #667eea;">
+      💡 Нажми на кнопку, чтобы начать
+    </div>
+    
+    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+      <button id="speakBtn" class="btn-primary" style="width: auto; padding: 14px 32px; background: linear-gradient(135deg, #8B5CF6, #7C3AED);">🔊 Прослушать слова</button>
+      <button id="stopBtn" class="btn-secondary" style="width: auto; padding: 14px 32px; display: none;">⏹️ Остановить</button>
+    </div>
+    
+    <div class="phygital-tip" style="background: #E0E7FF; padding: 16px 24px; border-radius: 24px; margin: 25px 0 15px 0; text-align: center;">
+      💡 Совет: Закрой глаза и сосредоточься! Записывай слова по мере запоминания.
+    </div>
+    
+    <div style="display: flex; justify-content: center; margin-top: 15px;">
+      <button id="readyBtn" class="btn-primary" style="width: auto; padding: 16px 48px; background: linear-gradient(135deg, #10B981, #059669);">✅ Я всё запомнил(а) и записал(а)!</button>
+    </div>
   `;
   
-  document.getElementById("speakBtn").onclick = () => {
-    const utterance = new SpeechSynthesisUtterance(words.join(", "));
-    utterance.lang = "ru-RU";
-    speechSynthesis.speak(utterance);
+  const speakBtn = document.getElementById("speakBtn");
+  const stopBtn = document.getElementById("stopBtn");
+  const readyBtn = document.getElementById("readyBtn");
+  
+  speakBtn.onclick = () => {
+    stopAndReset();
+    speakWords();
+    stopBtn.style.display = "inline-block";
   };
   
-  document.getElementById("readyBtn").onclick = () => showParentPasswordModal(() => successAction());
+  stopBtn.onclick = () => {
+    stopAndReset();
+    stopBtn.style.display = "none";
+    showToast("⏹️ Озвучивание остановлено", "info");
+  };
+  
+  readyBtn.onclick = () => {
+    if (isPlaying) {
+      showToast("⏳ Подожди, слова ещё озвучиваются...", "info");
+      return;
+    }
+    showParentPasswordModal(() => {
+      // Сохраняем слова в localStorage для родителей
+      const savedWords = JSON.parse(localStorage.getItem("audio_words") || "{}");
+      const date = new Date();
+      const key = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+      savedWords[key] = { words: selectedWords, level: state.level };
+      localStorage.setItem("audio_words", JSON.stringify(savedWords));
+      
+      successAction();
+      showToast("🎉 Отлично! Родители проверят твои записи!", "success");
+      
+      audioTimeout = setTimeout(() => {
+        renderPhygitalAudio();
+      }, 1500);
+    });
+  };
 }
-
 // ============================================
 // ========== БЛОК ЛОВКОСТЬ ==========
 // ============================================
@@ -3408,20 +6004,20 @@ function renderPhygitalAudio() {
 // ===== ЛОВКОСТЬ (ОСНОВНАЯ ФУНКЦИЯ) =====
 function renderDexterity() {
   // Выбираем случайное задание
-  const games = ['reaction', 'findwords', 'schulteLite'];
+  const games = ['reaction', 'findwords', 'schulte'];
   const game = games[Math.floor(Math.random() * games.length)];
   
   if (game === 'reaction') {
-    renderReactionGame();
+    renderReaction();
   } else if (game === 'findwords') {
-    renderFindWordsGame();
+    renderFindWords();
   } else {
-    renderSchulteLite();
+    renderSchulte();
   }
 }
 
-// ===== 1. ИГРА НА РЕАКЦИЮ (КНОПКА В РАЗНЫХ МЕСТАХ) =====
-function renderReactionGame() {
+// ===== 1. РЕАКЦИЯ (Успей нажать) =====
+function renderReaction() {
   let hits = 0;
   let active = false;
   let timeout = null;
@@ -3432,12 +6028,8 @@ function renderReactionGame() {
   const reactionRecord = localStorage.getItem(`reaction_record_${state.level}`);
   
   gameArea.innerHTML = `
-    <div class="attention-hud">
-      <div>🏆 Очки: <b id="score">${state.score}</b></div>
-      <div>🔥 Комбо: <b id="combo">${state.combo}</b></div>
-      <div>🎯 Серия: <b id="streak">${state.streak}/5</b></div>
-    </div>
-    <div class="task-title">⚡ Успей нажать! ${'⭐'.repeat(state.level)}</div>
+    ${renderHUD()}
+    <div class="task-title">⚡ Реакция ${'⭐'.repeat(state.level)}</div>
     <div class="reaction-stats">
       <div>🎯 Попаданий: <span id="hitCount">0</span> / ${requiredHits}</div>
       <div>⏱️ Время реакции: <span id="reactionTime">0</span> мс</div>
@@ -3513,7 +6105,7 @@ function renderReactionGame() {
           startBtn.style.opacity = '1';
           startBtn.textContent = '▶️ Ещё раз';
           successAction();
-          showResult(`✅ Отлично! ${requiredHits} попаданий!`, true);
+          showToast(`✅ Отлично! ${requiredHits} попаданий!`, "success");
         } else {
           showTarget();
         }
@@ -3545,55 +6137,104 @@ function renderReactionGame() {
   };
 }
 
-// ===== 2. НАЙДИ СЛОВА =====
-function renderFindWordsGame() {
-  const wordsByLevel = {
-    1: [
-      { text: "оевправаозгикороваармзщшопдомиклмн", target: "корова" },
-      { text: "собакатмищзмкотвапролдворгшщзхлптицапрст", target: "собака" },
-      { text: "кошкапролджэямышьшщзхлкнига", target: "кошка" },
-      { text: "машинапролджэяавтомобильшщзхлдорога", target: "машина" },
-      { text: "учительпролджэяшколашщзхлученики", target: "учитель" },
-      { text: "деревошщзхллеспролджэялиственица", target: "дерево" }
-    ],
-    2: [
-      { text: "велосипедризмкшщзхлкнигапролджэямашинапрст", target: "велосипед" },
-      { text: "компьютеролджэятелефоншщзхлпланшет", target: "компьютер" },
-      { text: "библиотекапролджэяшколашщзхлучитель", target: "библиотека" },
-      { text: "путешествиеолджэятурпролджэяотдых", target: "путешествие" },
-      { text: "фотографияшщзхлфотоаппаратпролдж", target: "фотография" },
-      { text: "рестораншщзхледапролджэяменю", target: "ресторан" }
-    ],
-    3: [
-      { text: "экскаваторпролджэятранспортшщзхлстроительство", target: "экскаватор" },
-      { text: "достопримечательностьпролджэятуризм", target: "достопримечательность" },
-      { text: "электростанцияпролджэяэнергияшщзхл", target: "электростанция" },
-      { text: "предпринимательпролджэябизнесшщзхл", target: "предприниматель" },
-      { text: "исследованиепролджэянаукашщзхлэксперимент", target: "исследование" },
-      { text: "конституцияпролджэязаконшщзхлправо", target: "конституция" }
-    ]
-  };
+// ===== 2. НАЙДИ СЛОВА (ИСПРАВЛЕНАЯ ВЕРСИЯ) =====
+let findWordsTimeout = null;
+
+// Функция для генерации случайной строки-заполнителя
+function generateRandomString(length) {
+  const chars = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+  let result = "";
+  for (let i = 0; i < length; i++) {
+    result += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return result;
+}
+
+// Функция для вставки слова в строку на случайную позицию
+function insertWordIntoString(baseString, word, startPos) {
+  return baseString.slice(0, startPos) + word + baseString.slice(startPos + word.length);
+}
+
+// Функция для создания задания с одинаковой длиной строк
+function createTask(word, lineLength, lineCount) {
+  const lines = [];
+  // Для каждой строки генерируем уникальную случайную позицию
+  for (let i = 0; i < lineCount; i++) {
+    // Генерируем случайную позицию от 0 до (lineLength - word.length - 5)
+    // Чтобы слово точно поместилось и был запас
+    const maxStartPos = lineLength - word.length - 2;
+    const startPos = Math.floor(Math.random() * (maxStartPos - 3)) + 3;
+    
+    let line = generateRandomString(lineLength);
+    line = insertWordIntoString(line, word, startPos);
+    lines.push(line);
+  }
+  return lines;
+}
+
+function renderFindWords() {
+  // Очищаем предыдущий таймаут
+  if (findWordsTimeout) {
+    clearTimeout(findWordsTimeout);
+    findWordsTimeout = null;
+  }
   
-  const words = wordsByLevel[state.level];
-  const current = words[Math.floor(Math.random() * words.length)];
+  // ===== КОНФИГУРАЦИЯ ДЛЯ КАЖДОГО УРОВНЯ =====
+  // Уровень 1: 1 строка, 30 символов, слова 3-5 букв
+  const wordsLevel1 = ["кот", "дом", "лес", "сад", "мяч", "сон", "день", "нос", "рот", "рука", "нога", "зуб", "сыр", "хлеб", "сок", "чай", "суп", "мир", "год", "час"];
+  
+  // Уровень 2: 2 строки, по 40 символов, слова 5-7 букв
+  const wordsLevel2 = ["кошка", "собака", "белка", "лисица", "птица", "рыбка", "мышка", "ёжик", "заяц", "волк", "медведь", "дерево", "цветок", "солнце", "луна", "звезда", "книга", "тетрадь", "ручка", "учитель"];
+  
+  // Уровень 3: 3 строки, по 50 символов, слова 7-10 букв
+  const wordsLevel3 = ["верблюд", "дельфин", "попугай", "жираф", "кенгуру", "компьютер", "библиотека", "путешествие", "фотография", "строитель", "приключение", "образование", "современный", "фантастика", "транспорт", "правительство", "исследование", "электричество", "достопримечательность", "предприниматель"];
+  
+  let wordsList, lineLength, lineCount, currentWord;
+  
+  if (state.level === 1) {
+    wordsList = wordsLevel1;
+    lineLength = 23;  // 23 символов в строке
+    lineCount = 1;    // 1 строка
+  } else if (state.level === 2) {
+    wordsList = wordsLevel2;
+    lineLength = 46;  // 40 символов в строке
+    lineCount = 1;    // 2 строки
+  } else {
+    wordsList = wordsLevel3;
+    lineLength = 69;  // 50 символов в строке
+    lineCount = 1;    // 3 строки
+  }
+  
+  // Выбираем случайное слово
+  currentWord = wordsList[Math.floor(Math.random() * wordsList.length)];
+  
+  // Создаём задание: слово будет ТОЛЬКО в ПЕРВОЙ строке (чтобы было понятно где искать)
+  // Но позиция начала слова будет РАЗНОЙ: от 3 до (lineLength - длина слова - 2)
+  const generatedLines = createTask(currentWord, lineLength, lineCount);
+  
   let found = false;
+  let isAnswered = false;
   
   gameArea.innerHTML = `
-    <div class="attention-hud">
-      <div>🏆 Очки: <b id="score">${state.score}</b></div>
-      <div>🔥 Комбо: <b id="combo">${state.combo}</b></div>
-      <div>🎯 Серия: <b id="streak">${state.streak}/5</b></div>
-    </div>
+    ${renderHUD()}
     <div class="task-title">🔍 Найди слово ${'⭐'.repeat(state.level)}</div>
-    <div class="findword-target">
-      🎯 Найди слово: <span class="target-word">${current.target.toUpperCase()}</span>
+    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+      📖 Задача: В строке из букв спрятано слово. Найди его и нажми на ПЕРВУЮ букву слова!
+      ${lineCount === 1 ? '🔍 Одна строка, найди слово!' : lineCount === 2 ? '🔍 Две строки, внимательно ищи!' : '🔍 Три строки, будь внимателен!'}
     </div>
-    <div class="findword-grid" id="findwordGrid">
-      ${current.text.split('').map((char, i) => 
-        `<span class="findword-char" data-index="${i}">${char}</span>`
-      ).join('')}
+    <div class="findword-target" style="text-align: center; margin-bottom: 20px;">
+      🎯 Найди слово: <span class="target-word" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 8px 24px; border-radius: 40px; font-size: 28px;">${currentWord.toUpperCase()}</span>
     </div>
-    <div style="display: flex; justify-content: center; margin-top: 20px; gap: 15px;">
+    <div class="findword-grid" id="findwordGrid" style="background: white; border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 15px; margin: 20px 0; border: 2px solid #E5E7EB;">
+      ${generatedLines.map((line, lineIdx) => `
+        <div class="findword-line" data-line="${lineIdx}" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; font-family: monospace;">
+          ${line.split('').map((char, charIdx) => `
+            <span class="findword-char" data-line="${lineIdx}" data-pos="${charIdx}" data-char="${char}" style="width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; background: #F3F4F6; border-radius: 12px; cursor: pointer; transition: all 0.2s;">${char}</span>
+          `).join('')}
+        </div>
+      `).join('')}
+    </div>
+    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
       <button id="newFindWordBtn" class="btn-secondary" style="width: auto; padding: 12px 24px;">🔄 Новое слово</button>
     </div>
   `;
@@ -3602,42 +6243,124 @@ function renderFindWordsGame() {
   
   const chars = document.querySelectorAll('.findword-char');
   
-  chars.forEach((char, i) => {
+  chars.forEach(char => {
     char.onclick = () => {
-      if (found) return;
+      if (found || isAnswered) return;
       
-      const substr = current.text.substr(i, current.target.length);
-      if (substr === current.target) {
+      const line = parseInt(char.dataset.line);
+      const pos = parseInt(char.dataset.pos);
+      
+      // Проверяем ТОЛЬКО первую строку (где спрятано слово)
+      // На других уровнях слово тоже только в первой строке
+      if (line !== 0) {
+        char.classList.add('wrong');
+        char.style.background = "#EF4444";
+        char.style.color = "white";
+        setTimeout(() => {
+          if (char.classList.contains('wrong')) {
+            char.classList.remove('wrong');
+            char.style.background = "#F3F4F6";
+            char.style.color = "#333";
+          }
+        }, 300);
+        failAction();
+        return;
+      }
+      
+      const lineText = generatedLines[line];
+      const substr = lineText.substr(pos, currentWord.length);
+      
+      if (substr === currentWord) {
         found = true;
-        for (let j = 0; j < current.target.length; j++) {
-          const foundChar = document.querySelector(`.findword-char[data-index="${i + j}"]`);
+        isAnswered = true;
+        
+        // Подсвечиваем найденное слово
+        for (let j = 0; j < currentWord.length; j++) {
+          const foundChar = document.querySelector(`.findword-char[data-line="${line}"][data-pos="${pos + j}"]`);
           if (foundChar) {
             foundChar.classList.add('found');
+            foundChar.style.background = "linear-gradient(135deg, #10B981, #059669)";
+            foundChar.style.color = "white";
           }
         }
+        
         successAction();
-        showToast(`✅ Нашёл слово "${current.target}"!`, "success");
-        setTimeout(() => {
-          renderFindWordsGame();
+        showToast(`✅ Нашёл слово "${currentWord}"!`, "success");
+        
+        findWordsTimeout = setTimeout(() => {
+          renderFindWords();
         }, 1500);
       } else {
         char.classList.add('wrong');
-        setTimeout(() => char.classList.remove('wrong'), 300);
+        char.style.background = "#EF4444";
+        char.style.color = "white";
+        setTimeout(() => {
+          if (char.classList.contains('wrong')) {
+            char.classList.remove('wrong');
+            char.style.background = "#F3F4F6";
+            char.style.color = "#333";
+          }
+        }, 300);
         failAction();
+      }
+    };
+    
+    // Эффект при наведении
+    char.onmouseenter = () => {
+      if (!found && !isAnswered && !char.classList.contains('found')) {
+        char.style.transform = "scale(1.1)";
+        char.style.background = "#8B5CF6";
+        char.style.color = "white";
+      }
+    };
+    char.onmouseleave = () => {
+      if (!found && !isAnswered && !char.classList.contains('found') && !char.classList.contains('wrong')) {
+        char.style.transform = "scale(1)";
+        char.style.background = "#F3F4F6";
+        char.style.color = "#333";
       }
     };
   });
   
   document.getElementById('newFindWordBtn').onclick = () => {
-    renderFindWordsGame();
+    if (findWordsTimeout) {
+      clearTimeout(findWordsTimeout);
+    }
+    renderFindWords();
+    showToast("🔄 Новое слово сгенерировано!", "success");
   };
 }
 
-// ===== 3. ЛЁГКАЯ ТАБЛИЦА ШУЛЬТЕ (КЛАССИЧЕСКАЯ) =====
-function renderSchulteLite() {
+// ===== 3. ТАБЛИЦА ШУЛЬТЕ (УЛУЧШЕННАЯ ВЕРСИЯ) =====
+let schulteTimeout = null;
+
+function renderSchulte() {
+  // Очищаем предыдущий таймаут
+  if (schulteTimeout) {
+    clearTimeout(schulteTimeout);
+    schulteTimeout = null;
+  }
+  
+  // Размеры таблицы с учётом экрана (увеличены в 1.5 раза)
   const sizes = { 1: 9, 2: 16, 3: 25 };
   const total = sizes[state.level] || 9;
   const cols = Math.sqrt(total);
+  
+  // Адаптивные размеры ячеек (увеличены в 1.5 раза)
+  let cellSize = "105px";      // было 70px * 1.5
+  let fontSize = "36px";       // было 24px * 1.5
+  
+  if (state.level === 1) {
+    cellSize = "min(105px, calc(90vw / 3 - 10px))";
+    fontSize = "min(42px, calc(90vw / 6))";
+  } else if (state.level === 2) {
+    cellSize = "min(90px, calc(90vw / 4 - 8px))";
+    fontSize = "min(33px, calc(90vw / 8))";
+  } else if (state.level === 3) {
+    cellSize = "min(75px, calc(90vw / 5 - 6px))";
+    fontSize = "min(27px, calc(90vw / 10))";
+  }
+  
   let numbers = Array.from({ length: total }, (_, i) => i + 1);
   numbers.sort(() => Math.random() - 0.5);
   let current = 1;
@@ -3646,30 +6369,138 @@ function renderSchulteLite() {
   let completed = false;
   let timerInterval = null;
   
-  const recordKey = `schulte_lite_record_${state.level}`;
+  const recordKey = `schulte_record_${state.level}`;
   const savedRecord = localStorage.getItem(recordKey);
   
   gameArea.innerHTML = `
-    <div class="attention-hud">
-      <div>🏆 Очки: <b id="score">${state.score}</b></div>
-      <div>🔥 Комбо: <b id="combo">${state.combo}</b></div>
-      <div>🎯 Серия: <b id="streak">${state.streak}/5</b></div>
+    ${renderHUD()}
+    <div class="task-title">📊 Таблица Шульте ${'⭐'.repeat(state.level)}</div>
+    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
+      📖 Нажимай на цифры по порядку от 1 до ${total}. 
+      ⏱️ Чем быстрее, тем лучше! За ошибку +0.5 сек.
     </div>
-    <div class="task-title">⚡ Таблица Шульте ${'⭐'.repeat(state.level)}</div>
-    <div class="schulte-lite-header">
-      <div class="schulte-lite-timer">⏱️ <span id="timerValue">0.00</span> сек</div>
-      <div class="schulte-lite-target">🎯 Найди: <span id="currentTarget">1</span></div>
-      <div class="schulte-lite-record">🏆 Рекорд: <span id="recordValue">${savedRecord ? savedRecord + ' сек' : '—'}</span></div>
+    
+    <div class="schulte-stats" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; background: linear-gradient(135deg, #667eea15, #764ba215); padding: 15px 20px; border-radius: 60px; margin-bottom: 25px;">
+      <div class="schulte-timer" style="display: flex; align-items: center; gap: 8px; background: white; padding: 8px 20px; border-radius: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <span style="font-size: 24px;">⏱️</span>
+        <span style="font-weight: 600;">Время:</span>
+        <span id="timerValue" style="font-size: 28px; font-weight: 800; color: #f59e0b; font-family: monospace;">0.00</span>
+        <span>сек</span>
+      </div>
+      
+      <div class="schulte-target" style="display: flex; align-items: center; gap: 8px; background: white; padding: 8px 20px; border-radius: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <span style="font-size: 24px;">🎯</span>
+        <span style="font-weight: 600;">Найди:</span>
+        <span id="currentTarget" style="font-size: 32px; font-weight: 800; color: #667eea; min-width: 40px; text-align: center;">1</span>
+      </div>
+      
+      <div class="schulte-record" style="display: flex; align-items: center; gap: 8px; background: white; padding: 8px 20px; border-radius: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+        <span style="font-size: 24px;">🏆</span>
+        <span style="font-weight: 600;">Рекорд:</span>
+        <span id="recordValue" style="font-size: 20px; font-weight: 700; color: #f59e0b;">${savedRecord ? savedRecord + ' сек' : '—'}</span>
+      </div>
     </div>
-    <div class="schulte-lite-grid" id="schulteGrid" style="grid-template-columns: repeat(${cols}, 1fr);"></div>
-    <div style="display: flex; justify-content: center; margin-top: 20px;">
-      <button id="resetSchulteBtn" class="btn-secondary" style="width: auto; padding: 12px 24px;">🔄 Новая таблица</button>
+    
+    <div style="display: flex; justify-content: center; margin: 20px 0;">
+      <div class="schulte-grid-wrapper" style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 20px; border-radius: 32px; box-shadow: 0 12px 28px rgba(102,126,234,0.4);">
+        <div class="schulte-grid" id="schulteGrid" style="display: grid; grid-template-columns: repeat(${cols}, 1fr); gap: 12px; margin: 0 auto;"></div>
+      </div>
+    </div>
+    
+    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 25px;">
+      <button id="resetSchulteBtn" class="btn-secondary" style="width: auto; padding: 12px 24px; display: inline-flex; align-items: center; gap: 8px;">
+        🔄 Новая таблица
+      </button>
     </div>
   `;
   
   updateHUD();
   
   const grid = document.getElementById('schulteGrid');
+  
+  // Добавляем стили для ячеек и wrapper
+  const style = document.createElement('style');
+  style.textContent = `
+    .schulte-grid-wrapper {
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    
+    .schulte-grid-wrapper:hover {
+      transform: scale(1.01);
+      box-shadow: 0 16px 32px rgba(102,126,234,0.5);
+    }
+    
+    .schulte-cell {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #ffffff, #f8f9ff);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: ${fontSize};
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      border: 2px solid rgba(102,126,234,0.3);
+      color: #333;
+      width: ${cellSize};
+      height: ${cellSize};
+    }
+    
+    .schulte-cell:hover {
+      transform: scale(1.08);
+      background: linear-gradient(135deg, #667eea20, #764ba220);
+      border-color: #667eea;
+      box-shadow: 0 10px 24px rgba(102,126,234,0.4);
+    }
+    
+    .schulte-cell.correct {
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      border-color: #10B981;
+      transform: scale(0.96);
+      animation: schultePulse 0.3s ease;
+      cursor: default;
+      box-shadow: 0 4px 12px rgba(16,185,129,0.4);
+    }
+    
+    .schulte-cell.wrong {
+      background: linear-gradient(135deg, #EF4444, #DC2626);
+      color: white;
+      border-color: #EF4444;
+      animation: schulteShake 0.3s ease;
+    }
+    
+    @keyframes schultePulse {
+      0%, 100% { transform: scale(0.96); }
+      50% { transform: scale(1.05); background: #059669; }
+    }
+    
+    @keyframes schulteShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+    
+    @keyframes schulteCelebrate {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); background: #FFD700; border-color: #FFD700; }
+      100% { transform: scale(1); }
+    }
+    
+    @keyframes borderGlow {
+      0% { box-shadow: 0 12px 28px rgba(102,126,234,0.4); }
+      50% { box-shadow: 0 12px 32px rgba(102,126,234,0.7); border-color: #a855f7; }
+      100% { box-shadow: 0 12px 28px rgba(102,126,234,0.4); }
+    }
+    
+    .schulte-grid-wrapper {
+      animation: borderGlow 2s ease-in-out infinite;
+    }
+  `;
+  document.head.appendChild(style);
   
   function startTimer() {
     if (timerInterval) clearInterval(timerInterval);
@@ -3688,7 +6519,13 @@ function renderSchulteLite() {
     if (!current || parseFloat(time) < parseFloat(current)) {
       localStorage.setItem(recordKey, time);
       const recordSpan = document.getElementById('recordValue');
-      if (recordSpan) recordSpan.textContent = time + ' сек (НОВЫЙ!)';
+      if (recordSpan) {
+        recordSpan.innerHTML = time + ' сек ⭐';
+        recordSpan.style.animation = 'schulteCelebrate 0.5s ease';
+        setTimeout(() => {
+          recordSpan.style.animation = '';
+        }, 500);
+      }
       return true;
     }
     return false;
@@ -3697,50 +6534,107 @@ function renderSchulteLite() {
   function createGrid() {
     grid.innerHTML = '';
     numbers = Array.from({ length: total }, (_, i) => i + 1);
-    numbers.sort(() => Math.random() - 0.5);
+    // Перемешиваем числа
+    for (let i = numbers.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+    }
     current = 1;
     startTime = null;
     penalty = 0;
     completed = false;
-    document.getElementById('currentTarget').textContent = '1';
-    document.getElementById('timerValue').textContent = '0.00';
+    
+    const targetSpan = document.getElementById('currentTarget');
+    const timerSpan = document.getElementById('timerValue');
+    if (targetSpan) targetSpan.textContent = '1';
+    if (timerSpan) timerSpan.textContent = '0.00';
     if (timerInterval) clearInterval(timerInterval);
     
     numbers.forEach(num => {
       const cell = document.createElement('div');
-      cell.className = 'schulte-lite-cell';
+      cell.className = 'schulte-cell';
       cell.textContent = num;
+      
       cell.onclick = () => {
         if (completed) return;
         if (!startTime) startTimer();
         
-        if (parseInt(cell.textContent) === current) {
+        const clickedNum = parseInt(cell.textContent);
+        
+        if (clickedNum === current) {
+          // Правильный клик
           cell.classList.add('correct');
           cell.style.pointerEvents = 'none';
           current++;
-          document.getElementById('currentTarget').textContent = current;
+          if (targetSpan) targetSpan.textContent = current;
+          
+          // Вибрация на мобильных (если есть)
+          if (navigator.vibrate) navigator.vibrate(50);
           
           if (current > total) {
             completed = true;
             clearInterval(timerInterval);
             const finalTime = ((Date.now() - startTime) / 1000 + penalty).toFixed(2);
             const isNewRecord = saveRecord(finalTime);
+            
+            // Праздничная анимация для wrapper
+            const wrapper = document.querySelector('.schulte-grid-wrapper');
+            if (wrapper) {
+              wrapper.style.animation = 'schulteCelebrate 0.5s ease';
+              setTimeout(() => { wrapper.style.animation = 'borderGlow 2s ease-in-out infinite'; }, 500);
+            }
+            
             if (isNewRecord) {
-              showToast(`🏆 Новый рекорд! ${finalTime} сек`, 'success');
+              showToast(`🏆 НОВЫЙ РЕКОРД! ${finalTime} сек`, 'success');
             } else {
-              showToast(`🎉 Готово! Время: ${finalTime} сек`, 'success');
+              showToast(`🎉 МОЛОДЕЦ! Время: ${finalTime} сек`, 'success');
             }
             successAction();
+            
+            // Запускаем новую таблицу только один раз
+            schulteTimeout = setTimeout(() => {
+              if (state.levelProgress < state.tasksPerLevel) {
+                renderSchulte();
+              }
+            }, 1500);
           }
         } else {
+          // Ошибка
           penalty += 0.5;
           cell.classList.add('wrong');
-          setTimeout(() => cell.classList.remove('wrong'), 300);
+          
+          if (navigator.vibrate) navigator.vibrate(100);
+          
+          setTimeout(() => {
+            cell.classList.remove('wrong');
+          }, 300);
+          
           if (startTime) {
             const time = ((Date.now() - startTime) / 1000 + penalty).toFixed(2);
-            document.getElementById('timerValue').textContent = time;
+            if (timerSpan) timerSpan.textContent = time;
           }
           failAction();
+          
+          // Подсказка: показываем, какую цифру ищем
+          const hintToast = document.createElement('div');
+          hintToast.textContent = `🔍 Ищем цифру ${current}!`;
+          hintToast.style.cssText = `
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            z-index: 999;
+            animation: toastSlide 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+          `;
+          document.body.appendChild(hintToast);
+          setTimeout(() => hintToast.remove(), 800);
         }
       };
       grid.appendChild(cell);
@@ -3749,19 +6643,25 @@ function renderSchulteLite() {
   
   createGrid();
   
-  document.getElementById('resetSchulteBtn').onclick = () => {
-    createGrid();
-  };
+  const resetBtn = document.getElementById('resetSchulteBtn');
+  if (resetBtn) {
+    resetBtn.onclick = () => {
+      if (schulteTimeout) {
+        clearTimeout(schulteTimeout);
+      }
+      createGrid();
+      showToast("🔄 Новая таблица создана!", "success");
+    };
+  }
 }
 
-// ===== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ =====
-function getDifficultyStars() {
-    const stars = { easy: '⭐', medium: '⭐⭐', hard: '⭐⭐⭐' };
-    return stars[currentDifficulty] || '⭐';
+// ===== ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ ЗВЁЗД =====
+function getStars() {
+  const stars = { 1: '⭐', 2: '⭐⭐', 3: '⭐⭐⭐' };
+  return stars[state.level] || '⭐';
 }
 
-
-// ===== РЕГИСТРАЦИЯ ЗАДАНИЙ (ИСПРАВЛЕНО!) =====
+// ===== РЕГИСТРАЦИЯ ЗАДАНИЙ =====
 // Скорочтение
 TASKS.reading["flipped_text"] = renderFlippedText;
 TASKS.reading["obstacle_text"] = renderObstacleText;
@@ -3795,11 +6695,12 @@ TASKS.memory["memory_what_missing"] = renderMemoryWhatMissing;
 TASKS.memory["memory_quiz"] = renderMemoryQuiz;
 TASKS.memory["phygital_audio"] = renderPhygitalAudio;
 
-TASKS.dexterity["reaction_game"] = renderReactionGame;
-TASKS.dexterity["find_words_game"] = renderFindWordsGame;
-TASKS.dexterity["schulte_lite"] = renderSchulteLite;
+// Ловкость
+TASKS.dexterity["reaction"] = renderReaction;
+TASKS.dexterity["findwords"] = renderFindWords;
+TASKS.dexterity["schulte"] = renderSchulte;
 
-// ===== КАТЕГОРИИ (ИСПРАВЛЕНО!) =====
+// ===== КАТЕГОРИИ =====
 document.querySelectorAll(".category-btn").forEach(btn => {
   btn.onclick = () => {
     document.querySelectorAll(".category-btn").forEach(b => b.classList.remove("active"));
@@ -3814,7 +6715,7 @@ document.querySelectorAll(".category-btn").forEach(btn => {
   };
 });
 
-// ===== СЛОЖНОСТЬ (ИСПРАВЛЕНО!) =====
+// ===== СЛОЖНОСТЬ =====
 document.querySelectorAll(".difficulty-btn").forEach(btn => {
   btn.onclick = () => {
     document.querySelectorAll(".difficulty-btn").forEach(b => b.classList.remove("active"));
@@ -3862,7 +6763,7 @@ document.getElementById("resetAllStats").onclick = () => {
   modal.style.display = "none";
 };
 
-// ===== ЗАПУСК (ИСПРАВЛЕНО!) =====
+// ===== ЗАПУСК =====
 loadProgress();
 showTaskSelection();
 updateProgress();

@@ -13,28 +13,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Анимированные фоновые элементы */
-body::before {
-  content: "⭐";
-  position: fixed;
-  font-size: 300px;
-  bottom: -100px;
-  left: -100px;
-  opacity: 0.08;
-  pointer-events: none;
-  animation: float 20s ease-in-out infinite;
-}
-
-body::after {
-  content: "🚀";
-  position: fixed;
-  font-size: 250px;
-  top: -80px;
-  right: -80px;
-  opacity: 0.08;
-  pointer-events: none;
-  animation: float 15s ease-in-out infinite reverse;
-}
 
 @keyframes float {
   0%, 100% { transform: translate(0, 0) rotate(0deg); }
@@ -319,6 +297,14 @@ body::after {
   margin-bottom: 25px;
 }
 
+.options-list-horizontal {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
 .option-btn {
   padding: 16px 24px;
   font-size: 18px;
@@ -375,6 +361,45 @@ body::after {
   animation: shake 0.4s ease;
 }
 
+.option-btn-horizontal {
+  padding: 14px 28px;
+  font-size: 18px;
+  font-weight: 600;
+  border: 3px solid #e5e7eb;
+  border-radius: 60px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 150px;
+  color: #333;
+}
+
+.option-btn-horizontal:hover {
+  transform: translateY(-3px);
+  border-color: #667eea;
+  background: #f8f9ff;
+  box-shadow: 0 6px 16px rgba(102,126,234,0.2);
+}
+
+.option-btn-horizontal.selected {
+  background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  color: white !important;
+  border-color: transparent !important;
+}
+
+.option-btn-horizontal.correct {
+  background: linear-gradient(135deg, #10B981, #059669) !important;
+  color: white !important;
+  border-color: #10B981 !important;
+}
+
+.option-btn-horizontal.wrong {
+  background: #EF4444 !important;
+  color: white !important;
+  border-color: #EF4444 !important;
+  animation: shake 0.3s ease;
+}
+
 @keyframes correctPop {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.05); }
@@ -420,6 +445,58 @@ body::after {
 .btn-primary:hover {
   transform: translateY(-3px);
   box-shadow: 0 15px 30px -10px rgba(102, 126, 234, 0.5);
+}
+
+.answer-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 16px;
+  background: white;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.answer-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+}
+
+.btn-secondary {
+  padding: 14px 28px;
+  background: #6B7280;
+  color: white;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: #4B5563;
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  width: 100%;
+  padding: 14px;
+  background: #EF4444;
+  color: white;
+  border: none;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-danger:hover {
+  background: #DC2626;
+  transform: translateY(-2px);
 }
 
 /* ===== ЯЧЕЙКИ ВНИМАНИЯ ===== */
@@ -572,6 +649,14 @@ body::after {
   border: 2px solid rgba(102, 126, 234, 0.2);
 }
 
+.logic-modes {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
 #logicOptions {
   display: flex !important;
   flex-direction: row !important;
@@ -590,6 +675,74 @@ body::after {
   font-weight: 700;
   border-radius: 24px;
   text-align: center;
+}
+
+/* ===== РАЗДЕЛИ ТЕКСТ НА СЛОВА ===== */
+.split-text-container {
+  text-align: center;
+  margin: 30px 0;
+  padding: 30px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow-x: auto;
+}
+
+.split-text {
+  user-select: none;
+  display: block;
+  word-break: break-all;
+  white-space: normal;
+  line-height: 2.2;
+  font-family: monospace;
+}
+
+.split-char {
+  display: inline-block;
+  font-weight: 500;
+}
+
+.split-position {
+  display: inline-block;
+  width: 30px;
+  text-align: center;
+  color: #ccc;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  user-select: none;
+  font-size: 20px;
+}
+
+.split-position:hover {
+  color: #667eea;
+  transform: scale(1.2);
+}
+
+.split-position.active {
+  color: #10B981;
+}
+
+/* ===== ПРОЧИТАЙ ПО РАЗМЕРУ ===== */
+.size-sort-letters {
+  text-align: center;
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* ===== ЗЕРКАЛЬНЫЙ ТЕКСТ ===== */
+.mirror-text-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* ===== НЕПРОПЕЧАТАННЫЙ ТЕКСТ ===== */
+.half-text-container {
+  text-align: center;
+  margin: 20px 0;
 }
 
 /* ===== ФИДЖИТАЛ ===== */
@@ -739,24 +892,6 @@ body::after {
   color: #10B981;
 }
 
-.btn-danger {
-  width: 100%;
-  padding: 14px;
-  background: #EF4444;
-  color: white;
-  border: none;
-  border-radius: 100px;
-  font-weight: 700;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-danger:hover {
-  background: #DC2626;
-  transform: translateY(-2px);
-}
-
 /* ===== РЕЗУЛЬТАТ ===== */
 .result-screen {
   text-align: center;
@@ -783,23 +918,6 @@ body::after {
   margin: 10px;
 }
 
-.btn-secondary {
-  padding: 14px 28px;
-  background: #6B7280;
-  color: white;
-  border: none;
-  border-radius: 100px;
-  cursor: pointer;
-  font-weight: 700;
-  font-size: 16px;
-  transition: all 0.3s ease;
-}
-
-.btn-secondary:hover {
-  background: #4B5563;
-  transform: translateY(-2px);
-}
-
 /* ===== ТОСТ ===== */
 @keyframes toastSlide {
   from {
@@ -812,149 +930,11 @@ body::after {
   }
 }
 
-/* ===== АДАПТИВНОСТЬ ===== */
-@media (max-width: 1024px) {
-  .attention-cell {
-    width: 80px;
-    height: 80px;
-    font-size: 36px;
-  }
-  
-  .memory-card {
-    width: 80px;
-    height: 80px;
-    font-size: 28px;
-  }
-}
-
-@media (max-width: 768px) {
-  body {
-    padding: 10px;
-  }
-  
-  .app-container {
-    border-radius: 32px;
-  }
-  
-  .game-header {
-    padding: 15px 20px;
-  }
-  
-  .logo {
-    font-size: 20px;
-  }
-  
-  .logo-icon {
-    font-size: 28px;
-  }
-  
-  .categories-panel {
-    padding: 15px 20px 0 20px;
-    gap: 8px;
-  }
-  
-  .category-btn {
-    padding: 8px 16px;
-    font-size: 13px;
-  }
-  
-  .difficulty-panel {
-    padding: 15px 20px;
-  }
-  
-  .difficulty-btn {
-    padding: 6px 16px;
-    font-size: 13px;
-  }
-  
-  .game-area {
-    margin: 15px 20px 20px 20px;
-    padding: 20px;
-  }
-  
-  .task-title {
-    font-size: 24px;
-  }
-  
-  .attention-cell {
-    width: 65px;
-    height: 65px;
-    font-size: 28px;
-  }
-  
-  .memory-card {
-    width: 70px;
-    height: 70px;
-    font-size: 24px;
-  }
-  
-  .logic-task {
-    font-size: 22px;
-    padding: 20px;
-  }
-  
-  #logicOptions .option-btn {
-    width: 80px;
-    height: 80px;
-    font-size: 28px;
-  }
-  
-  .attention-hud div {
-    padding: 4px 12px;
-    font-size: 12px;
-  }
-  
-  .attention-hud div b {
-    font-size: 14px;
-  }
-  
-  .result-screen h2 {
-    font-size: 32px;
-  }
-  
-  .result-screen p {
-    font-size: 18px;
-  }
-  
-  .stats-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  
-  .modal-content {
-    margin: 10% auto;
-    padding: 20px;
-    width: 95%;
-  }
-}
-
-@media (max-width: 480px) {
-  .attention-cell {
-    width: 55px;
-    height: 55px;
-    font-size: 24px;
-  }
-  
-  .grid-1 {
-    gap: 8px;
-  }
-  
-  .memory-card {
-    width: 55px;
-    height: 55px;
-    font-size: 20px;
-  }
-  
-  .option-btn {
-    padding: 12px 16px;
-    font-size: 14px;
-  }
-}
-
 /* ===== ПАНЕЛЬ ВЫБОРА ЗАДАНИЯ ===== */
 .task-select-panel {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 15px;
   padding: 15px 30px;
   background: linear-gradient(135deg, #f0f0ff 0%, #e8e8ff 100%);
@@ -973,6 +953,7 @@ body::after {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .task-select-btn {
@@ -999,7 +980,7 @@ body::after {
   border-color: transparent;
 }
 
-/* ===== ФИДЖИТАЛ БЛОК С ПАРОЛЕМ ===== */
+/* ===== ФИДЖИТАЛ БЛОК ===== */
 .phygital-hint {
   background: linear-gradient(135deg, #fef3c7, #fde68a);
   padding: 12px;
@@ -1008,6 +989,74 @@ body::after {
   text-align: center;
   font-size: 14px;
   color: #92400e;
+}
+
+.phygital-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #FEF3C7;
+  padding: 8px 20px;
+  border-radius: 40px;
+  margin-bottom: 24px;
+  font-weight: 600;
+  color: #92400E;
+}
+
+.phygital-lock {
+  font-size: 20px;
+}
+
+.phygital-content {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: linear-gradient(135deg, #F3F4F6, #E5E7EB);
+  border-radius: 32px;
+  padding: 32px;
+  margin: 24px 0;
+}
+
+.phygital-icon-large {
+  font-size: 80px;
+  background: white;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 70px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.phygital-instruction h3 {
+  font-size: 24px;
+  color: #2D3047;
+  margin-bottom: 12px;
+}
+
+.phygital-instruction p {
+  font-size: 18px;
+  color: #4B5563;
+  line-height: 1.5;
+}
+
+.phygital-tip {
+  background: #E0E7FF;
+  padding: 16px 24px;
+  border-radius: 24px;
+  margin: 16px 0;
+  text-align: center;
+  color: #4338CA;
+  font-weight: 500;
+}
+
+.phygital-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
 }
 
 /* ===== ТАБЛИЦА ШУЛЬТЕ ===== */
@@ -1145,11 +1194,7 @@ body::after {
   opacity: 0.7;
 }
 
-/* ============================================
-   БЛОК ЛОВКОСТЬ
-   ============================================ */
-
-/* 1. Таблица Шульте (лёгкая) */
+/* ===== БЛОК ЛОВКОСТЬ ===== */
 .schulte-lite-header {
   display: flex;
   justify-content: space-between;
@@ -1220,7 +1265,6 @@ body::after {
   animation: shake 0.3s ease;
 }
 
-/* 2. Реакция */
 .reaction-stats {
   display: flex;
   justify-content: center;
@@ -1300,7 +1344,6 @@ body::after {
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* 3. Найди слова */
 .findword-target {
   text-align: center;
   font-size: 22px;
@@ -1368,77 +1411,156 @@ body::after {
   animation: shake 0.3s ease;
 }
 
-/* 4. Фиджитал */
-.phygital-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: #FEF3C7;
-  padding: 8px 20px;
-  border-radius: 40px;
-  margin-bottom: 24px;
-  font-weight: 600;
-  color: #92400E;
+/* ===== АДАПТИВНОСТЬ ===== */
+@media (max-width: 1024px) {
+  .attention-cell {
+    width: 80px;
+    height: 80px;
+    font-size: 36px;
+  }
+  
+  .memory-card {
+    width: 80px;
+    height: 80px;
+    font-size: 28px;
+  }
+  
+  #logicOptions .option-btn {
+    width: 90px;
+    height: 90px;
+    font-size: 32px;
+  }
 }
 
-.phygital-lock {
-  font-size: 20px;
-}
-
-.phygital-content {
-  display: flex;
-  gap: 30px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  background: linear-gradient(135deg, #F3F4F6, #E5E7EB);
-  border-radius: 32px;
-  padding: 32px;
-  margin: 24px 0;
-}
-
-.phygital-icon-large {
-  font-size: 80px;
-  background: white;
-  width: 140px;
-  height: 140px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 70px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-
-.phygital-instruction h3 {
-  font-size: 24px;
-  color: #2D3047;
-  margin-bottom: 12px;
-}
-
-.phygital-instruction p {
-  font-size: 18px;
-  color: #4B5563;
-  line-height: 1.5;
-}
-
-.phygital-tip {
-  background: #E0E7FF;
-  padding: 16px 24px;
-  border-radius: 24px;
-  margin: 16px 0;
-  text-align: center;
-  color: #4338CA;
-  font-weight: 500;
-}
-
-.phygital-footer {
-  display: flex;
-  justify-content: center;
-  margin-top: 24px;
-}
-
-/* Адаптация для мобильных (Ловкость) */
 @media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+  
+  .app-container {
+    border-radius: 32px;
+  }
+  
+  .game-header {
+    padding: 15px 20px;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .logo {
+    font-size: 20px;
+  }
+  
+  .logo-icon {
+    font-size: 28px;
+  }
+  
+  .header-center {
+    max-width: 100%;
+    margin: 0;
+    width: 100%;
+  }
+  
+  .categories-panel {
+    padding: 15px 20px 0 20px;
+    gap: 8px;
+    justify-content: center;
+  }
+  
+  .category-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  
+  .difficulty-panel {
+    padding: 15px 20px;
+    justify-content: center;
+  }
+  
+  .difficulty-btn {
+    padding: 6px 16px;
+    font-size: 13px;
+  }
+  
+  .game-area {
+    margin: 15px 20px 20px 20px;
+    padding: 20px;
+  }
+  
+  .task-title {
+    font-size: 24px;
+  }
+  
+  .attention-cell {
+    width: 65px;
+    height: 65px;
+    font-size: 28px;
+  }
+  
+  .memory-card {
+    width: 70px;
+    height: 70px;
+    font-size: 24px;
+  }
+  
+  .logic-task {
+    font-size: 22px;
+    padding: 20px;
+  }
+  
+  #logicOptions .option-btn {
+    width: 80px;
+    height: 80px;
+    font-size: 28px;
+  }
+  
+  .attention-hud div {
+    padding: 4px 12px;
+    font-size: 12px;
+  }
+  
+  .attention-hud div b {
+    font-size: 14px;
+  }
+  
+  .result-screen h2 {
+    font-size: 32px;
+  }
+  
+  .result-screen p {
+    font-size: 18px;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .modal-content {
+    margin: 10% auto;
+    padding: 20px;
+    width: 95%;
+  }
+  
+  .options-list-horizontal {
+    gap: 10px;
+  }
+  
+  .option-btn-horizontal {
+    padding: 10px 16px;
+    font-size: 14px;
+    min-width: 120px;
+  }
+  
+  .split-position {
+    width: 20px;
+    font-size: 14px;
+  }
+  
+  .size-sort-letters {
+    padding: 20px;
+  }
+  
   .reaction-field {
     height: 350px;
   }
@@ -1467,72 +1589,25 @@ body::after {
     flex-direction: column;
     text-align: center;
   }
-}
-
-@media (max-width: 480px) {
-  .findword-char {
-    width: 35px;
-    height: 35px;
+  
+  .grid[data-size="3"] .cell {
+    width: 70px;
+    height: 70px;
+    font-size: 20px;
+  }
+  
+  .grid[data-size="5"] .cell {
+    width: 45px;
+    height: 45px;
+    font-size: 14px;
+  }
+  
+  .grid[data-size="7"] .cell {
+    width: 38px;
+    height: 38px;
     font-size: 12px;
   }
   
-  .schulte-lite-cell {
-    font-size: 16px;
-  }
-}
-
-/* Центрирование панели выбора заданий */
-.task-select-panel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  padding: 15px 30px;
-  background: linear-gradient(135deg, #f0f0ff 0%, #e8e8ff 100%);
-  border-radius: 60px;
-  margin: 0 30px 20px 30px;
-  flex-wrap: wrap;
-}
-
-.task-select-label {
-  font-weight: 700;
-  color: #667eea;
-  font-size: 16px;
-}
-
-.task-select-buttons {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.task-select-btn {
-  padding: 8px 16px;
-  background: white;
-  border: 2px solid #667eea;
-  border-radius: 40px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: #667eea;
-}
-
-.task-select-btn:hover {
-  background: #667eea;
-  color: white;
-  transform: scale(1.02);
-}
-
-.task-select-btn.active {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
-  border-color: transparent;
-}
-
-/* Адаптация для мобильных */
-@media (max-width: 768px) {
   .task-select-panel {
     margin: 0 15px 15px 15px;
     padding: 12px 15px;
@@ -1543,5 +1618,49 @@ body::after {
   .task-select-btn {
     padding: 6px 12px;
     font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .attention-cell {
+    width: 55px;
+    height: 55px;
+    font-size: 24px;
+  }
+  
+  .grid-1 {
+    gap: 8px;
+  }
+  
+  .memory-card {
+    width: 55px;
+    height: 55px;
+    font-size: 20px;
+  }
+  
+  .option-btn {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  
+  .option-btn-horizontal {
+    padding: 8px 12px;
+    font-size: 12px;
+    min-width: 100px;
+  }
+  
+  .split-position {
+    width: 16px;
+    font-size: 12px;
+  }
+  
+  .findword-char {
+    width: 35px;
+    height: 35px;
+    font-size: 12px;
+  }
+  
+  .schulte-lite-cell {
+    font-size: 16px;
   }
 }
