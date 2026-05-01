@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>🧠 Умные приключения</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- HEADER -->
+    <header class="game-header">
+      <div class="logo">
+        <div class="logo-icon">🧠</div>
+        <span>Умные приключения</span>
+      </div>
+
+      <div class="header-center">
+        <div class="progress-bar-container">
+          <div class="progress-label">⭐ Прогресс уровня</div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progressBar"></div>
+          </div>
+          <div class="progress-stats" id="progressStats">0%</div>
+        </div>
+      </div>
+
+      <button class="parent-btn" id="statsBtn">📊 Статистика</button>
+    </header>
+
+    <!-- КАТЕГОРИИ -->
+    <div class="categories-panel">
+      <button class="category-btn active" data-category="reading">📖 Скорочтение</button>
+      <button class="category-btn" data-category="logic">🧠 Логика</button>
+      <button class="category-btn" data-category="attention">🔍 Внимание</button>
+      <button class="category-btn" data-category="memory">💾 Память</button>
+      <button class="category-btn" data-category="dexterity">⚡ Ловкость</button>
+    </div>
+
+    <!-- ВЫБОР УРОВНЯ СЛОЖНОСТИ -->
+    <div class="difficulty-panel">
+      <button class="difficulty-btn active" data-level="1">⭐ Новичок</button>
+      <button class="difficulty-btn" data-level="2">⭐⭐ Мастер</button>
+      <button class="difficulty-btn" data-level="3">⭐⭐⭐ Эксперт</button>
+    </div>
+
+    <!-- ВЫБОР ЗАДАНИЯ (показывается после выбора категории) -->
+    <div class="task-select-panel" id="taskSelectPanel" style="display: flex;">
+      <span class="task-select-label">📋 Выбери задание:</span>
+      <div class="task-select-buttons" id="taskSelectButtons"></div>
+    </div>
+
+    <!-- ИГРОВАЯ ОБЛАСТЬ -->
+    <main class="game-area" id="gameArea">
+      <div class="game-placeholder">
+        <div class="placeholder-icon">🎮</div>
+        <h3>Выбери категорию и уровень</h3>
+        <p>Начни своё приключение в мире развития мозга!</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО СТАТИСТИКИ -->
+  <div id="statsModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      <h2>📊 Твоя статистика</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">🏆</div>
+          <div class="stat-value" id="statScore">0</div>
+          <div class="stat-label">Всего очков</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value" id="statCorrect">0</div>
+          <div class="stat-label">Правильных ответов</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">❌</div>
+          <div class="stat-value" id="statErrors">0</div>
+          <div class="stat-label">Ошибок</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⏱️</div>
+          <div class="stat-value" id="statTime">0</div>
+          <div class="stat-label">Секунд всего</div>
+        </div>
+      </div>
+      <div class="stats-accuracy">
+        <div class="accuracy-label">🎯 Точность</div>
+        <div class="accuracy-bar">
+          <div class="accuracy-fill" id="accuracyFill"></div>
+        </div>
+        <div class="accuracy-value" id="accuracyValue">0%</div>
+      </div>
+      <button id="resetAllStats" class="btn-danger">🔄 Сбросить всю статистику</button>
+    </div>
+  </div>
+
+  <!-- МОДАЛЬНОЕ ОКНО ДЛЯ ПАРОЛЯ РОДИТЕЛЕЙ (Фиджитал) -->
+  <div id="parentPasswordModal" class="modal">
+    <div class="modal-content" style="max-width: 400px;">
+      <span class="modal-close" id="closePasswordModal">&times;</span>
+      <h2>🔐 Подтверждение</h2>
+      <p style="margin-bottom: 20px;">Для подтверждения выполнения фиджитал-задания введите родительский пароль:</p>
+      <input type="password" id="parentPasswordInput" class="answer-input" placeholder="Введите пароль" style="margin-bottom: 20px;">
+      <button id="submitParentPassword" class="btn-primary">✅ Подтвердить</button>
+      <p style="margin-top: 15px; font-size: 12px; color: #999;">Подсказка: пароль "umnye2024"</p>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
