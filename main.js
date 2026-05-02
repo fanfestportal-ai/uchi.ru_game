@@ -290,7 +290,7 @@ function showTaskSelection() {
 
 function getTaskName(taskId) {
   const names = {
-    // Скорочтение
+    // Чтение
     "flipped_text": " Перевёрнутый текст",
     "obstacle_text": " Текст с препятствиями",
     "half_text": " Непропечатанный текст",
@@ -460,10 +460,10 @@ function renderHUD() {
 }
 
 // ============================================
-// ========== ЗАДАНИЯ СКОРОЧТЕНИЕ ==========
+// ========== ЗАДАНИЯ ЧТЕНИЕ ==========
 // ============================================
 
-// ===== ЗАДАНИЯ СКОРОЧТЕНИЕ =====
+// ===== ЗАДАНИЯ ЧТЕНИЕ =====
 
 // ЛЁГКИЙ УРОВЕНЬ (1 предложение, 3 варианта ответа)
 const readingTextsEasy = [
@@ -2843,14 +2843,7 @@ function renderLogicAnagram() {
     { scrambled: "лкиос", correct: "ослик", hint: "Животное с длинными ушами" },
     { scrambled: "каёл", correct: "ёлка", hint: "Дерево с иголками, новогодняя" },
     { scrambled: "небос", correct: "сосен", hint: "Дерево" },
-    { scrambled: "тлас", correct: "стла", hint: "Часть слова" },
-    { scrambled: "ворт", correct: "твор", hint: "Часть слова" },
-    { scrambled: "мика", correct: "ками", hint: "Часть слова" },
-    { scrambled: "грач", correct: "чарг", hint: "Часть слова" },
-    { scrambled: "пуск", correct: "спук", hint: "Часть слова" },
-    { scrambled: "кова", correct: "вако", hint: "Часть слова" },
-    { scrambled: "ренг", correct: "нгре", hint: "Часть слова" },
-    { scrambled: "блук", correct: "лубк", hint: "Часть слова" }
+
   ];
 
   // ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 30 слов из 5-7 букв =====
@@ -3791,8 +3784,16 @@ function renderAttentionFindOdd() {
   });
 }
 
-// 2. НАЙДИ ПРЕДМЕТЫ (2D КОМНАТА)
+// 2. НАЙДИ ПРЕДМЕТЫ В КОМНАТЕ (исправлена двойная генерация)
+let findItemsTimeout = null;
+
 function renderAttentionFindItems() {
+  // Очищаем предыдущий таймаут, чтобы избежать двойного вызова
+  if (findItemsTimeout) {
+    clearTimeout(findItemsTimeout);
+    findItemsTimeout = null;
+  }
+  
   // ===== КОНФИГУРАЦИЯ ДЛЯ РАЗНЫХ УРОВНЕЙ =====
   const configs = {
     1: { 
@@ -3908,15 +3909,15 @@ function renderAttentionFindItems() {
   
   const grid = document.getElementById("attentionGrid");
   let found = new Set();
+  let gameCompleted = false; // Флаг, чтобы предотвратить повторный вызов
   
   const updateCount = () => {
     document.getElementById("foundCount").textContent = found.size;
-    if (found.size === config.needToFind) {
+    if (found.size === config.needToFind && !gameCompleted) {
+      gameCompleted = true;
       showToast("🎉 Отлично! Ты нашёл все предметы!", "success");
-      successAction();
-      setTimeout(() => {
-        renderAttentionFindItems();
-      }, 1500);
+      successAction(); // successAction сам вызовет showTaskSelection через 800 мс
+      // НЕ вызываем renderAttentionFindItems() здесь!
     }
   };
   
@@ -3938,19 +3939,21 @@ function renderAttentionFindItems() {
     cell.style.border = "2px solid #d4a574";
     
     cell.onmouseenter = () => {
-      if (!found.has(item) && toFind.includes(item)) {
+      if (!found.has(item) && toFind.includes(item) && !gameCompleted) {
         cell.style.backgroundColor = "#ffe0b3";
         cell.style.transform = "scale(1.05)";
       }
     };
     cell.onmouseleave = () => {
-      if (!found.has(item)) {
+      if (!found.has(item) && !gameCompleted) {
         cell.style.backgroundColor = "#f5e6cc";
         cell.style.transform = "scale(1)";
       }
     };
     
     cell.onclick = () => {
+      if (gameCompleted) return;
+      
       if (toFind.includes(item) && !found.has(item)) {
         found.add(item);
         cell.classList.add("correct");
@@ -3964,11 +3967,11 @@ function renderAttentionFindItems() {
         cell.style.backgroundColor = "#ffb3b3";
         setTimeout(() => {
           cell.classList.remove("wrong");
-          cell.style.backgroundColor = "#f5e6cc";
+          if (!gameCompleted && !found.has(item)) {
+            cell.style.backgroundColor = "#f5e6cc";
+          }
         }, 300);
         failAction();
-      } else if (found.has(item)) {
-        showToast("🔍 Этот предмет ты уже нашёл!", "info");
       }
     };
     grid.appendChild(cell);
@@ -3978,6 +3981,7 @@ function renderAttentionFindItems() {
   const resetBtn = document.getElementById("resetRoomBtn");
   if (resetBtn) {
     resetBtn.onclick = () => {
+      if (findItemsTimeout) clearTimeout(findItemsTimeout);
       renderAttentionFindItems();
       showToast("🔄 Новая комната создана!", "success");
     };
@@ -6662,7 +6666,7 @@ function getStars() {
 }
 
 // ===== РЕГИСТРАЦИЯ ЗАДАНИЙ =====
-// Скорочтение
+// Чтение
 TASKS.reading["flipped_text"] = renderFlippedText;
 TASKS.reading["obstacle_text"] = renderObstacleText;
 TASKS.reading["half_text"] = renderHalfText;
