@@ -1,35 +1,35 @@
 function getTaskIcon(taskId) {
   const icons = {
-    "flipped_text": "🔄",
-    "obstacle_text": "🚧",
-    "half_text": "✂️",
-    "mirror_text": "🪞",
-    "split_words": "📝",
-    "size_sort": "📏",
-    "phygital_flipped": "🎯",
-    "logic_chain": "🔗",
-    "logic_riddle": "❓",
-    "logic_match": "🔀",
-    "logic_anagram": "🔄",
-    "logic_picture": "🖼️",
-    "logic_cipher": "🔐",
-    "phygital_cipher": "🎯",
-    "attention_find_odd": "🔍",
-    "attention_find_items": "🎨",
-    "attention_find_number": "🔢",
-    "attention_black_white": "⚫",
-    "attention_circle_square": "⭕",
-    "attention_find_among": "🐕",
-    "phygital_coloring": "🎨",
-    "memory_sequence": "📋",
-    "memory_what_missing": "❓",
-    "memory_quiz": "📝",
-    "phygital_audio": "🎧",
-    "reaction": "⚡",
-    "findwords": "🔍",
-    "schulte": "📊"
+    "flipped_text": "",
+    "obstacle_text": "",
+    "half_text": "",
+    "mirror_text": "",
+    "split_words": "",
+    "size_sort": "",
+    "phygital_flipped": "",
+    "logic_chain": "",
+    "logic_riddle": "",
+    "logic_match": "",
+    "logic_anagram": "",
+    "logic_picture": "",
+    "logic_cipher": "",
+    "phygital_cipher": "",
+    "attention_find_odd": "",
+    "attention_find_items": "",
+    "attention_find_number": "",
+    "attention_black_white": "",
+    "attention_circle_square": "",
+    "attention_find_among": "",
+    "phygital_coloring": "",
+    "memory_sequence": "",
+    "memory_what_missing": "",
+    "memory_quiz": "",
+    "phygital_audio": "",
+    "reaction": "",
+    "findwords": "",
+    "schulte": ""
   };
-  return icons[taskId] || "📖";
+  return icons[taskId] || "";
 }
 
 const soundCorrect = new Audio("https://assets.mixkit.co/sfx/preview/mixkit-game-click-1114.mp3");
@@ -120,7 +120,7 @@ function clearTimers() {
   }
 }
 
-// ===== TOAST =====
+// ===== TOAST (ИСПРАВЛЕН: ЦВЕТА ПО ПАЛИТРЕ) =====
 function showToast(text, type = "success") {
   const div = document.createElement("div");
   div.textContent = text;
@@ -129,14 +129,14 @@ function showToast(text, type = "success") {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: ${type === "success" ? "#10B981" : "#EF4444"};
+    background: ${type === "success" ? "#87d34c" : "#ea3117"};
     color: white;
     padding: 12px 24px;
     border-radius: 12px;
     font-weight: 600;
     z-index: 1000;
     animation: toastSlide 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.05), -3px -3px 10px rgba(255, 255, 255, 0.8);
   `;
   document.body.appendChild(div);
   setTimeout(() => div.remove(), 1500);
@@ -147,14 +147,13 @@ function updateProgress() {
   const progressBar = document.getElementById("progressBar");
   const progressStats = document.getElementById("progressStats");
   
-  if (state.totalTasks > 0) {
-    const percent = Math.round((state.completedTasks / state.totalTasks) * 100);
-    if (progressBar) progressBar.style.width = `${percent}%`;
-    if (progressStats) progressStats.textContent = `${percent}%`;
-  } else {
-    if (progressBar) progressBar.style.width = "0%";
-    if (progressStats) progressStats.textContent = "0%";
-  }
+  // Прогресс считается от levelProgress (сколько заданий выполнено в текущем уровне)
+  const percent = (state.levelProgress / state.tasksPerLevel) * 100;
+  
+  console.log("Progress update:", state.levelProgress, "/", state.tasksPerLevel, "=", percent + "%");
+  
+  if (progressBar) progressBar.style.width = `${percent}%`;
+  if (progressStats) progressStats.textContent = `${Math.round(percent)}%`;
 }
 
 function updateHUD() {
@@ -184,7 +183,7 @@ function successAction() {
     state.streak = 0;
   }
   
-  updateProgress();
+  updateProgress(); // ЭТА СТРОКА ДОЛЖНА БЫТЬ
   
   if (state.levelProgress >= state.tasksPerLevel) {
     showLevelComplete();
@@ -206,7 +205,7 @@ function failAction() {
   
   state.metrics.totalErrors++;
   saveProgress();
-  showToast("❌ Неправильно! Попробуй ещё раз", "error");
+  showToast("Неправильно! Попробуй ещё раз", "error");
 }
 
 // ===== ЗАВЕРШЕНИЕ УРОВНЯ =====
@@ -217,13 +216,13 @@ function showLevelComplete() {
   
   gameArea.innerHTML = `
     <div class="result-screen">
-      <h2>🎉 Уровень завершён!</h2>
-      <p>⏱ Время: ${time} сек</p>
-      <p>❌ Ошибки: ${state.errors}</p>
-      <p>🎯 Точность: ${accuracy}%</p>
-      <p>✨ Всего очков: ${state.score}</p>
-      <button id="nextLevel" class="btn-primary">🚀 Следующий уровень</button>
-      <button id="resetProgress" class="btn-secondary">🔄 Начать заново</button>
+      <h2>Уровень завершён!</h2>
+      <p>Время: ${time} сек</p>
+      <p>Ошибки: ${state.errors}</p>
+      <p>Точность: ${accuracy}%</p>
+      <p>Всего очков: ${state.score}</p>
+      <button id="nextLevel" class="btn-primary">Следующий уровень</button>
+      <button id="resetProgress" class="btn-secondary">Начать заново</button>
     </div>
   `;
   
@@ -252,14 +251,19 @@ function showTaskSelection() {
   const taskSelectPanel = document.getElementById("taskSelectPanel");
   const taskSelectButtons = document.getElementById("taskSelectButtons");
   
-  if (taskSelectPanel) {
-    taskSelectPanel.style.display = "flex";
-  }
-  
   const tasks = TASKS[state.category];
   const taskList = Object.keys(tasks);
   
-  if (taskSelectButtons) {
+  // Обновляем totalTasks
+  state.totalTasks = taskList.length * state.tasksPerLevel;
+  
+  // Показываем панель выбора заданий ТОЛЬКО если есть задания
+  if (taskSelectPanel && taskList.length > 0) {
+    taskSelectPanel.style.display = "flex";
+  }
+  
+  // Заполняем кнопки выбора заданий
+  if (taskSelectButtons && taskList.length > 0) {
     taskSelectButtons.innerHTML = taskList.map(taskId => `
       <button class="task-select-btn" data-task="${taskId}">
         <span class="task-icon">${getTaskIcon(taskId)}</span>
@@ -278,14 +282,20 @@ function showTaskSelection() {
     });
   }
   
-  // Если есть сохранённое задание, показываем его
-  if (state.currentTaskId && tasks[state.currentTaskId]) {
-    renderSpecificTask(state.currentTaskId);
-  } else if (taskList.length > 0) {
-    const firstTask = taskList[0];
-    state.currentTaskId = firstTask;
-    renderSpecificTask(firstTask);
+  // ЕСЛИ ЗАДАНИЕ НЕ ВЫБРАНО — ПОКАЗЫВАЕМ ЗАГЛУШКУ
+  if (!state.currentTaskId || !tasks[state.currentTaskId]) {
+    gameArea.innerHTML = `
+      <div class="game-placeholder">
+        <div class="placeholder-icon">🎮</div>
+        <h3>Выбери категорию и уровень</h3>
+        <p>Начни своё приключение в мире развития мозга!</p>
+      </div>
+    `;
+    return;
   }
+  
+  // Если задание выбрано — показываем его
+  renderSpecificTask(state.currentTaskId);
 }
 
 function getTaskName(taskId) {
@@ -428,9 +438,9 @@ function showParentPasswordModal(onSuccess) {
         pendingPhygitalSuccess();
         pendingPhygitalSuccess = null;
       }
-      showToast("✅ Задание подтверждено! Молодец!", "success");
+      showToast("Задание подтверждено! Молодец!", "success");
     } else {
-      showToast("❌ Неверный пароль! Попроси помощи у родителей", "error");
+      showToast("Неверный пароль! Попроси помощи у родителей", "error");
     }
   };
   
@@ -451,14 +461,25 @@ function showParentPasswordModal(onSuccess) {
 function renderHUD() {
   return `
     <div class="attention-hud">
-      <div>🏆 Очки: <b>${state.score}</b></div>
-      <div>🔥 Комбо: <b>${state.combo}</b></div>
-      <div>🎯 Серия: <b>${state.streak}/5</b></div>
-      <div>📊 Прогресс: <b>${state.levelProgress}/${state.tasksPerLevel}</b></div>
+      <div>
+        <img src="images/Points.png" alt="Очки" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 4px;">
+        Очки: <b>${state.score}</b>
+      </div>
+      <div>
+        <img src="images/Combo.png" alt="Комбо" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 4px;">
+        Комбо: <b>${state.combo}</b>
+      </div>
+      <div>
+        <img src="images/Series.png" alt="Серия" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 4px;">
+        Серия: <b>${state.streak}/5</b>
+      </div>
+      <div>
+        <img src="images/Progress.png" alt="Прогресс" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 4px;">
+        Прогресс: <b>${state.levelProgress}/${state.tasksPerLevel}</b>
+      </div>
     </div>
   `;
 }
-
 // ============================================
 // ========== ЗАДАНИЯ ЧТЕНИЕ ==========
 // ============================================
@@ -607,11 +628,10 @@ function getReadingText() {
   }
 }
 
-// 1. Перевёрнутый текст (осмысленный)
+// 1. Перевёрнутый текст (осмысленный) - ИСПРАВЛЕН: цвета по палитре
 let flippedTextTimeout = null;
 
 function renderFlippedText() {
-  // Очищаем предыдущий таймаут, если есть
   if (flippedTextTimeout) {
     clearTimeout(flippedTextTimeout);
     flippedTextTimeout = null;
@@ -619,19 +639,18 @@ function renderFlippedText() {
   
   const task = getReadingText();
   
-  // Определяем размер шрифта в зависимости от уровня (в 1.5 раза больше)
-  let fontSize = "33px";    // было 22px * 1.5 = 33px
+  let fontSize = "33px";
   if (state.level === 2) {
-    fontSize = "27px";      // было 18px * 1.5 = 27px
+    fontSize = "27px";
   } else if (state.level === 3) {
-    fontSize = "24px";      // было 16px * 1.5 = 24px
+    fontSize = "24px";
   }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔄 Перевёрнутый текст ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Перевёрнутый текст ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: Переверни телефон (или переверни текст в уме). Прочитай текст и выбери правильный ответ.
+      Задача: Переверни телефон (или переверни текст в уме). Прочитай текст и выбери правильный ответ.
     </div>
     <div class="reading-container">
       <div class="flipped-text" style="transform: rotate(180deg); font-size: ${fontSize}; text-align: center; background: white; padding: 25px; border-radius: 20px; line-height: 1.6; font-weight: 500;">
@@ -640,66 +659,62 @@ function renderFlippedText() {
     </div>
     <div class="options-list-horizontal" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
       ${task.options.map((opt, idx) => `
-        <button class="option-btn-horizontal" data-answer="${opt}" data-index="${idx}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 3px solid #e5e7eb; border-radius: 60px; background: white; cursor: pointer; transition: all 0.2s ease; min-width: 150px; color: #333;">
+        <button class="option-btn-horizontal" data-answer="${opt}" data-index="${idx}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 150px; color: #2f2f45;">
           ${opt}
         </button>
       `).join('')}
     </div>
-    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">✅ Проверить</button>
+    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">Проверить</button>
   `;
   
-  // Добавляем стили для кнопок в строку
   const style = document.createElement('style');
   style.textContent = `
     .option-btn-horizontal {
       transition: all 0.2s ease;
-      color: #333 !important;
+      color: #2f2f45 !important;
     }
     .option-btn-horizontal:hover {
       transform: translateY(-3px);
-      border-color: #667eea;
+      border-color: #765fde;
       background: #f8f9ff;
-      box-shadow: 0 6px 16px rgba(102,126,234,0.2);
+      box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
     }
     .option-btn-horizontal.selected {
-      background: linear-gradient(135deg, #667eea, #764ba2) !important;
+      background: #765fde !important;
       color: white !important;
       border-color: transparent !important;
       transform: scale(1.02);
     }
     .option-btn-horizontal.correct {
-      background: linear-gradient(135deg, #10B981, #059669) !important;
+      background: #87d34c !important;
       color: white !important;
-      border-color: #10B981 !important;
+      border-color: #87d34c !important;
     }
     .option-btn-horizontal.wrong {
-      background: #EF4444 !important;
+      background: #ea3117 !important;
       color: white !important;
-      border-color: #EF4444 !important;
+      border-color: #ea3117 !important;
       animation: shake 0.3s ease;
     }
   `;
   document.head.appendChild(style);
   
-  // Настраиваем выбор вариантов
   let selected = null;
   let selectedButton = null;
-  let isAnswered = false; // Флаг, чтобы предотвратить повторные клики
+  let isAnswered = false;
   const buttons = document.querySelectorAll(".option-btn-horizontal");
   
   buttons.forEach(btn => {
     btn.onclick = () => {
-      if (isAnswered) return; // Если уже ответили, игнорируем клики
+      if (isAnswered) return;
       
-      // Убираем выделение со всех кнопок
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "white";
-        b.style.color = "#333";
+        b.style.background = "#ffffff";
+        b.style.color = "#2f2f45";
       });
-      // Выделяем текущую кнопку
       btn.classList.add("selected");
-      btn.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+      btn.style.background = "#765fde";
       btn.style.color = "white";
       selected = btn.dataset.answer;
       selectedButton = btn;
@@ -708,7 +723,7 @@ function renderFlippedText() {
   
   const checkBtn = document.getElementById("checkBtn");
   checkBtn.onclick = () => {
-    if (isAnswered) return; // Если уже ответили, игнорируем
+    if (isAnswered) return;
     
     if (!selected) {
       showToast("Выбери ответ!", "error");
@@ -717,43 +732,47 @@ function renderFlippedText() {
     
     if (selected === task.answer) {
       isAnswered = true;
-      // Подсвечиваем правильный ответ зелёным
       if (selectedButton) {
         selectedButton.classList.add("correct");
-        selectedButton.style.background = "linear-gradient(135deg, #10B981, #059669)";
+        selectedButton.style.background = "#87d34c";
         selectedButton.style.color = "white";
       }
       successAction();
-      showToast("✅ Правильно!", "success");
+      showToast("Правильно!", "success");
       
-      // Загружаем новый текст через 1 секунду (ТОЛЬКО ОДИН РАЗ)
       flippedTextTimeout = setTimeout(() => {
         renderFlippedText();
       }, 1000);
     } else {
-      // Подсвечиваем неправильный ответ красным
       if (selectedButton) {
         selectedButton.classList.add("wrong");
-        selectedButton.style.background = "#EF4444";
+        selectedButton.style.background = "#ea3117";
         selectedButton.style.color = "white";
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "white";
-          selectedButton.style.color = "#333";
+          selectedButton.style.background = "#ffffff";
+          selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
           isAnswered = false;
         }, 800);
       }
       failAction();
-      showToast(`❌ Неправильно! Правильный ответ: ${task.answer}`, "error");
+      showToast(`Неправильно! Правильный ответ: ${task.answer}`, "error");
     }
   };
 }
-
 // 2. Текст с препятствиями (осмысленный) - ПОЛНАЯ ВЕРСИЯ 20+20+20
+let obstacleTextTimeout = null;
+
 function renderObstacleText() {
+  // Очищаем предыдущий таймаут
+  if (obstacleTextTimeout) {
+    clearTimeout(obstacleTextTimeout);
+    obstacleTextTimeout = null;
+  }
+  
   // ===== ЛЁГКИЙ УРОВЕНЬ (1 предложение, 3 варианта) - 20 текстов =====
   const textsEasy = [
     { text: "К@о#т$ л%ю^б&и*т м(о)л[о]к{о}", answer: "Текст про кота, который любит молоко", options: ["Текст про кота, который любит молоко", "Текст про собаку, которая любит кости", "Текст про птицу, которая любит зерно"] },
@@ -825,6 +844,7 @@ function renderObstacleText() {
     { text: "Д@р#у%ж^б&а *п(о)м[о]г{а}е/т| `в~д. В@м #е %с ^т &е* (п)р[о]б{л}е/м|ы` `л~г. О@н #а % ^д &е*л(а)е[т] {ж}и/з|н`ь~я.", answer: "Текст про дружбу, которая помогает в трудные времена", options: ["Текст про дружбу, которая помогает в трудные времена", "Текст про верных друзей и поддержку", "Текст про детство и школьных товарищей", "Текст про совместные увлечения и хобби", "Текст про доверие и взаимопонимание", "Текст про радость общения и встречи"] },
     { text: "И@с#к%у^с&с*т(в)о [в]д{о}х/н|о`в~я. К@а #р %т ^и &н*ы (к)а[р]т{и}н/ы| `в~х. М@у #з %ы ^к &а* (д)а[ё]т {э}м/о|ц`и~и.", answer: "Текст про искусство, которое вдохновляет и дарит эмоции", options: ["Текст про искусство, которое вдохновляет и дарит эмоции", "Текст про живопись и великих художников", "Текст про музыку и известных композиторов", "Текст про театр и актёрское мастерство", "Текст про литературу и любимых писателей", "Текст про архитектуру и красивые здания"] }
   ];
+  
   // Объединяем все тексты для сложного уровня
   const allHard = [...textsHard];
   
@@ -842,30 +862,30 @@ function renderObstacleText() {
   }
 
   // Определяем размер шрифта (в 1.5 раза больше)
-  let fontSize = "30px";     // было 20px * 1.5 = 30px
+  let fontSize = "30px";
   if (state.level === 2) {
-    fontSize = "27px";       // было 18px * 1.5 = 27px
+    fontSize = "27px";
   } else if (state.level === 3) {
-    fontSize = "24px";       // было 16px * 1.5 = 24px
+    fontSize = "24px";
   }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🚧 Текст с препятствиями ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Текст с препятствиями ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: В тексте есть лишние символы ( @ # $ % ^ & * ( ) { } [ ] ). Прочитай только буквы и пойми смысл!
+      Задача: В тексте есть лишние символы ( @ # $ % ^ & * ( ) { } [ ] ). Прочитай только буквы и пойми смысл!
     </div>
     <div class="obstacle-text" style="transform: none; font-size: ${fontSize}; font-family: monospace; background: white; padding: 25px; border-radius: 20px; line-height: 1.6; font-weight: 500;">
       ${task.text}
     </div>
     <div class="options-list-horizontal" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
       ${task.options.map(opt => `
-        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 3px solid #e5e7eb; border-radius: 60px; background: white; cursor: pointer; transition: all 0.2s ease; min-width: 200px; color: #333;">
-          📖 ${opt}
+        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 200px; color: #2f2f45;">
+          ${opt}
         </button>
       `).join('')}
     </div>
-    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">✅ Проверить</button>
+    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">Проверить</button>
   `;
   
   // Добавляем стили для кнопок в строку
@@ -873,29 +893,29 @@ function renderObstacleText() {
   style.textContent = `
     .option-btn-horizontal {
       transition: all 0.2s ease;
-      color: #333 !important;
+      color: #2f2f45 !important;
     }
     .option-btn-horizontal:hover {
       transform: translateY(-3px);
-      border-color: #667eea;
+      border-color: #765fde;
       background: #f8f9ff;
-      box-shadow: 0 6px 16px rgba(102,126,234,0.2);
+      box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
     }
     .option-btn-horizontal.selected {
-      background: linear-gradient(135deg, #667eea, #764ba2) !important;
+      background: #765fde !important;
       color: white !important;
       border-color: transparent !important;
       transform: scale(1.02);
     }
     .option-btn-horizontal.correct {
-      background: linear-gradient(135deg, #10B981, #059669) !important;
+      background: #87d34c !important;
       color: white !important;
-      border-color: #10B981 !important;
+      border-color: #87d34c !important;
     }
     .option-btn-horizontal.wrong {
-      background: #EF4444 !important;
+      background: #ea3117 !important;
       color: white !important;
-      border-color: #EF4444 !important;
+      border-color: #ea3117 !important;
       animation: shake 0.3s ease;
     }
   `;
@@ -913,11 +933,11 @@ function renderObstacleText() {
       
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "white";
-        b.style.color = "#333";
+        b.style.background = "#ffffff";
+        b.style.color = "#2f2f45";
       });
       btn.classList.add("selected");
-      btn.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+      btn.style.background = "#765fde";
       btn.style.color = "white";
       selected = btn.dataset.answer;
       selectedButton = btn;
@@ -937,11 +957,11 @@ function renderObstacleText() {
       isAnswered = true;
       if (selectedButton) {
         selectedButton.classList.add("correct");
-        selectedButton.style.background = "linear-gradient(135deg, #10B981, #059669)";
+        selectedButton.style.background = "#87d34c";
         selectedButton.style.color = "white";
       }
       successAction();
-      showToast("✅ Правильно! Ты понял смысл зашифрованного текста!", "success");
+      showToast("Правильно! Ты понял смысл зашифрованного текста!", "success");
       
       obstacleTextTimeout = setTimeout(() => {
         renderObstacleText();
@@ -949,24 +969,23 @@ function renderObstacleText() {
     } else {
       if (selectedButton) {
         selectedButton.classList.add("wrong");
-        selectedButton.style.background = "#EF4444";
+        selectedButton.style.background = "#ea3117";
         selectedButton.style.color = "white";
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "white";
-          selectedButton.style.color = "#333";
+          selectedButton.style.background = "#ffffff";
+          selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
           isAnswered = false;
         }, 800);
       }
       failAction();
-      showToast(`❌ Неправильно! Правильный ответ: ${task.answer}`, "error");
+      showToast(`Неправильно! Правильный ответ: ${task.answer}`, "error");
     }
   };
 }
-
 // 3. Непропечатанный текст (видна только верхняя половина)
 let halfTextTimeout = null;
 
@@ -1072,9 +1091,9 @@ function renderHalfText() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">✂️ Непропечатанный текст ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Непропечатанный текст ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: Текст напечатан не полностью — видна только верхняя часть букв. 
+      Задача: Текст напечатан не полностью — видна только верхняя часть букв. 
       Попробуй прочитать и понять смысл!
     </div>
     <div class="half-text-container" style="text-align: center; margin: 20px 0;">
@@ -1084,12 +1103,12 @@ function renderHalfText() {
     </div>
     <div class="options-list-horizontal" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
       ${task.options.map(opt => `
-        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 3px solid #e5e7eb; border-radius: 60px; background: white; cursor: pointer; transition: all 0.2s ease; min-width: 200px; color: #333;">
-          📖 ${opt}
+        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 200px; color: #2f2f45;">
+          ${opt}
         </button>
       `).join('')}
     </div>
-    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">✅ Проверить</button>
+    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">Проверить</button>
   `;
   
   // Добавляем стили для кнопок
@@ -1097,29 +1116,29 @@ function renderHalfText() {
   style.textContent = `
     .option-btn-horizontal {
       transition: all 0.2s ease;
-      color: #333 !important;
+      color: #2f2f45 !important;
     }
     .option-btn-horizontal:hover {
       transform: translateY(-3px);
-      border-color: #667eea;
+      border-color: #765fde;
       background: #f8f9ff;
-      box-shadow: 0 6px 16px rgba(102,126,234,0.2);
+      box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
     }
     .option-btn-horizontal.selected {
-      background: linear-gradient(135deg, #667eea, #764ba2) !important;
+      background: #765fde !important;
       color: white !important;
       border-color: transparent !important;
       transform: scale(1.02);
     }
     .option-btn-horizontal.correct {
-      background: linear-gradient(135deg, #10B981, #059669) !important;
+      background: #87d34c !important;
       color: white !important;
-      border-color: #10B981 !important;
+      border-color: #87d34c !important;
     }
     .option-btn-horizontal.wrong {
-      background: #EF4444 !important;
+      background: #ea3117 !important;
       color: white !important;
-      border-color: #EF4444 !important;
+      border-color: #ea3117 !important;
       animation: shake 0.3s ease;
     }
   `;
@@ -1137,11 +1156,11 @@ function renderHalfText() {
       
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "white";
-        b.style.color = "#333";
+        b.style.background = "#ffffff";
+        b.style.color = "#2f2f45";
       });
       btn.classList.add("selected");
-      btn.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+      btn.style.background = "#765fde";
       btn.style.color = "white";
       selected = btn.dataset.answer;
       selectedButton = btn;
@@ -1161,11 +1180,11 @@ function renderHalfText() {
       isAnswered = true;
       if (selectedButton) {
         selectedButton.classList.add("correct");
-        selectedButton.style.background = "linear-gradient(135deg, #10B981, #059669)";
+        selectedButton.style.background = "#87d34c";
         selectedButton.style.color = "white";
       }
       successAction();
-      showToast("✅ Правильно!", "success");
+      showToast("Правильно!", "success");
       
       halfTextTimeout = setTimeout(() => {
         renderHalfText();
@@ -1173,23 +1192,24 @@ function renderHalfText() {
     } else {
       if (selectedButton) {
         selectedButton.classList.add("wrong");
-        selectedButton.style.background = "#EF4444";
+        selectedButton.style.background = "#ea3117";
         selectedButton.style.color = "white";
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "white";
-          selectedButton.style.color = "#333";
+          selectedButton.style.background = "#ffffff";
+          selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
           isAnswered = false;
         }, 800);
       }
       failAction();
-      showToast(`❌ Неправильно! Правильный ответ: ${task.answer}`, "error");
+      showToast(`Неправильно! Правильный ответ: ${task.answer}`, "error");
     }
   };
 }
+
 // 4. Зеркальный текст
 let mirrorTextTimeout = null;
 
@@ -1272,7 +1292,7 @@ function renderMirrorText() {
     { text: "Астрономы открыли новую планету в системе Проксимы Центавра. Наблюдения длились несколько лет. На планете есть атмосфера и вода. Возможно, там существует жизнь. Новость облетела весь мир. Учёные готовят новую миссию к этой звезде.", answer: "Астрономы открыли новую планету с возможной жизнью", options: ["Астрономы открыли новую планету с возможной жизнью", "Открытие оказалось ошибкой", "Воды на планете нет", "Жизнь точно существует", "Миссию отменили"] }
   ];
 
-    const allMedium = [...textsMedium];
+  const allMedium = [...textsMedium];
   const allHard = [...textsHard];
   
   // Получаем тексты в зависимости от уровня
@@ -1286,13 +1306,13 @@ function renderMirrorText() {
   }
   
   // Определяем размер шрифта в зависимости от уровня (в 2 раза больше)
-  let fontSize = "44px";   // было 22px → стало 44px (×2)
+  let fontSize = "44px";
   let containerClass = "";
   if (state.level === 2) {
-    fontSize = "36px";     // было 18px → стало 36px (×2)
+    fontSize = "36px";
     containerClass = "medium-text";
   } else if (state.level === 3) {
-    fontSize = "32px";     // было 16px → стало 32px (×2)
+    fontSize = "32px";
     containerClass = "hard-text";
   }
   
@@ -1302,9 +1322,9 @@ function renderMirrorText() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🪞 Зеркальный текст ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Зеркальный текст ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: Текст написан задом наперёд (зеркально). Прочитай его правильно и выбери ответ!
+      Задача: Текст написан задом наперёд (зеркально). Прочитай его правильно и выбери ответ!
     </div>
     <div class="mirror-text-container" style="text-align: center; margin: 20px 0;">
       <div class="flipped-text ${containerClass}" style="transform: scaleX(-1); font-size: ${fontSize}; text-align: center; background: white; padding: 25px; border-radius: 20px; line-height: 1.6; max-width: 100%; display: inline-block; word-break: break-word; font-weight: 500;">
@@ -1313,12 +1333,12 @@ function renderMirrorText() {
     </div>
     <div class="options-list-horizontal" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
       ${task.options.map(opt => `
-        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 3px solid #e5e7eb; border-radius: 60px; background: white; cursor: pointer; transition: all 0.2s ease; min-width: 200px; color: #333;">
+        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 200px; color: #2f2f45;">
           ${opt}
         </button>
       `).join('')}
     </div>
-    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">✅ Проверить</button>
+    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">Проверить</button>
   `;
   
   // Добавляем стили для кнопок
@@ -1326,29 +1346,29 @@ function renderMirrorText() {
   style.textContent = `
     .option-btn-horizontal {
       transition: all 0.2s ease;
-      color: #333 !important;
+      color: #2f2f45 !important;
     }
     .option-btn-horizontal:hover {
       transform: translateY(-3px);
-      border-color: #667eea;
+      border-color: #765fde;
       background: #f8f9ff;
-      box-shadow: 0 6px 16px rgba(102,126,234,0.2);
+      box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
     }
     .option-btn-horizontal.selected {
-      background: linear-gradient(135deg, #667eea, #764ba2) !important;
+      background: #765fde !important;
       color: white !important;
       border-color: transparent !important;
       transform: scale(1.02);
     }
     .option-btn-horizontal.correct {
-      background: linear-gradient(135deg, #10B981, #059669) !important;
+      background: #87d34c !important;
       color: white !important;
-      border-color: #10B981 !important;
+      border-color: #87d34c !important;
     }
     .option-btn-horizontal.wrong {
-      background: #EF4444 !important;
+      background: #ea3117 !important;
       color: white !important;
-      border-color: #EF4444 !important;
+      border-color: #ea3117 !important;
       animation: shake 0.3s ease;
     }
   `;
@@ -1366,11 +1386,11 @@ function renderMirrorText() {
       
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "white";
-        b.style.color = "#333";
+        b.style.background = "#ffffff";
+        b.style.color = "#2f2f45";
       });
       btn.classList.add("selected");
-      btn.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+      btn.style.background = "#765fde";
       btn.style.color = "white";
       selected = btn.dataset.answer;
       selectedButton = btn;
@@ -1390,11 +1410,11 @@ function renderMirrorText() {
       isAnswered = true;
       if (selectedButton) {
         selectedButton.classList.add("correct");
-        selectedButton.style.background = "linear-gradient(135deg, #10B981, #059669)";
+        selectedButton.style.background = "#87d34c";
         selectedButton.style.color = "white";
       }
       successAction();
-      showToast("✅ Правильно! Ты прочитал зеркальный текст!", "success");
+      showToast("Правильно! Ты прочитал зеркальный текст!", "success");
       
       mirrorTextTimeout = setTimeout(() => {
         renderMirrorText();
@@ -1402,20 +1422,20 @@ function renderMirrorText() {
     } else {
       if (selectedButton) {
         selectedButton.classList.add("wrong");
-        selectedButton.style.background = "#EF4444";
+        selectedButton.style.background = "#ea3117";
         selectedButton.style.color = "white";
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "white";
-          selectedButton.style.color = "#333";
+          selectedButton.style.background = "#ffffff";
+          selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
           isAnswered = false;
         }, 800);
       }
       failAction();
-      showToast(`❌ Неправильно! Правильный ответ: ${task.answer}`, "error");
+      showToast(`Неправильно! Правильный ответ: ${task.answer}`, "error");
     }
   };
 }
@@ -1460,7 +1480,7 @@ function renderSplitWords() {
     { text: "утромсолнцевсталораномальчикпроснулсяиумылся", correct: "утром солнце встало рано мальчик проснулся и умылся", words: ["утром", "солнце", "встало", "рано", "мальчик", "проснулся", "и", "умылся"] },
     { text: "вшколесегодняпразднуютденьзнанийдетиприносятцветыучителям", correct: "в школе сегодня празднуют день знаний дети приносят цветы учителям", words: ["в", "школе", "сегодня", "празднуют", "день", "знаний", "дети", "приносят", "цветы", "учителям"] },
     { text: "наулицесильныйветердеревьякачаютсялучшесидетьдома", correct: "на улице сильный ветер деревья качаются лучше сидеть дома", words: ["на", "улице", "сильный", "ветер", "деревья", "качаются", "лучше", "сидеть", "дома"] },
-    { text: "котигралсклубкоммышьбегалапокомнатепотомоналегласпать", correct: "кот играл с клубком мышь бегала по комнате потом она легла спать", words: ["кот", "играл", "с", "клубком", "мышь", "бегал", "по", "комнате", "потом", "он", "лёг", "спать"] },
+    { text: "котигралсклубкоммышьбегалапокомнатепотомоналегласпать", correct: "кот играл с клубком мышь бегала по комнате потом она легла спать", words: ["кот", "играл", "с", "клубком", "мышь", "бегала", "по", "комнате", "потом", "она", "легла", "спать"] },
     { text: "мамакупилавмагазинехлебмолокоидетиоченьобрадовались", correct: "мама купила в магазине хлеб молоко и дети очень обрадовались", words: ["мама", "купила", "в", "магазине", "хлеб", "молоко", "и", "дети", "очень", "обрадовались"] },
     { text: "летомыездилинаморекупалисьзагоралистроилизамкиизпеска", correct: "летом мы ездили на море купались загорали строили замки из песка", words: ["летом", "мы", "ездили", "на", "море", "купались", "загорали", "строили", "замки", "из", "песка"] },
     { text: "взоопаркеживутслоныжирафыиобезьяныдетилюбятнанихсмотреть", correct: "в зоопарке живут слоны жирафы и обезьяны дети любят на них смотреть", words: ["в", "зоопарке", "живут", "слоны", "жирафы", "и", "обезьяны", "дети", "любят", "на", "них", "смотреть"] },
@@ -1485,8 +1505,7 @@ function renderSplitWords() {
     { text: "машапошлавпервыйклассучительницавстретилаеёсулыбкойвклассебыломногоновыхдрузеймашанаучиласьчитатьписатьиоченьполюбилаучиться", correct: "маша пошла в первый класс учительница встретила её с улыбкой в классе было много новых друзей маша научилась читать писать и очень полюбила учиться", words: ["маша", "пошла", "в", "первый", "класс", "учительница", "встретила", "её", "с", "улыбкой", "в", "классе", "было", "много", "новых", "друзей", "маша", "научилась", "читать", "писать", "и", "очень", "полюбила", "учиться"] },
     { text: "александрмечталстатьврачомсдетстваонхорошоучилсявшколепоступилвмедицинскийуниверситетнабюджетмногочиталипрактиковалсявбольницепослеучёбыустроилсявдетскуюполиклинику", correct: "александр мечтал стать врачом с детства он хорошо учился в школе поступил в медицинский университет на бюджет много читал и практиковался в больнице после учёбы устроился в детскую поликлинику", words: ["александр", "мечтал", "стать", "врачом", "с", "детства", "он", "хорошо", "учился", "в", "школе", "поступил", "в", "медицинский", "университет", "на", "бюджет", "много", "читал", "и", "практиковался", "в", "больнице", "после", "учёбы", "устроился", "в", "детскую", "поликлинику"] },
     { text: "командапрограммистовсоздавалавуюкомпьютернуюигруработанаднейшлатригодадизайнерырисовалиперсонажейипрограммистыписаликодисправлялиошибкиигрувыпустилинавсехплатформахгеймерыповсемумируоценилиеёвысоко", correct: "команда программистов создавала новую компьютерную игру работа над ней шла три года дизайнеры рисовали персонажей и программисты писали код и исправляли ошибки игру выпустили на всех платформах геймеры по всему миру оценили её высоко", words: ["команда", "программистов", "создавала", "новую", "компьютерную", "игру", "работа", "над", "ней", "шла", "три", "года", "дизайнеры", "рисовали", "персонажей", "и", "программисты", "писали", "код", "и", "исправляли", "ошибки", "игру", "выпустили", "на", "всех", "платформах", "геймеры", "по", "всему", "миру", "оценили", "её", "высоко"] },
-    { text: "вдалёкойгалактикежилмаленькийроботспаркионмечталнаучитьсятанцеватьнотолькопрограммыдляработыназаводеоднаждыонвстретилдевочкулизукотораяпоказалаемурадостьдвижениятеперьонсамыйвесёлыйробот", correct: "в далёкой галактике жил маленький робот спарки он мечтал научиться танцевать но только программы для работы на заводе однажды он встретил девочку лизу которая показала ему радость движения теперь он самый весёлый робот", words: ["в", "далёкой", "галактике", "жил", "маленький", "робот", "спарки", "он", "мечтал", "научиться", "танцевать", "но", "только", "программы", "для", "работы", "на", "заводе", "однажды", "он", "встретил", "девочку", "лизу", "которая", "показала", "ему", "радость", "движения", "теперь", "он", "самый", "весёлый", "робот"] },
-    { text: "учёныеобнаружилиновуюпланетувдальнемкосмосеонанаходитсявобитаемойзонеимеетатмосферуиводучерездесятьлетпланируетсяотправитьтудазондисследоватьповерхность", correct: "учёные обнаружили новую планету в дальнем космосе она находится в обитаемой зоне имеет атмосферу и воду через десять лет планируется отправить туда зонд исследовать поверхность", words: ["учёные", "обнаружили", "новую", "планету", "в", "дальнем", "космосе", "она", "находится", "в", "обитаемой", "зоне", "имеет", "атмосферу", "и", "воду", "через", "десять", "лет", "планируется", "отправить", "туда", "зонд", "исследовать", "поверхность"] }
+    { text: "вдалёкойгалактикежилмаленькийроботспаркионмечталнаучитьсятанцеватьнотолькопрограммыдляработыназаводеоднаждыонвстретилдевочкулизукотораяпоказалаемурадостьдвижениятеперьонсамыйвесёлыйробот", correct: "в далёкой галактике жил маленький робот спарки он мечтал научиться танцевать но только программы для работы на заводе однажды он встретил девочку лизу которая показала ему радость движения теперь он самый весёлый робот", words: ["в", "далёкой", "галактике", "жил", "маленький", "робот", "спарки", "он", "мечтал", "научиться", "танцевать", "но", "только", "программы", "для", "работы", "на", "заводе", "однажды", "он", "встретил", "девочку", "лизу", "которая", "показала", "ему", "радость", "движения", "теперь", "он", "самый", "весёлый", "робот"] }
   ];
 
   // Добиваем до 20 текстов для сложного уровня
@@ -1538,19 +1557,19 @@ function renderSplitWords() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">📝 Раздели текст на слова ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Раздели текст на слова ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: В тексте нет пробелов. Нажимай на кружочки (⬤) между буквами, чтобы поставить разделитель. 
+      Задача: В тексте нет пробелов. Нажимай на кружочки между буквами, чтобы поставить разделитель. 
       Раздели слова так, чтобы получился осмысленный текст!
     </div>
-    <div class="split-text-container" style="text-align: center; margin: 30px 0; padding: 30px; background: white; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); overflow-x: auto;">
+    <div class="split-text-container" style="text-align: center; margin: 30px 0; padding: 30px; background: white; border-radius: 20px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8); overflow-x: auto;">
       <div class="split-text" style="font-size: ${fontSize}; letter-spacing: ${letterSpacing}; font-family: monospace; line-height: 1.8; word-break: break-word; white-space: normal; max-width: 100%; display: block;">
         ${textWithSpaces}
       </div>
     </div>
     <div class="split-controls" style="display: flex; justify-content: center; gap: 15px; margin: 20px 0;">
-      <button id="resetSplitBtn" class="btn-secondary" style="width: auto; padding: 10px 24px;">🔄 Сбросить разделители</button>
-      <button id="checkSplitBtn" class="btn-primary" style="width: auto; padding: 10px 32px;">✅ Проверить</button>
+      <button id="resetSplitBtn" class="btn-secondary" style="width: auto; padding: 10px 24px;">Сбросить разделители</button>
+      <button id="checkSplitBtn" class="btn-primary" style="width: auto; padding: 10px 32px;">Проверить</button>
     </div>
   `;
   
@@ -1569,11 +1588,11 @@ function renderSplitWords() {
       font-size: 20px;
     }
     .split-position:hover {
-      color: #667eea;
+      color: #765fde;
       transform: scale(1.2);
     }
     .split-position.active {
-      color: #10B981;
+      color: #87d34c;
     }
     .split-char {
       display: inline-block;
@@ -1611,7 +1630,7 @@ function renderSplitWords() {
       if (currentSplitPositions[idx]) {
         pos.classList.add('active');
         pos.textContent = '|';
-        pos.style.color = '#10B981';
+        pos.style.color = '#87d34c';
       } else {
         pos.classList.remove('active');
         pos.textContent = '⬤';
@@ -1628,7 +1647,7 @@ function renderSplitWords() {
       pos.textContent = '⬤';
       pos.style.color = '#ccc';
     });
-    showToast("🔄 Разделители сброшены", "success");
+    showToast("Разделители сброшены", "success");
   };
   
   // Проверка результата
@@ -1660,11 +1679,11 @@ function renderSplitWords() {
         if (correctPositions.includes(idx)) {
           pos.classList.add('active');
           pos.textContent = '|';
-          pos.style.color = '#10B981';
+          pos.style.color = '#87d34c';
         }
       });
       successAction();
-      showToast("✅ Правильно! Ты правильно разделил текст на слова!", "success");
+      showToast("Правильно! Ты правильно разделил текст на слова!", "success");
       
       splitWordsTimeout = setTimeout(() => {
         renderSplitWords();
@@ -1674,7 +1693,7 @@ function renderSplitWords() {
       for (let i = 0; i < correctPositions.length; i++) {
         const posIdx = correctPositions[i];
         if (!currentSplitPositions[posIdx] && splitPositions[posIdx]) {
-          splitPositions[posIdx].style.color = '#EF4444';
+          splitPositions[posIdx].style.color = '#ea3117';
           splitPositions[posIdx].style.backgroundColor = '#fee2e2';
           setTimeout(() => {
             if (splitPositions[posIdx]) {
@@ -1687,11 +1706,11 @@ function renderSplitWords() {
       
       for (let i = 0; i < currentSplitPositions.length; i++) {
         if (currentSplitPositions[i] && !correctPositions.includes(i) && splitPositions[i]) {
-          splitPositions[i].style.color = '#EF4444';
+          splitPositions[i].style.color = '#ea3117';
           splitPositions[i].style.backgroundColor = '#fee2e2';
           setTimeout(() => {
             if (splitPositions[i]) {
-              splitPositions[i].style.color = '#10B981';
+              splitPositions[i].style.color = '#87d34c';
               splitPositions[i].style.backgroundColor = 'transparent';
             }
           }, 800);
@@ -1701,14 +1720,13 @@ function renderSplitWords() {
       failAction();
       const remaining = correctPositions.length - correctPositions.filter(p => currentSplitPositions[p]).length;
       if (remaining > 0) {
-        showToast(`❌ Неправильно! Нужно поставить ${remaining} разделитель(ей) в правильных местах`, "error");
+        showToast(`Неправильно! Нужно поставить ${remaining} разделитель(ей) в правильных местах`, "error");
       } else {
-        showToast(`❌ Неправильно! Есть лишние разделители`, "error");
+        showToast(`Неправильно! Есть лишние разделители`, "error");
       }
     }
   };
 }
-
 // 6. Прочитай слово от самой маленькой к самой большой букве
 let sizeSortTimeout = null;
 
@@ -1842,19 +1860,19 @@ function renderSizeSort() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">📏 Прочитай по размеру ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Прочитай по размеру ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: Прочитай слово, начиная с самой большой буквы и заканчивая самой маленькой.
+      Задача: Прочитай слово, начиная с самой большой буквы и заканчивая самой маленькой.
       <br>
     </div>
-    <div class="size-sort-letters" style="text-align: center; background: white; padding: 40px; border-radius: 20px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <div class="size-sort-letters" style="text-align: center; background: white; padding: 40px; border-radius: 20px; margin: 20px 0; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
       ${lettersHtml.join('')}
     </div>
     <div style="display: flex; justify-content: center; margin: 20px 0;">
       <input type="text" id="sizeSortAnswer" class="answer-input" placeholder="Введи получившееся слово" style="width: 350px; text-align: center; font-size: 24px; padding: 15px; border-radius: 60px;">
     </div>
     <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
-      <button id="checkSizeSortBtn" class="btn-primary" style="width: auto; padding: 12px 32px;">✅ Проверить</button>
+      <button id="checkSizeSortBtn" class="btn-primary" style="width: auto; padding: 12px 32px;">Проверить</button>
     </div>
   `;
   
@@ -1871,14 +1889,14 @@ function renderSizeSort() {
     
     if (answer === currentWord.word) {
       successAction();
-      showToast("✅ Правильно! Ты прочитал слово по размеру букв!", "success");
+      showToast("Правильно! Ты прочитал слово по размеру букв!", "success");
       
       sizeSortTimeout = setTimeout(() => {
         renderSizeSort();
       }, 1500);
     } else {
       failAction();
-      showToast(`❌ Неправильно! Правильный ответ: ${currentWord.word}`, "error");
+      showToast(`Неправильно! Правильный ответ: ${currentWord.word}`, "error");
       answerInput.value = '';
       answerInput.focus();
     }
@@ -1903,29 +1921,29 @@ function renderPhygitalFlipped() {
     for (let j = 0; j < 6; j++) {
       const idx = i + j;
       if (idx < alphabet.length) {
-        rowCells.push(`<td style="border: 2px solid #667eea; padding: 12px; text-align: center; background: white; font-size: 32px; font-weight: bold;">${alphabet[idx]}</td>`);
+        rowCells.push(`<td style="border: 2px solid #765fde; padding: 12px; text-align: center; background: white; font-size: 32px; font-weight: bold;">${alphabet[idx]}</td>`);
       } else {
-        rowCells.push(`<td style="border: 2px solid #667eea; padding: 12px; text-align: center; background: white;">—</td>`);
+        rowCells.push(`<td style="border: 2px solid #765fde; padding: 12px; text-align: center; background: white;">—</td>`);
       }
     }
-    tableRows.push(`<tr>${rowCells.join("")}</tr>`);
+    tableRows.push(`<tr>${rowCells.join("")}<tr>`);
   }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🎯 Фиджитал: Перевёрнутое письмо</div>
+    <div class="task-title">Фиджитал: Перевёрнутое письмо</div>
     <div class="phygital-hint" style="background: #fef3c7; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-      🔐 Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+      Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
     </div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задание: Возьми листочек!
+      Задание: Возьми листочек!
       Напиши перевёрнутое послание, используя эту таблицу.
     </div>
     <div style="background: #e0e0e0; border-radius: 16px; padding: 15px; margin-bottom: 20px; overflow-x: auto;">
       <div id="flippedTableContainer" style="transform: rotate(180deg); display: inline-block; width: 100%;">
         <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden;">
           <thead>
-            <tr><th colspan="6" style="padding: 10px; background: #667eea; color: white; font-size: 18px;">🔃 АЛФАВИТ</th></tr>
+            <tr><th colspan="6" style="padding: 10px; background: #765fde; color: white; font-size: 18px;">🔃 АЛФАВИТ</th></tr>
           </thead>
           <tbody>
             ${tableRows.join("")}
@@ -1934,15 +1952,15 @@ function renderPhygitalFlipped() {
       </div>
     </div>
     <div class="phygital-hint" style="background: #e8eaff; padding: 12px; border-radius: 12px; margin-top: 10px; text-align: center;">
-      💡 Подсказка: Буквы должны смотреть в правильную сторону!<br>
+      Подсказка: Буквы должны смотреть в правильную сторону!<br>
       Попробуй написать перевёрнутое слово, глядя на эту таблицу.
     </div>
     <div class="options-list">
-      <button class="option-btn" data-answer="idea">💡 Напиши перевёрнутое имя</button>
-      <button class="option-btn" data-answer="idea2">💡 А теперь любое слово</button>
-      <button class="option-btn" data-answer="idea3">💡 Или номер телефона</button>
+      <button class="option-btn" data-answer="idea">Напиши перевёрнутое имя</button>
+      <button class="option-btn" data-answer="idea2">А теперь любое слово</button>
+      <button class="option-btn" data-answer="idea3">Или номер телефона</button>
     </div>
-    <button id="readyBtn" class="btn-primary">✅ Я выполнил(а) задание!</button>
+    <button id="readyBtn" class="btn-primary">Я выполнил(а) задание!</button>
   `;
   
   document.getElementById("readyBtn").onclick = () => {
@@ -2148,21 +2166,21 @@ function renderLogicChain() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔗 Продолжи логическую цепочку ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Продолжи логическую цепочку ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: Посмотри на последовательность. Найди закономерность и выбери следующий элемент!
+      Задача: Посмотри на последовательность. Найди закономерность и выбери следующий элемент!
     </div>
     <div class="logic-task" style="background: white; padding: 30px; font-size: ${fontSize}; text-align: center; word-break: break-word;">
       ${chain.pattern}
     </div>
     <div class="options-list-horizontal">
       ${chain.options.map(opt => `
-        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 20px; font-weight: 600; border: 3px solid #e5e7eb; border-radius: 60px; background: white; cursor: pointer; transition: all 0.2s ease; min-width: 80px;">
+        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 20px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 80px; color: #2f2f45;">
           ${opt}
         </button>
       `).join('')}
     </div>
-    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">✅ Проверить</button>
+    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">Проверить</button>
   `;
   
   // Настраиваем выбор вариантов
@@ -2177,11 +2195,11 @@ function renderLogicChain() {
       
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "white";
-        b.style.color = "#333";
+        b.style.background = "#ffffff";
+        b.style.color = "#2f2f45";
       });
       btn.classList.add("selected");
-      btn.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+      btn.style.background = "#765fde";
       btn.style.color = "white";
       selected = btn.dataset.answer;
       selectedButton = btn;
@@ -2201,11 +2219,11 @@ function renderLogicChain() {
       isAnswered = true;
       if (selectedButton) {
         selectedButton.classList.add("correct");
-        selectedButton.style.background = "linear-gradient(135deg, #10B981, #059669)";
+        selectedButton.style.background = "#87d34c";
         selectedButton.style.color = "white";
       }
       successAction();
-      showToast("✅ Правильно! Ты нашёл закономерность!", "success");
+      showToast("Правильно! Ты нашёл закономерность!", "success");
       
       logicChainTimeout = setTimeout(() => {
         renderLogicChain();
@@ -2213,20 +2231,20 @@ function renderLogicChain() {
     } else {
       if (selectedButton) {
         selectedButton.classList.add("wrong");
-        selectedButton.style.background = "#EF4444";
+        selectedButton.style.background = "#ea3117";
         selectedButton.style.color = "white";
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "white";
-          selectedButton.style.color = "#333";
+          selectedButton.style.background = "#ffffff";
+          selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
           isAnswered = false;
         }, 800);
       }
       failAction();
-      showToast(`❌ Неправильно! Правильный ответ: ${chain.correct}`, "error");
+      showToast(`Неправильно! Правильный ответ: ${chain.correct}`, "error");
     }
   };
 }
@@ -2324,21 +2342,21 @@ function renderLogicRiddle() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">❓ Отгадай загадку ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Отгадай загадку ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: Внимательно прочитай загадку и выбери правильный ответ. Здесь важно логически мыслить, а не просто знать!
+      Задача: Внимательно прочитай загадку и выбери правильный ответ. Здесь важно логически мыслить, а не просто знать!
     </div>
     <div class="logic-task" style="background: white; padding: 30px; font-size: 22px; text-align: center;">
       ${riddle.question}
     </div>
     <div class="options-list-horizontal">
       ${riddle.options.map(opt => `
-        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 3px solid #e5e7eb; border-radius: 60px; background: white; cursor: pointer; transition: all 0.2s ease; min-width: 120px;">
+        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 120px; color: #2f2f45;">
           ${opt}
         </button>
       `).join('')}
     </div>
-    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">✅ Проверить</button>
+    <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">Проверить</button>
   `;
   
   // Добавляем стили для кнопок
@@ -2346,29 +2364,29 @@ function renderLogicRiddle() {
   style.textContent = `
     .option-btn-horizontal {
       transition: all 0.2s ease;
-      color: #333 !important;
+      color: #2f2f45 !important;
     }
     .option-btn-horizontal:hover {
       transform: translateY(-3px);
-      border-color: #667eea;
+      border-color: #765fde;
       background: #f8f9ff;
-      box-shadow: 0 6px 16px rgba(102,126,234,0.2);
+      box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
     }
     .option-btn-horizontal.selected {
-      background: linear-gradient(135deg, #667eea, #764ba2) !important;
+      background: #765fde !important;
       color: white !important;
       border-color: transparent !important;
       transform: scale(1.02);
     }
     .option-btn-horizontal.correct {
-      background: linear-gradient(135deg, #10B981, #059669) !important;
+      background: #87d34c !important;
       color: white !important;
-      border-color: #10B981 !important;
+      border-color: #87d34c !important;
     }
     .option-btn-horizontal.wrong {
-      background: #EF4444 !important;
+      background: #ea3117 !important;
       color: white !important;
-      border-color: #EF4444 !important;
+      border-color: #ea3117 !important;
       animation: shake 0.3s ease;
     }
   `;
@@ -2386,11 +2404,11 @@ function renderLogicRiddle() {
       
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "white";
-        b.style.color = "#333";
+        b.style.background = "#ffffff";
+        b.style.color = "#2f2f45";
       });
       btn.classList.add("selected");
-      btn.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+      btn.style.background = "#765fde";
       btn.style.color = "white";
       selected = btn.dataset.answer;
       selectedButton = btn;
@@ -2410,11 +2428,11 @@ function renderLogicRiddle() {
       isAnswered = true;
       if (selectedButton) {
         selectedButton.classList.add("correct");
-        selectedButton.style.background = "linear-gradient(135deg, #10B981, #059669)";
+        selectedButton.style.background = "#87d34c";
         selectedButton.style.color = "white";
       }
       successAction();
-      showToast("✅ Правильно! Ты отгадал загадку!", "success");
+      showToast("Правильно! Ты отгадал загадку!", "success");
       
       riddleTimeout = setTimeout(() => {
         renderLogicRiddle();
@@ -2422,20 +2440,20 @@ function renderLogicRiddle() {
     } else {
       if (selectedButton) {
         selectedButton.classList.add("wrong");
-        selectedButton.style.background = "#EF4444";
+        selectedButton.style.background = "#ea3117";
         selectedButton.style.color = "white";
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "white";
-          selectedButton.style.color = "#333";
+          selectedButton.style.background = "#ffffff";
+          selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
           isAnswered = false;
         }, 800);
       }
       failAction();
-      showToast(`❌ Неправильно! Попробуй ещё раз`, "error");
+      showToast(`Неправильно! Попробуй ещё раз`, "error");
     }
   };
 }
@@ -2551,7 +2569,7 @@ function renderLogicMatch() {
     levelPairs = 5;
   }
   
-  // Определяем размер шрифта (увеличенный в 1.5-2 раза)
+  // Определяем размер шрифта
   let fontSize = "18px";
   let fontSizeEnd = "18px";
   let paddingSize = "16px";
@@ -2586,28 +2604,28 @@ function renderLogicMatch() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔀 Соедини части ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Соедини части ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: Перетащи окончания (правый столбик) к подходящим началам (левый столбик).
+      Задача: Перетащи окончания (правый столбик) к подходящим началам (левый столбик).
     </div>
     <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap;">
       <div style="flex: 1; min-width: 280px;">
-        <h4 style="text-align: center; margin-bottom: 15px; font-size: 22px;">📌 Начала</h4>
+        <h4 style="text-align: center; margin-bottom: 15px; font-size: 22px;">Начала</h4>
         <div id="startsContainer">
           ${match.starts.map((start, i) => `
             <div class="match-start" data-start-index="${i}" 
-                 style="background: #667eea20; padding: ${paddingSize} 20px; margin: 10px 0; border-radius: 16px; text-align: center; border: 2px dashed #667eea; font-size: ${fontSize}; font-weight: 500;">
-              📖 ${start}...
+                 style="background: #765fde20; padding: ${paddingSize} 20px; margin: 10px 0; border-radius: 16px; text-align: center; border: 2px dashed #765fde; font-size: ${fontSize}; font-weight: 500;">
+               ${start}...
             </div>
           `).join("")}
         </div>
       </div>
       <div style="flex: 1; min-width: 280px;">
-        <h4 style="text-align: center; margin-bottom: 15px; font-size: 22px;">🎯 Окончания (перетащи)</h4>
+        <h4 style="text-align: center; margin-bottom: 15px; font-size: 22px;">Окончания (перетащи)</h4>
         <div id="endsContainer">
           ${shuffledEnds.map((end, i) => `
             <div class="match-end" data-end-index="${i}" data-original-index="${endMapping[i]}" draggable="true"
-                 style="background: #764ba220; padding: ${paddingSize} 20px; margin: 10px 0; border-radius: 16px; text-align: center; cursor: grab; border: 2px solid #764ba2; font-size: ${fontSizeEnd}; font-weight: 500;">
+                 style="background: #ff881120; padding: ${paddingSize} 20px; margin: 10px 0; border-radius: 16px; text-align: center; cursor: grab; border: 2px solid #ff8811; font-size: ${fontSizeEnd}; font-weight: 500;">
               ...${end}
             </div>
           `).join("")}
@@ -2616,8 +2634,8 @@ function renderLogicMatch() {
     </div>
     <div id="matchStatus" style="text-align: center; margin: 20px 0; color: #666; font-weight: 500;"></div>
     <div style="display: flex; gap: 15px; justify-content: center;">
-      <button id="resetMatchBtn" class="btn-secondary" style="width: auto; padding: 12px 24px;">🔄 Сбросить</button>
-      <button id="checkMatchBtn" class="btn-primary" style="width: auto; padding: 12px 24px;">✅ Проверить</button>
+      <button id="resetMatchBtn" class="btn-secondary" style="width: auto; padding: 12px 24px;">Сбросить</button>
+      <button id="checkMatchBtn" class="btn-primary" style="width: auto; padding: 12px 24px;">Проверить</button>
     </div>
   `;
   
@@ -2627,10 +2645,10 @@ function renderLogicMatch() {
     const matchedCount = Object.keys(currentMatches).length;
     const statusDiv = document.getElementById("matchStatus");
     if (matchedCount === levelPairs) {
-      statusDiv.innerHTML = `✅ Отлично! Все ${matchedCount} пары соединены!`;
-      statusDiv.style.color = "#10B981";
+      statusDiv.innerHTML = `Отлично! Все ${matchedCount} пары соединены!`;
+      statusDiv.style.color = "#87d34c";
     } else {
-      statusDiv.innerHTML = `🔗 Соединено ${matchedCount} из ${levelPairs}`;
+      statusDiv.innerHTML = `Соединено ${matchedCount} из ${levelPairs}`;
       statusDiv.style.color = "#666";
     }
   }
@@ -2643,8 +2661,8 @@ function renderLogicMatch() {
     document.querySelectorAll(".match-start").forEach(start => {
       const placeholder = start.querySelector(".match-placeholder");
       if (placeholder) placeholder.remove();
-      start.style.background = "#667eea20";
-      start.style.border = "2px dashed #667eea";
+      start.style.background = "#765fde20";
+      start.style.border = "2px dashed #765fde";
     });
     updateMatchStatus();
   }
@@ -2707,8 +2725,8 @@ function renderLogicMatch() {
     currentMatches[startIndex] = parseInt(originalIndex);
     endDiv.style.display = "none";
     
-    startDiv.style.background = "#10B98120";
-    startDiv.style.border = "2px solid #10B981";
+    startDiv.style.background = "#87d34c20";
+    startDiv.style.border = "2px solid #87d34c";
     
     const oldPlaceholder = startDiv.querySelector(".match-placeholder");
     if (oldPlaceholder) oldPlaceholder.remove();
@@ -2717,7 +2735,7 @@ function renderLogicMatch() {
     placeholder.className = "match-placeholder";
     placeholder.style.marginTop = "8px";
     placeholder.style.padding = "6px";
-    placeholder.style.background = "#10B98120";
+    placeholder.style.background = "#87d34c20";
     placeholder.style.borderRadius = "8px";
     placeholder.style.fontSize = "14px";
     placeholder.innerHTML = `✓ прикреплено: ...${match.ends[originalIndex]}`;
@@ -2749,8 +2767,8 @@ function renderLogicMatch() {
     
     if (correct) {
       document.querySelectorAll(".match-start").forEach(start => {
-        start.style.background = "#10B98130";
-        start.style.border = "2px solid #10B981";
+        start.style.background = "#87d34c30";
+        start.style.border = "2px solid #87d34c";
       });
       showToast("🎉 Правильно! Все пары соединены верно!", "success");
       successAction();
@@ -2762,14 +2780,14 @@ function renderLogicMatch() {
       for (let i = 0; i < levelPairs; i++) {
         const startDiv = document.querySelector(`.match-start[data-start-index="${i}"]`);
         if (currentMatches[i] !== i) {
-          startDiv.style.background = "#EF444420";
-          startDiv.style.border = "2px solid #EF4444";
+          startDiv.style.background = "#ea311720";
+          startDiv.style.border = "2px solid #ea3117";
         } else if (currentMatches[i] !== undefined) {
-          startDiv.style.background = "#10B98130";
-          startDiv.style.border = "2px solid #10B981";
+          startDiv.style.background = "#87d34c30";
+          startDiv.style.border = "2px solid #87d34c";
         }
       }
-      showToast("❌ Не все пары соединены правильно! Попробуй ещё раз", "error");
+      showToast("Не все пары соединены правильно! Попробуй ещё раз", "error");
       failAction();
     }
   };
@@ -2778,13 +2796,12 @@ function renderLogicMatch() {
   if (resetBtn) {
     resetBtn.onclick = () => {
       resetMatches();
-      showToast("🔄 Прогресс сброшен", "success");
+      showToast("Прогресс сброшен", "success");
     };
   }
   
   updateMatchStatus();
 }
-
 // 4. Переставь буквы (анаграмма)
 let anagramTimeout = null;
 
@@ -2796,7 +2813,6 @@ function renderLogicAnagram() {
   }
   
   // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 30 слов из 3-4 букв =====
-  // Только ПЕРЕПУТАННЫЕ буквы, правильные слова хранятся отдельно
   const anagramsEasy = [
     { scrambled: "ток", correct: "кот", hint: "Домашнее животное, которое ловит мышей" },
     { scrambled: "мод", correct: "дом", hint: "Где ты живёшь?" },
@@ -2813,16 +2829,21 @@ function renderLogicAnagram() {
     { scrambled: "каре", correct: "река", hint: "Вода течёт от истока к устью" },
     { scrambled: "раго", correct: "гора", hint: "Очень высокое место на земле" },
     { scrambled: "лепо", correct: "поле", hint: "Большое пространство с травой" },
-    { scrambled: "шак", correct: "кош", hint: "Часть слова кошка" },
-    { scrambled: "бак", correct: "бас", hint: "Часть слова собака" },
-    { scrambled: "мыш", correct: "мыш", hint: "Часть слова мышка" },
-    { scrambled: "каме", correct: "маке", hint: "Часть слова" },
+    { scrambled: "шак", correct: "кот", hint: "Домашнее животное, которое ловит мышей" },
+    { scrambled: "бак", correct: "рыба", hint: "Живёт в воде" },
+    { scrambled: "мыш", correct: "мышь", hint: "Маленький серый зверёк" },
+    { scrambled: "каме", correct: "мак", hint: "Красный цветок" },
     { scrambled: "рузб", correct: "арбуз", hint: "Крупная ягода" },
     { scrambled: "нолы", correct: "слоны", hint: "Крупные животные с хоботом" },
-    { scrambled: "полс", correct: "слоп", hint: "Глагол" },
+    { scrambled: "полс", correct: "слон", hint: "Крупное животное с хоботом" },
     { scrambled: "банна", correct: "банан", hint: "Жёлтый фрукт" },
-    { scrambled: "гонир", correct: "рогин", hint: "Часть слова" },
-    { scrambled: "летом", correct: "молет", hint: "Часть слова" }
+    { scrambled: "гонир", correct: "рог", hint: "Часть тела животного" },
+    { scrambled: "летом", correct: "молот", hint: "Инструмент" },
+    { scrambled: "кинад", correct: "динка", hint: "Девочка из Африки" },
+    { scrambled: "бокас", correct: "собака", hint: "Верный друг человека" },
+    { scrambled: "шакок", correct: "кошка", hint: "Домашнее животное" },
+    { scrambled: "тсица", correct: "птица", hint: "Умеет летать" },
+    { scrambled: "абры", correct: "рыба", hint: "Живёт в воде" }
   ];
 
   // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 30 слов из 4-5 букв =====
@@ -2842,8 +2863,21 @@ function renderLogicAnagram() {
     { scrambled: "лачпе", correct: "пчела", hint: "Делает мёд" },
     { scrambled: "лкиос", correct: "ослик", hint: "Животное с длинными ушами" },
     { scrambled: "каёл", correct: "ёлка", hint: "Дерево с иголками, новогодняя" },
-    { scrambled: "небос", correct: "сосен", hint: "Дерево" },
-
+    { scrambled: "небос", correct: "сосна", hint: "Хвойное дерево" },
+    { scrambled: "розеаб", correct: "берёза", hint: "Белоствольное дерево" },
+    { scrambled: "дуб", correct: "дуб", hint: "Могучий лесной великан" },
+    { scrambled: "клён", correct: "клён", hint: "Дерево с резными листьями" },
+    { scrambled: "ива", correct: "ива", hint: "Дерево, растущее у воды" },
+    { scrambled: "осина", correct: "осина", hint: "Дерево, листья которого дрожат" },
+    { scrambled: "рябина", correct: "рябина", hint: "Дерево с красными ягодами" },
+    { scrambled: "черёмуха", correct: "черёмуха", hint: "Дерево с белыми душистыми цветами" },
+    { scrambled: "липа", correct: "липа", hint: "Дерево с сердцевидными листьями" },
+    { scrambled: "ясень", correct: "ясень", hint: "Дерево с перистыми листьями" },
+    { scrambled: "вяз", correct: "вяз", hint: "Дерево с шершавыми листьями" },
+    { scrambled: "граб", correct: "граб", hint: "Дерево с гладкой серой корой" },
+    { scrambled: "бук", correct: "бук", hint: "Дерево с гладкой серой корой" },
+    { scrambled: "ольха", correct: "ольха", hint: "Дерево, растущее у воды" },
+    { scrambled: "тополь", correct: "тополь", hint: "Дерево, дающее пух" }
   ];
 
   // ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 30 слов из 5-7 букв =====
@@ -2863,13 +2897,21 @@ function renderLogicAnagram() {
     { scrambled: "бедо", correct: "обед", hint: "Дневной приём пищи" },
     { scrambled: "жину", correct: "ужин", hint: "Вечерний приём пищи" },
     { scrambled: "тпомок", correct: "компот", hint: "Напиток из фруктов" },
-    { scrambled: "ремип", correct: "пирем", hint: "Часть слова" },
-    { scrambled: "кортов", correct: "творок", hint: "Кисломолочный продукт" },
-    { scrambled: "варет", correct: "тверя", hint: "Часть слова" },
-    { scrambled: "нкаси", correct: "синка", hint: "Часть слова" },
-    { scrambled: "робат", correct: "брато", hint: "Часть слова" },
-    { scrambled: "листад", correct: "далист", hint: "Часть слова" },
-    { scrambled: "мутнка", correct: "тункам", hint: "Часть слова" }
+    { scrambled: "ремип", correct: "пирог", hint: "Выпечка с начинкой" },
+    { scrambled: "иетпчень", correct: "печенье", hint: "Сладкое мучное изделие" },
+    { scrambled: "лкоакет", correct: "конфета", hint: "Сладкая сладость" },
+    { scrambled: "шоколад", correct: "шоколад", hint: "Сладкое лакомство из какао" },
+    { scrambled: "рожмоеен", correct: "мороженое", hint: "Холодный десерт" },
+    { scrambled: "орт", correct: "торт", hint: "Праздничный десерт" },
+    { scrambled: "ксе", correct: "сок", hint: "Фруктовый напиток" },
+    { scrambled: "одав", correct: "вода", hint: "Жидкость, необходимая для жизни" },
+    { scrambled: "олкомо", correct: "молоко", hint: "Белый напиток от коровы" },
+    { scrambled: "айч", correct: "чай", hint: "Горячий напиток" },
+    { scrambled: "феок", correct: "кофе", hint: "Бодрящий напиток" },
+    { scrambled: "лабагазе", correct: "газелла", hint: "Антилопа" },
+    { scrambled: "раназияб", correct: "зебра", hint: "Полосатая лошадка" },
+    { scrambled: "фаржи", correct: "жираф", hint: "Самое высокое животное" },
+    { scrambled: "леокдокр", correct: "крокодил", hint: "Зелёный хищник с пастью" }
   ];
 
   // Выбираем анаграмму в зависимости от уровня
@@ -2898,10 +2940,10 @@ function renderLogicAnagram() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔄 Переставь буквы ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Переставь буквы ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: Буквы перепутаны. Переставь их местами, чтобы получилось слово.
-      <br>💡 Подсказка: ${anagram.hint}
+      Задача: Буквы перепутаны. Переставь их местами, чтобы получилось слово.
+      <br>Подсказка: ${anagram.hint}
     </div>
     <div class="logic-task" style="background: white; padding: 30px; font-size: ${fontSize}; letter-spacing: ${letterSpacing}; text-align: center; font-family: monospace; font-weight: bold;">
       ${anagram.scrambled.toUpperCase().split('').join(' ')}
@@ -2910,7 +2952,7 @@ function renderLogicAnagram() {
       <input type="text" id="answerInput" class="answer-input" placeholder="Напиши слово" style="width: 350px; text-align: center; font-size: 24px; padding: 15px; border-radius: 60px;">
     </div>
     <div style="display: flex; justify-content: center; margin-top: 20px;">
-      <button id="checkBtn" class="btn-primary" style="width: auto; padding: 12px 32px;">✅ Проверить</button>
+      <button id="checkBtn" class="btn-primary" style="width: auto; padding: 12px 32px;">Проверить</button>
     </div>
   `;
   
@@ -2927,14 +2969,14 @@ function renderLogicAnagram() {
     
     if (answer === anagram.correct) {
       successAction();
-      showToast("✅ Правильно! Ты разгадал анаграмму!", "success");
+      showToast("Правильно! Ты разгадал анаграмму!", "success");
       
       anagramTimeout = setTimeout(() => {
         renderLogicAnagram();
       }, 1500);
     } else {
       failAction();
-      showToast(`❌ Неправильно! Попробуй ещё раз`, "error");
+      showToast(`Неправильно! Попробуй ещё раз`, "error");
       answerInput.value = '';
       answerInput.focus();
     }
@@ -2961,282 +3003,138 @@ function renderLogicPicture() {
   // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 15 картинок, по 3 утверждения =====
   const itemsEasy = [
     { 
-      emoji: "🍎", 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/красный_яблоко.png" alt="Яблоко" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Яблоко",
       questions: ["Это фрукт", "Красного или зелёного цвета", "Растёт на дереве"],
       correct: [true, true, true]
     },
     { 
-      emoji: "🥕", 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_морковка.png" alt="Морковь" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Морковь",
       questions: ["Это овощ", "Оранжевого цвета", "Растёт в земле"],
       correct: [true, true, true]
     },
     { 
-      emoji: "🐱", 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_котёнок.png" alt="Кошка" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Кошка",
       questions: ["Это домашнее животное", "Умеет лаять", "Любит молоко"],
       correct: [true, false, true]
     },
     { 
-      emoji: "🐶", 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_щенок.png" alt="Собака" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Собака",
       questions: ["Это домашнее животное", "Умеет мяукать", "Охраняет дом"],
       correct: [true, false, true]
     },
     { 
-      emoji: "✈️", 
-      name: "Самолёт",
-      questions: ["Летает в небе", "Плавает в воде", "Перевозит людей"],
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/сиреневый_ягода.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      name: "Виноград",
+      questions: ["Это ягода", "Сиреневого цвета", "Растёт гроздьями"],
+      correct: [true, true, true]
+    },
+    { 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_гитара.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      name: "Гитара",
+      questions: ["Музыкальный инструмент", "Используют в спорте", "Имеет струны"],
       correct: [true, false, true]
     },
     { 
-      emoji: "🚗", 
-      name: "Машина",
-      questions: ["Едет по дороге", "Имеет крылья", "Нужен бензин"],
-      correct: [true, false, true]
-    },
-    { 
-      emoji: "☀️", 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_день_небо_и_солнце.png" alt="Солнце" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Солнце",
       questions: ["Даёт свет и тепло", "Видно ночью", "Это звезда"],
       correct: [true, false, true]
     },
     { 
-      emoji: "🌙", 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_ночь_небо_и_месяц.png" alt="Луна" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Луна",
       questions: ["Видно ночью", "Даёт тепло", "Спутник Земли"],
       correct: [true, false, true]
     },
     { 
-      emoji: "🐟", 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_рыба.png" alt="Рыба" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Рыба",
       questions: ["Живёт в воде", "Умеет летать", "Дышит жабрами"],
       correct: [true, false, true]
     },
     { 
-      emoji: "🐦", 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/серый_голубь_1.png" alt="Птица" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Птица",
       questions: ["Умеет летать", "Живёт под водой", "У неё есть перья"],
       correct: [true, false, true]
     },
     { 
-      emoji: "🍌", 
-      name: "Банан",
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_груша.png" alt="Груша" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      name: "Груша",
       questions: ["Это фрукт", "Жёлтого цвета", "Растёт на дереве"],
       correct: [true, true, true]
     },
     { 
-      emoji: "🥒", 
-      name: "Огурец",
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/зелёный_брокколи.png" alt="Брокколи" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      name: "Брокколи",
       questions: ["Это овощ", "Зелёного цвета", "Сладкий на вкус"],
       correct: [true, true, false]
     },
     { 
-      emoji: "🍓", 
-      name: "Клубника",
-      questions: ["Это ягода", "Красного цвета", "Растёт на дереве"],
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/красный_вишня.png" alt="Вишня" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      name: "Вишня",
+      questions: ["Это ягода", "Красного цвета", "Растёт в траве"],
       correct: [true, true, false]
     },
     { 
-      emoji: "🐘", 
-      name: "Слон",
-      questions: ["У него есть хобот", "Умеет летать", "Очень большой"],
-      correct: [true, false, true]
-    },
-    { 
-      emoji: "🐬", 
-      name: "Дельфин",
-      questions: ["Живёт в море", "Умеет говорить", "Очень умный"],
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_лампа.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      name: "Лампа",
+      questions: ["Даёт свет", "Плавает в воде", "Работает от электричества"],
       correct: [true, false, true]
     }
   ];
 
-  // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 15 картинок, по 5 утверждений =====
+  // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) =====
   const itemsMedium = [
     { 
-      emoji: "🍅", 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/красный_помидор.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Помидор",
-      questions: ["Это овощ", "Красного цвета", "Имеет круглую форму", "Растёт на дереве", "Из него делают сок"],
-      correct: [true, true, true, false, true]
+      questions: ["Это овощ", "Синего цвета", "Имеет круглую форму", "Растёт на дереве", "Из него делают сок"],
+      correct: [true, false, true, false, true]
     },
     { 
-      emoji: "🥔", 
-      name: "Картошка",
-      questions: ["Это овощ", "Растёт под землёй", "Имеет круглую форму", "Синего цвета", "Из неё делают пюре"],
-      correct: [true, true, true, false, true]
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_котёнок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      name: "Котёнок",
+      questions: ["Это домашнее животное", "Умеет лаять", "Любит молоко", "Имеет крылья", "Умеет мяукать"],
+      correct: [true, false, true, false, true]
     },
     { 
-      emoji: "🐧", 
-      name: "Пингвин",
-      questions: ["Не умеет летать", "Живёт в Антарктиде", "Умеет плавать", "Всегда ходит в смокинге", "Питается рыбой"],
-      correct: [true, true, true, true, true]
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_щенок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      name: "Щенок",
+      questions: ["Это домашнее животное", "Умеет мяукать", "Любит гулять", "Имеет хобот", "Охраняет дом"],
+      correct: [true, false, true, false, true]
     },
     { 
-      emoji: "🦒", 
-      name: "Жираф",
-      questions: ["У него длинная шея", "Живёт в Африке", "Пятнистый окрас", "Умеет летать", "Ест листья с деревьев"],
-      correct: [true, true, true, false, true]
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_мяч.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      name: "Мяч",
+      questions: ["Имеет квадратную форму", "Используется в спорте", "Можно пинать ногой", "Умеет летать сам", "Можно бросать руками"],
+      correct: [false, true, true, false, true]
     },
     { 
-      emoji: "🚲", 
-      name: "Велосипед",
-      questions: ["Имеет два колеса", "Нужен для езды", "Имеет мотор", "Экологичный вид транспорта", "Может плавать"],
-      correct: [true, true, false, true, false]
-    },
-    { 
-      emoji: "⛵", 
-      name: "Корабль",
-      questions: ["Плавает по воде", "Имеет паруса или мотор", "Летает в небе", "Перевозит грузы", "Может ездить по земле"],
-      correct: [true, true, false, true, false]
-    },
-    { 
-      emoji: "🌻", 
-      name: "Подсолнух",
-      questions: ["Это цветок", "Жёлтого цвета", "Поворачивается за солнцем", "Растёт в пустыне", "Из семян делают масло"],
-      correct: [true, true, true, false, true]
-    },
-    { 
-      emoji: "🍄", 
-      name: "Гриб",
-      questions: ["Растёт в лесу", "Имеет шляпку и ножку", "Это растение", "Бывает съедобным и ядовитым", "Любит солнце"],
-      correct: [true, true, false, true, false]
-    },
-    { 
-      emoji: "🐝", 
-      name: "Пчела",
-      questions: ["Делает мёд", "Живёт в улье", "Умеет жалить", "Это птица", "Опыляет цветы"],
-      correct: [true, true, true, false, true]
-    },
-    { 
-      emoji: "🕷️", 
-      name: "Паук",
-      questions: ["Плетёт паутину", "Имеет 8 ног", "Это насекомое", "Ест мух", "Живёт в воде"],
-      correct: [true, true, false, true, false]
-    },
-    { 
-      emoji: "🎸", 
-      name: "Гитара",
-      questions: ["Это музыкальный инструмент", "Имеет струны", "Играют с помощью смычка", "Бывает акустической", "Используется в рок-музыке"],
-      correct: [true, true, false, true, true]
-    },
-    { 
-      emoji: "📚", 
-      name: "Книга",
-      questions: ["Состоит из страниц", "Имеет обложку", "Можно читать", "Нужна для приготовления пищи", "Бывает разной толщины"],
-      correct: [true, true, true, false, true]
-    },
-    { 
-      emoji: "⏰", 
-      name: "Будильник",
-      questions: ["Показывает время", "Может звонить", "Нужен для измерения температуры", "Бывает механическим", "Помогает просыпаться"],
-      correct: [true, true, false, true, true]
-    },
-    { 
-      emoji: "☎️", 
-      name: "Телефон",
-      questions: ["Нужен для общения", "Имеет кнопки", "Может принимать звонки", "Измеряет давление", "Бывает проводным"],
-      correct: [true, true, true, false, true]
-    },
-    { 
-      emoji: "🔑", 
-      name: "Ключ",
-      questions: ["Открывает замок", "Обычно металлический", "Имеет бороздки", "Из него варят суп", "Бывает разной формы"],
-      correct: [true, true, true, false, true]
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_роликовый_конёк.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      name: "Роликовый конёк",
+      questions: ["Используется для катания", "Имеет лыжи", "Надевается на ногу", "Имеет 4 колеса", "Нужен для плавания"],
+      correct: [true, false, true, true, false]
     }
   ];
 
   // ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 15 картинок, по 7 утверждений =====
   const itemsHard = [
     { 
-      emoji: "🐪", 
-      name: "Верблюд",
-      questions: ["Живёт в пустыне", "Имеет горбы", "Может долго не пить воду", "Умеет летать", "Его называют кораблём пустыни", "Плюётся при опасности", "Переносит грузы"],
-      correct: [true, true, true, false, true, true, true]
-    },
-    { 
-      emoji: "🐧", 
-      name: "Пингвин",
-      questions: ["Не умеет летать", "Живёт в Антарктиде", "Умеет плавать", "Ходит вразвалочку", "Воспитывает птенцов в суровых условиях", "Питается рыбой", "Имеет чёрно-белый окрас"],
-      correct: [true, true, true, true, true, true, true]
-    },
-    { 
-      emoji: "🌋", 
-      name: "Вулкан",
-      questions: ["Извергает лаву", "Может быть действующим", "Находится в горах", "Из него добывают золото", "Бывает спящим", "Очень опасен", "Выбрасывает пепел"],
-      correct: [true, true, true, false, true, true, true]
-    },
-    { 
-      emoji: "🦷", 
-      name: "Зуб",
-      questions: ["Находится во рту", "Помогает пережёвывать пищу", "Нуждается в чистке", "Бывает молочным", "Может болеть", "Имеет корень", "Покрыт эмалью"],
-      correct: [true, true, true, true, true, true, true]
-    },
-    { 
-      emoji: "🧲", 
-      name: "Магнит",
-      questions: ["Притягивает металл", "Имеет два полюса", "Используется в компасах", "Притягивает всё подряд", "Бывает постоянным", "Создаёт магнитное поле", "Не притягивает дерево"],
-      correct: [true, true, true, false, true, true, true]
-    },
-    { 
-      emoji: "⚡", 
-      name: "Молния",
-      questions: ["Возникает во время грозы", "Сопровождается громом", "Очень опасна", "Это электрический разряд", "Поднимается от земли к небу", "Может ударить в дерево", "Температура выше Солнца"],
-      correct: [true, true, true, true, true, true, true]
-    },
-    { 
-      emoji: "🧪", 
-      name: "Пробирка",
-      questions: ["Используется в химии", "Делается из стекла", "Имеет круглое дно", "Из неё едят суп", "В ней проводят опыты", "Может закрываться пробкой", "Содержит реактивы"],
-      correct: [true, true, true, false, true, true, true]
-    },
-    { 
-      emoji: "🔬", 
-      name: "Микроскоп",
-      questions: ["Увеличивает предметы", "Используется учёными", "Позволяет увидеть микробов", "Нужен для измерения времени", "Имеет линзы", "Бывает электронным", "Открыл клетку"],
-      correct: [true, true, true, false, true, true, true]
-    },
-    { 
-      emoji: "💰", 
-      name: "Деньги",
-      questions: ["Бывают бумажными", "Бывают металлическими", "Имеют номинал", "Растут на деревьях", "Используются для покупок", "В каждой стране свои", "Хранятся в кошельке"],
-      correct: [true, true, true, false, true, true, true]
-    },
-    { 
-      emoji: "🏆", 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_кубок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Кубок",
-      questions: ["Даётся за победу", "Сделан из металла или пластика", "Имеет награвированные слова", "Из него едят", "Бывает разных размеров", "На нём пишут название соревнования", "У него есть ручки"],
-      correct: [true, true, true, false, true, true, true]
+      questions: ["Даётся за победу", "Сделан из стекла", "Имеет награвированные слова", "Из него едят суп", "Бывает разных размеров"],
+      correct: [true, false, true, false, true]
     },
     { 
-      emoji: "🎭", 
-      name: "Театр",
-      questions: ["Там показывают спектакли", "Есть сцена и зрительный зал", "Актёры играют роли", "Там учатся в школе", "Бывает кукольным", "Используются декорации", "Зрители аплодируют"],
-      correct: [true, true, true, false, true, true, true]
-    },
-    { 
-      emoji: "🏥", 
-      name: "Больница",
-      questions: ["Там лечат людей", "Работают врачи и медсёстры", "Есть операционная", "Там продают игрушки", "Бывает скорая помощь", "Там делают операции", "Пациенты лежат в палатах"],
-      correct: [true, true, true, false, true, true, true]
-    },
-    { 
-      emoji: "✈️", 
-      name: "Самолёт",
-      questions: ["Летает в воздухе", "Имеет крылья", "Перевозит пассажиров", "Плавает в воде", "Имеет шасси для посадки", "Управляется пилотом", "Летает выше облаков"],
-      correct: [true, true, true, false, true, true, true]
-    },
-    { 
-      emoji: "🚀", 
-      name: "Ракета",
-      questions: ["Летит в космос", "Имеет двигатель", "Доставляет спутники", "Ездит по земле", "Космонавты летают на ней", "Может быть многоступенчатой", "Стартует с Земли"],
-      correct: [true, true, true, false, true, true, true]
-    },
-    { 
-      emoji: "🕰️", 
-      name: "Часы",
-      questions: ["Показывают время", "Бывают механическими", "Бывают электронными", "Измеряют температуру", "Имеют стрелки или цифры", "Тикают", "Могут будить"],
-      correct: [true, true, true, false, true, true, true]
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_молния.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      name: "Молния",
+      questions: ["Возникает во время грозы", "Сопровождается тишиной", "Очень опасна", "Это электрический разряд", "Поднимается от земли к небу"],
+      correct: [true, false, true, true, false]
     }
   ];
 
@@ -3252,12 +3150,12 @@ function renderLogicPicture() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🖼️ Выбери правильные утверждения ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Выбери правильные утверждения ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
-      📖 Задача: Посмотри на картинку и выбери все правильные утверждения о ней.
+      Задача: Посмотри на картинку и выбери все правильные утверждения о ней.
     </div>
     <div style="display: flex; justify-content: center; margin: 20px 0;">
-      <div style="text-align: center; font-size: 100px; padding: 30px; background: white; border-radius: 30px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: inline-block;">
+      <div style="text-align: center; font-size: 100px; padding: 30px; background: white; border-radius: 30px; margin-bottom: 25px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8); display: inline-block;">
         ${item.emoji}
       </div>
     </div>
@@ -3272,7 +3170,7 @@ function renderLogicPicture() {
       </div>
     </div>
     <div style="display: flex; justify-content: center;">
-      <button id="checkAnswers" class="btn-primary" style="margin-top: 10px; width: auto; padding: 14px 48px;">✅ Проверить</button>
+      <button id="checkAnswers" class="btn-primary" style="margin-top: 10px; width: auto; padding: 14px 48px;">Проверить</button>
     </div>
   `;
   
@@ -3287,12 +3185,12 @@ function renderLogicPicture() {
       transform: translateX(5px);
     }
     .option-item.correct {
-      background: linear-gradient(135deg, #10B98120, #05966920);
-      border-color: #10B981;
+      background: #87d34c20;
+      border-color: #87d34c;
     }
     .option-item.wrong {
-      background: #fee2e2;
-      border-color: #EF4444;
+      background: #ea311720;
+      border-color: #ea3117;
     }
   `;
   document.head.appendChild(style);
@@ -3327,18 +3225,17 @@ function renderLogicPicture() {
     
     if (allCorrect) {
       successAction();
-      showToast("✅ Правильно! Все утверждения верны!", "success");
+      showToast("Правильно! Все утверждения верны!", "success");
       
       pictureTimeout = setTimeout(() => {
         renderLogicPicture();
       }, 1500);
     } else {
       failAction();
-      showToast("❌ Не все утверждения выбраны верно! Попробуй ещё раз", "error");
+      showToast("Не все утверждения выбраны верно! Попробуй ещё раз", "error");
     }
   };
 }
-
 // 6. Расшифруй послание
 let cipherTimeout = null;
 
@@ -3349,11 +3246,59 @@ function renderLogicCipher() {
     cipherTimeout = null;
   }
   
-  // ===== БИБЛИОТЕКИ СИМВОЛОВ ДЛЯ ШИФРОВ =====
+  // ===== БИБЛИОТЕКИ СИМВОЛОВ ДЛЯ ШИФРОВ (заменены на картинки) =====
   const symbolSets = {
-    easy: ["★", "■", "●", "▲", "♥", "◆", "♠", "♣", "☀", "☁", "☂", "❄", "⚡", "⭐", "🌙", "☎", "✉", "⌛", "⚙", "🔑"],
-    medium: ["🔴", "🔵", "🟢", "🟡", "🟠", "🟣", "🔶", "🔷", "🔺", "🔻", "⬛", "⬜", "🔲", "🔳", "⭕", "❌", "💎", "🔔", "📌", "📍"],
-    hard: ["★", "■", "●", "▲", "♥", "◆", "♠", "♣", "☀", "☁", "☂", "❄", "⚡", "⭐", "🌙", "☎", "✉", "⌛", "⚙", "🔑", "🔴", "🔵", "🟢", "🟡"]
+    easy: [
+      '<img src="images/желтый_смайл_1.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/синий_котёнок.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/голубой_мяч.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/оранжевый_гриб.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/красный_вишня.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/сиреневый_ягода.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/желтый_яйцо.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/зелёный_брокколи.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/голубой_день_небо_и_солнце.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/голубой_сок.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/синий_лампа.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/оранжевый_сок.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/голубой_тарелка.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/голубой_батут.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/сиреневый_звезда.png" style="width: 30px; height: 30px; object-fit: contain;">'
+    ],
+    medium: [
+      '<img src="images/красный_помидор.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/синий_котёнок.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/зелёный_яблоко.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/желтый_груша.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/оранжевый_морковка.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/сиреневый_ягода.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/оранжевый_гитара.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/голубой_часы.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/красный_вопрос.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/зелёный_галочка.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/голубой_роликовый_конёк.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/сиреневый_замочек.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/голубой_батут.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/желтый_палитра.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/оранжевый_банка.png" style="width: 30px; height: 30px; object-fit: contain;">'
+    ],
+    hard: [
+      '<img src="images/красный_арбуз.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/синий_котёнок.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/голубой_мяч.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/оранжевый_гном_лицо.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/красный_вишня.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/желтый_кубок.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/сиреневый_наушники.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/голубой_пазл.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/голубой_день_небо_и_солнце.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/синий_ночь_небо_и_месяц.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/синий_лампа.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/оранжевый_сок.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/зелёный_брокколи.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/желтый_молния.png" style="width: 30px; height: 30px; object-fit: contain;">',
+      '<img src="images/синий_лупа.png" style="width: 30px; height: 30px; object-fit: contain;">'
+    ]
   };
   
   // ===== ФУНКЦИЯ ГЕНЕРАЦИИ СЛУЧАЙНОГО СЛОВА =====
@@ -3402,16 +3347,17 @@ function renderLogicCipher() {
   const letters = correctWord.split('');
   const uniqueLetters = [...new Set(letters)];
   
-  // Назначаем символы для букв слова
+  // Назначаем символы для букв слова (размер картинок 60px вместо 30px)
   for (let i = 0; i < uniqueLetters.length; i++) {
-    cipherMap[uniqueLetters[i]] = shuffledSymbols[i];
+    cipherMap[uniqueLetters[i]] = shuffledSymbols[i].replace('style="width: 30px; height: 30px;"', 'style="width: 60px; height: 60px;"');
   }
   
   // Добавляем лишние символы в таблицу
   let extraIndex = uniqueLetters.length;
   for (let i = 0; i < extraSymbolsCount; i++) {
     if (extraIndex + i < shuffledSymbols.length) {
-      const extraSymbol = shuffledSymbols[extraIndex + i];
+      let extraSymbol = shuffledSymbols[extraIndex + i];
+      extraSymbol = extraSymbol.replace('style="width: 30px; height: 30px;"', 'style="width: 60px; height: 60px;"');
       let fakeLetter;
       do {
         fakeLetter = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"[Math.floor(Math.random() * 33)];
@@ -3426,9 +3372,9 @@ function renderLogicCipher() {
   // Создаём отображение таблицы (со всеми символами, в рандомном порядке)
   const allMapEntries = Object.entries(cipherMap);
   const shuffledMapEntries = [...allMapEntries].sort(() => Math.random() - 0.5);
-  // Таблица шифрования: символы 30px (в 2 раза меньше от 60px), буквы 24px
+  // Таблица шифрования: символы 60px, буквы 32px
   const mapDisplay = shuffledMapEntries.map(([letter, symbol]) => 
-    `<span style="font-size: 30px; display: inline-block; margin: 0 10px;">${symbol}</span> = <span style="font-size: 24px; font-weight: 500;">${letter}</span>`
+    `<span style="display: inline-flex; align-items: center; margin: 0 15px;">${symbol} = <span style="font-size: 32px; font-weight: 600; margin-left: 8px;">${letter}</span></span>`
   ).join(" &nbsp;&nbsp;|&nbsp;&nbsp; ");
   
   // Генерируем варианты ответов
@@ -3471,39 +3417,41 @@ function renderLogicCipher() {
   }
   
   // Определяем размер шрифта для зашифрованного слова
-  let fontSize = "48px";
-  let letterSpacing = "12px";
+  let fontSize = "60px";
+  let letterSpacing = "20px";
   if (state.level === 2) {
-    fontSize = "42px";
-    letterSpacing = "10px";
+    fontSize = "54px";
+    letterSpacing = "16px";
   } else if (state.level === 3) {
-    fontSize = "36px";
-    letterSpacing = "8px";
+    fontSize = "48px";
+    letterSpacing = "14px";
   }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔐 Расшифруй послание ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Расшифруй послание ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center; font-size: 18px;">
-      📖 Задача: Используй таблицу шифровки, чтобы расшифровать слово.
-      <br>💡 В таблице есть лишние символы, которые не нужны для решения!
+      Задача: Используй таблицу шифровки, чтобы расшифровать слово.
+      <br> В таблице есть лишние символы, которые не нужны для решения!
     </div>
-    <div style="display: flex; justify-content: center;">
-      <div class="cipher-table" style="background: white; padding: 25px; border-radius: 25px; margin-bottom: 30px; display: inline-block; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-        <strong style="font-size: 22px;">🗝️ Таблица шифрования:</strong><br>
-        <div style="margin-top: 15px;">${mapDisplay}</div>
+    <div style="display: flex; justify-content: center; overflow-x: auto;">
+      <div class="cipher-table" style="background: white; padding: 25px; border-radius: 25px; margin-bottom: 30px; display: inline-block; text-align: center; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
+        <strong style="font-size: 26px;">Таблица шифрования:</strong><br>
+        <div style="margin-top: 15px; display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">${mapDisplay}</div>
       </div>
     </div>
     <div style="display: flex; justify-content: center; margin: 30px 0;">
-      <div class="encoded-word" style="background: linear-gradient(135deg, #667eea15, #764ba215); padding: 30px 40px; border-radius: 30px; text-align: center;">
-        <strong style="font-size: 24px;">📨 Зашифрованное слово:</strong><br>
-        <span style="font-size: ${fontSize}; letter-spacing: ${letterSpacing}; font-family: monospace; font-weight: bold;">${encoded}</span>
+      <div class="encoded-word" style="background: linear-gradient(135deg, #765fde15, #ff881115); padding: 35px 45px; border-radius: 35px; text-align: center;">
+        <strong style="font-size: 28px;">Зашифрованное слово:</strong><br>
+        <div style="font-size: ${fontSize}; letter-spacing: ${letterSpacing}; font-family: monospace; font-weight: bold; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
+          ${encoded}
+        </div>
       </div>
     </div>
     <div style="display: flex; justify-content: center;">
-      <div class="options-list-horizontal" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 30px 0; max-width: 900px;">
+      <div class="options-list-horizontal" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 30px 0; max-width: 1000px;">
         ${options.map(opt => `
-          <button class="option-btn-cipher" data-answer="${opt}" style="padding: 18px 32px; font-size: 28px; font-weight: 700; border: 3px solid #e5e7eb; border-radius: 80px; background: white; cursor: pointer; transition: all 0.2s ease; min-width: 160px; color: #333;">
+          <button class="option-btn-cipher" data-answer="${opt}" style="padding: 18px 32px; font-size: 24px; font-weight: 700; border: 2px solid #d5d5da; border-radius: 80px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 180px; color: #2f2f45;">
             ${opt}
           </button>
         `).join('')}
@@ -3519,29 +3467,29 @@ function renderLogicCipher() {
   style.textContent = `
     .option-btn-cipher {
       transition: all 0.2s ease;
-      color: #333 !important;
+      color: #2f2f45 !important;
     }
     .option-btn-cipher:hover {
       transform: translateY(-5px);
-      border-color: #667eea;
+      border-color: #765fde;
       background: #f8f9ff;
-      box-shadow: 0 8px 20px rgba(102,126,234,0.3);
+      box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
     }
     .option-btn-cipher.selected {
-      background: linear-gradient(135deg, #667eea, #764ba2) !important;
+      background: #765fde !important;
       color: white !important;
       border-color: transparent !important;
       transform: scale(1.05);
     }
     .option-btn-cipher.correct {
-      background: linear-gradient(135deg, #10B981, #059669) !important;
+      background: #87d34c !important;
       color: white !important;
-      border-color: #10B981 !important;
+      border-color: #87d34c !important;
     }
     .option-btn-cipher.wrong {
-      background: #EF4444 !important;
+      background: #ea3117 !important;
       color: white !important;
-      border-color: #EF4444 !important;
+      border-color: #ea3117 !important;
       animation: shake 0.3s ease;
     }
   `;
@@ -3559,11 +3507,11 @@ function renderLogicCipher() {
       
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "white";
-        b.style.color = "#333";
+        b.style.background = "#ffffff";
+        b.style.color = "#2f2f45";
       });
       btn.classList.add("selected");
-      btn.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+      btn.style.background = "#765fde";
       btn.style.color = "white";
       selected = btn.dataset.answer;
       selectedButton = btn;
@@ -3583,11 +3531,11 @@ function renderLogicCipher() {
       isAnswered = true;
       if (selectedButton) {
         selectedButton.classList.add("correct");
-        selectedButton.style.background = "linear-gradient(135deg, #10B981, #059669)";
+        selectedButton.style.background = "#87d34c";
         selectedButton.style.color = "white";
       }
       successAction();
-      showToast("✅ Правильно! Ты расшифровал послание!", "success");
+      showToast("Правильно! Ты расшифровал послание!", "success");
       
       cipherTimeout = setTimeout(() => {
         renderLogicCipher();
@@ -3595,41 +3543,91 @@ function renderLogicCipher() {
     } else {
       if (selectedButton) {
         selectedButton.classList.add("wrong");
-        selectedButton.style.background = "#EF4444";
+        selectedButton.style.background = "#ea3117";
         selectedButton.style.color = "white";
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "white";
-          selectedButton.style.color = "#333";
+          selectedButton.style.background = "#ffffff";
+          selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
           isAnswered = false;
         }, 800);
       }
       failAction();
-      showToast(`❌ Неправильно! Попробуй ещё раз`, "error");
+      showToast(`Неправильно! Попробуй ещё раз`, "error");
     }
   };
 }
 
-// 7. Фиджитал: Свой шифр (полная таблица алфавита)
+// 7. Фиджитал: Свой шифр (полная таблица алфавита) - адаптивная версия
 function renderPhygitalCipher() {
-  // Создаём полную таблицу шифрования А=🍎, Б=🐻 и т.д.
+  // Создаём полную таблицу шифрования из картинок
   const emojiMap = {
-    "А": "🍎", "Б": "🐻", "В": "🐺", "Г": "🦆", "Д": "🐉", "Е": "🦔", 
-    "Ё": "⭐", "Ж": "🐞", "З": "🦓", "И": "🦎", "Й": "🔑", "К": "🐱", 
-    "Л": "🦊", "М": "🐭", "Н": "🦏", "О": "🐙", "П": "🐧", "Р": "🦀", 
-    "С": "🐍", "Т": "🐯", "У": "🦉", "Ф": "🦩", "Х": "🐫", "Ц": "🐔", 
-    "Ч": "🐛", "Ш": "🦈", "Щ": "🦐", "Ъ": "🚫", "Ы": "🎵", "Ь": "❄️", 
-    "Э": "⚡", "Ю": "🪀", "Я": "🍒",
-    "0": "0️⃣", "1": "1️⃣", "2": "2️⃣", "3": "3️⃣", "4": "4️⃣", 
-    "5": "5️⃣", "6": "6️⃣", "7": "7️⃣", "8": "8️⃣", "9": "9️⃣",
-    ".": "🔘", ",": "🔻", "!": "❗", "?": "❓"
+    "А": '<img src="images/красный_арбуз.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Б": '<img src="images/синий_котёнок.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "В": '<img src="images/оранжевый_щенок.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Г": '<img src="images/голубой_мяч.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Д": '<img src="images/желтый_груша.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Е": '<img src="images/зелёный_яблоко.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Ё": '<img src="images/желтый_смайл_1.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Ж": '<img src="images/сиреневый_ягода.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "З": '<img src="images/серый_голубь_1.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "И": '<img src="images/голубой_рыба.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Й": '<img src="images/синий_лампа.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "К": '<img src="images/оранжевый_гитара.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Л": '<img src="images/голубой_кровать.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "М": '<img src="images/красный_вишня.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Н": '<img src="images/желтый_кубок.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "О": '<img src="images/оранжевый_морковка.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "П": '<img src="images/сиреневый_книга.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Р": '<img src="images/голубой_роликовый_конёк.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "С": '<img src="images/синий_ночь_небо_и_месяц.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Т": '<img src="images/желтый_яйцо.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "У": '<img src="images/оранжевый_гриб.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Ф": '<img src="images/голубой_сок.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Х": '<img src="images/синий_лупа.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Ц": '<img src="images/желтый_палитра.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Ч": '<img src="images/голубой_тюбик.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Ш": '<img src="images/сиреневый_наушники.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Щ": '<img src="images/оранжевый_карандаш.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Ъ": '<img src="images/голубой_батут.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Ы": '<img src="images/синий_зуб.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Ь": '<img src="images/серый_чудик_1.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Э": '<img src="images/желтый_молния.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Ю": '<img src="images/сиреневый_замочек.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "Я": '<img src="images/красный_помидор.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "0": '<img src="images/красный_мишень.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "1": '<img src="images/желтый_смайл_2.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "2": '<img src="images/сиреневый_звезда.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "3": '<img src="images/голубой_часы.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "4": '<img src="images/оранжевый_коробка.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "5": '<img src="images/зелёный_галочка.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "6": '<img src="images/синий_рюкзак.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "7": '<img src="images/красный_вопрос.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "8": '<img src="images/желтый_ракетка.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "9": '<img src="images/голубой_пазл.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    ".": '<img src="images/голубой_тарелка.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    ",": '<img src="images/голубой_стул.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "!": '<img src="images/красный_чудик.png" style="width: 40px; height: 40px; object-fit: contain;">',
+    "?": '<img src="images/сиреневый_чудик_1.png" style="width: 40px; height: 40px; object-fit: contain;">'
   };
   
-  // Создаём таблицу 6x6 для букв
-  const alphabet = Object.keys(emojiMap).filter(k => /[А-ЯЁ]/.test(k));
+  // Определяем размер картинок в зависимости от экрана
+  const isMobile = window.innerWidth <= 768;
+  const imageSize = isMobile ? "32px" : "40px";
+  const fontSize = isMobile ? "14px" : "18px";
+  const tablePadding = isMobile ? "8px" : "12px";
+  
+  // Обновляем размеры картинок в emojiMap для мобильных
+  const adjustedEmojiMap = {};
+  for (let [key, value] of Object.entries(emojiMap)) {
+    adjustedEmojiMap[key] = value.replace(/width: \d+px; height: \d+px;/, `width: ${imageSize}; height: ${imageSize};`);
+  }
+  
+  // Создаём адаптивную таблицу 6x6 для букв
+  const alphabet = Object.keys(adjustedEmojiMap).filter(k => /[А-ЯЁ]/.test(k));
   const tableRows = [];
   for (let i = 0; i < alphabet.length; i += 6) {
     const rowCells = [];
@@ -3637,9 +3635,9 @@ function renderPhygitalCipher() {
       const idx = i + j;
       if (idx < alphabet.length) {
         const letter = alphabet[idx];
-        rowCells.push(`<td style="border: 1px solid #667eea; padding: 8px; text-align: center; background: white;">${letter}<br><span style="font-size: 24px;">${emojiMap[letter]}</span></td>`);
+        rowCells.push(`<td style="border: 1px solid #765fde; padding: ${tablePadding}; text-align: center; background: white; font-size: ${fontSize}; font-weight: 600;">${letter}<br><span style="font-size: ${isMobile ? '24px' : '32px'}; display: inline-block;">${adjustedEmojiMap[letter]}</span></td>`);
       } else {
-        rowCells.push(`<td style="border: 1px solid #667eea; padding: 8px; text-align: center; background: white;">—</td>`);
+        rowCells.push(`<td style="border: 1px solid #765fde; padding: ${tablePadding}; text-align: center; background: white;">—</td>`);
       }
     }
     tableRows.push(`<tr>${rowCells.join("")}</tr>`);
@@ -3647,40 +3645,41 @@ function renderPhygitalCipher() {
   
   // Цифры и знаки
   const symbols = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", "!", "?"];
-  const symbolRow = symbols.map(s => `<td style="border: 1px solid #667eea; padding: 8px; text-align: center; background: white;">${s}<br><span style="font-size: 24px;">${emojiMap[s]}</span></td>`).join("");
+  const symbolRow = symbols.map(s => `<td style="border: 1px solid #ff8811; padding: ${tablePadding}; text-align: center; background: white; font-size: ${fontSize}; font-weight: 600;">${s}<br><span style="font-size: ${isMobile ? '24px' : '32px'}; display: inline-block;">${adjustedEmojiMap[s]}</span></td>`).join("");
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🎯 Фиджитал: Свой шифр</div>
+    <div class="task-title">Фиджитал: Свой шифр</div>
     <div class="phygital-hint" style="background: #fef3c7; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-      🔐 Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+      Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
     </div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задание: Используя таблицу шифрования ниже, придумай своё зашифрованное послание для друга или родителей.
+      Задание: Используя таблицу шифрования ниже, придумай своё зашифрованное послание для друга или родителей.
       Запиши его на листочке и попроси расшифровать!
     </div>
-    <div style="background: #e0e0e0; border-radius: 16px; padding: 15px; margin-bottom: 20px; overflow-x: auto;">
-      <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden;">
-        <thead>
-          <tr><th colspan="6" style="padding: 10px; background: #667eea; color: white;">Таблица шифрования (буквы)</th></tr>
-        </thead>
-        <tbody>
-          ${tableRows.join("")}
-        </tbody>
-      </table>
-      <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; margin-top: 15px;">
-        <thead>
-          <tr><th colspan="14" style="padding: 10px; background: #764ba2; color: white;">Цифры и знаки препинания</th></tr>
-        </thead>
-        <tbody>
-          <tr>${symbolRow}</tr>
-        </tbody>
-      </table>
+    <div style="background: #e0e0e0; border-radius: 16px; padding: ${isMobile ? '10px' : '15px'}; margin-bottom: 20px; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+      <div style="min-width: ${isMobile ? '550px' : '100%'};">
+        <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden;">
+          <thead>
+            <tr><th colspan="6" style="padding: ${isMobile ? '10px' : '15px'}; background: #765fde; color: white; font-size: ${isMobile ? '16px' : '22px'};">🗝️ Таблица шифрования (буквы)</th></tr>
+          </thead>
+          <tbody>
+            ${tableRows.join("")}
+          </tbody>
+        </td>
+        <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; margin-top: 15px;">
+          <thead>
+            <tr><th colspan="14" style="padding: ${isMobile ? '10px' : '15px'}; background: #ff8811; color: white; font-size: ${isMobile ? '16px' : '22px'};">🔢 Цифры и знаки препинания</th></tr>
+          </thead>
+          <tbody>
+            <tr>${symbolRow}</tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class="phygital-hint" style="background: #e8eaff; padding: 12px; border-radius: 12px; margin-top: 10px; text-align: center;">
-      💡 Пример: слово "КОТ" → 🐱🐙🐯
     </div>
-    <button id="readyBtn" class="btn-primary">✅ Я придумал(а) шифр и послание!</button>
+    <button id="readyBtn" class="btn-primary" style="margin-top: 20px;">Я придумал(а) шифр и послание!</button>
   `;
   
   document.getElementById("readyBtn").onclick = () => {
@@ -3689,7 +3688,6 @@ function renderPhygitalCipher() {
     });
   };
 }
-
 // ============================================
 // ========== ЗАДАНИЯ ВНИМАНИЕ ==========
 // ============================================
@@ -3698,9 +3696,9 @@ function renderPhygitalCipher() {
 function renderCenteredGrid(items, target, title, cols, onCellClick) {
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔍 ${title}</div>
+    <div class="task-title">${title}</div>
     <div class="attention-target" style="text-align: center;">
-      🎯 ${target}
+      ${target}
     </div>
     <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
       <div class="attention-grid" id="attentionGrid" style="display: grid; grid-template-columns: repeat(${cols}, 1fr); gap: 12px; justify-content: center; margin: 0 auto;"></div>
@@ -3729,14 +3727,22 @@ function renderAttentionFindOdd() {
   const cols = Math.sqrt(total);
   
   const pairs = [
-    { main: "🍎", odd: "🍏" },
-    { main: "🐶", odd: "🐕" },
-    { main: "⭐", odd: "🌟" },
-    { main: "⚽", odd: "🏀" },
-    { main: "🍒", odd: "🍓" },
-    { main: "🔵", odd: "🟣" },
-    { main: "☀️", odd: "🌙" },
-    { main: "🌸", odd: "🌻" }
+    { main: '<img src="images/красный_яблоко.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/зелёный_яблоко.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/синий_котёнок.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/оранжевый_щенок.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/желтый_смайл_1.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/желтый_смайл_2.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/красный_вишня.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/сиреневый_ягода.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/голубой_день_небо_и_солнце.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/синий_ночь_небо_и_месяц.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/желтый_груша.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/желтый_яблоко.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/оранжевый_морковка.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/оранжевый_гриб.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/голубой_мяч.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/голубой_роликовый_конёк.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/красный_помидор.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/красный_арбуз.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/голубой_рыба.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/синий_паук.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/желтый_смайл_3.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/желтый_смайл_4.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/голубой_часы.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/желтый_лампочка.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/сиреневый_книга.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/сиреневый_наушники.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/сиреневый_звезда.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/желтый_кубок.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/зелёный_брокколи.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/зелёный_яблоко.png" style="width: 60px; height: 60px; object-fit: contain;">' },
+    { main: '<img src="images/голубой_стул.png" style="width: 60px; height: 60px; object-fit: contain;">', odd: '<img src="images/голубой_кровать.png" style="width: 60px; height: 60px; object-fit: contain;">' }
   ];
   
   const pair = pairs[Math.floor(Math.random() * pairs.length)];
@@ -3749,9 +3755,9 @@ function renderAttentionFindOdd() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔍 Найди лишнее ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Найди лишнее ${'⭐'.repeat(state.level)}</div>
     <div class="attention-target" style="text-align: center; font-size: 24px;">
-      🎯 Найди: <span class="target-highlight">${odd}</span>
+      Найди лишний предмет:
     </div>
     <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 20px;">
       <div class="attention-grid" id="attentionGrid" style="display: grid; grid-template-columns: repeat(${cols}, 1fr); gap: 15px; justify-content: center; margin: 0 auto;"></div>
@@ -3763,15 +3769,16 @@ function renderAttentionFindOdd() {
   items.forEach(item => {
     const cell = document.createElement("div");
     cell.className = "attention-cell";
-    cell.textContent = item;
-    cell.style.width = "80px";
-    cell.style.height = "80px";
-    cell.style.fontSize = "48px";
+    cell.style.width = "100px";
+    cell.style.height = "100px";
+    cell.style.padding = "10px";
     cell.style.display = "flex";
     cell.style.alignItems = "center";
     cell.style.justifyContent = "center";
+    cell.innerHTML = item;
+    
     cell.onclick = () => {
-      if (item === odd) {
+      if (cell.innerHTML === odd) {
         cell.classList.add("correct");
         successAction();
       } else {
@@ -3784,278 +3791,345 @@ function renderAttentionFindOdd() {
   });
 }
 
-// 2. НАЙДИ ПРЕДМЕТЫ В КОМНАТЕ (исправлена двойная генерация)
+// 2. НАЙДИ ПРЕДМЕТЫ В КОМНАТЕ
 let findItemsTimeout = null;
 
 function renderAttentionFindItems() {
-  // Очищаем предыдущий таймаут, чтобы избежать двойного вызова
   if (findItemsTimeout) {
     clearTimeout(findItemsTimeout);
     findItemsTimeout = null;
   }
   
-  // ===== КОНФИГУРАЦИЯ ДЛЯ РАЗНЫХ УРОВНЕЙ =====
-  const configs = {
-    1: { 
-      gridCols: 5, 
-      gridRows: 5, 
-      totalItems: 25,
-      needToFind: 3,
-      roomType: "комната"
+  const backgrounds = {
+    1: {
+      image: 'images/фон_комната_3_зелёная-желтая.jpg',
+      fallbackColor: '#9B8A5B',
+      name: 'зелёно-жёлтая комната'
     },
-    2: { 
-      gridCols: 7, 
-      gridRows: 5, 
-      totalItems: 35,
-      needToFind: 6,
-      roomType: "комната"
+    2: {
+      image: 'images/фон_комната_1_фиолетовая-голубая.jpg',
+      fallbackColor: '#6B5B95',
+      name: 'фиолетово-голубая комната'
     },
-    3: { 
-      gridCols: 9, 
-      gridRows: 5, 
-      totalItems: 45,
-      needToFind: 8,
-      roomType: "комната"
+    3: {
+      image: 'images/фон_комната_2_голубая-зелёная.jpg',
+      fallbackColor: '#5B9B8A',
+      name: 'голубо-зелёная комната'
     }
+  };
+  
+  const bg = backgrounds[state.level];
+  
+  const configs = {
+    1: { needToFind: 3 },
+    2: { needToFind: 5 },
+    3: { needToFind: 7 }
   };
   
   const config = configs[state.level];
-  const totalCells = config.totalItems;
-  const cols = config.gridCols;
   
-  // Все возможные предметы для комнаты
   const allRoomItems = [
-    "📚", "✏️", "🍎", "🔑", "📱", "⌚", "🎮", "💻", "📺", "🪑", "🛋️", "🛏️", 
-    "🚪", "🪟", "💡", "🖼️", "🌸", "☕", "🥛", "🍪", "🎧", "📷", "🔋", "📖",
-    "✂️", "📏", "🎨", "🧸", "🎲", "🏆", "📀", "🎥", "🕯️", "🧴", "🧹", "🧺",
-    "🧸", "🎈", "📎", "✒️", "📌", "🔍", "⚽", "🏀", "🎾", "🏸"
+    '<img src="images/красный_яблоко.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/зелёный_яблоко.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/желтый_груша.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/красный_вишня.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/сиреневый_ягода.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/оранжевый_морковка.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/голубой_мяч.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/голубой_роликовый_конёк.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/голубой_стул.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/голубой_кровать.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/синий_лампа.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/синий_котёнок.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/оранжевый_щенок.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/голубой_рыба.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/синий_паук.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/сиреневый_книга.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/сиреневый_наушники.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/голубой_часы.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/желтый_кубок.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/голубой_батут.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/оранжевый_гитара.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/голубой_тюбик.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/синий_лупа.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/голубой_сок.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/красный_помидор.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/оранжевый_гриб.png" style="width: 55px; height: 55px; object-fit: contain;">',
+    '<img src="images/сиреневый_песочные_часы.png" style="width: 55px; height: 55px; object-fit: contain;">'
   ];
   
-  // Выбираем случайные предметы для поиска (уникальные)
-  const shuffledForFind = [...allRoomItems].sort(() => Math.random() - 0.5);
-  const toFind = shuffledForFind.slice(0, config.needToFind);
+  const shuffledItems = [...allRoomItems].sort(() => Math.random() - 0.5);
+  const toFind = shuffledItems.slice(0, config.needToFind);
+  const otherItems = shuffledItems.slice(config.needToFind);
   
-  // Предметы для заполнения комнаты (все кроме тех, что нужно найти)
-  const otherItems = allRoomItems.filter(item => !toFind.includes(item));
-  
-  // Создаём комнату с предметами
-  let items = [];
-  const targetIndices = new Set();
-  
-  // Размещаем предметы для поиска в случайных местах (по одному разу)
-  for (let i = 0; i < toFind.length; i++) {
-    let position;
-    do {
-      position = Math.floor(Math.random() * totalCells);
-    } while (targetIndices.has(position));
-    targetIndices.add(position);
+  let itemsForPlacement = [...toFind];
+  const totalItemsCount = 28;
+  while (itemsForPlacement.length < totalItemsCount) {
+    const randomItem = otherItems[Math.floor(Math.random() * otherItems.length)];
+    itemsForPlacement.push(randomItem);
   }
   
-  // Заполняем сетку
-  const targetArray = [...targetIndices];
-  for (let i = 0; i < totalCells; i++) {
-    const targetIndex = targetArray.indexOf(i);
-    if (targetIndex !== -1) {
-      items.push(toFind[targetIndex]);
-    } else {
-      const randomItem = otherItems[Math.floor(Math.random() * otherItems.length)];
-      items.push(randomItem);
+  for (let i = itemsForPlacement.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [itemsForPlacement[i], itemsForPlacement[j]] = [itemsForPlacement[j], itemsForPlacement[i]];
+  }
+  
+  const containerHeight = 550;
+  const itemSize = 60;
+  let positions = [];
+  
+  function isOverlapping(x, y, size, minDistance = 20) {
+    for (let pos of positions) {
+      if (Math.abs(pos.x - x) < size + minDistance && Math.abs(pos.y - y) < size + minDistance) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  function getContainerWidth() {
+    const itemsContainer = document.querySelector('#itemsContainer');
+    if (itemsContainer) {
+      return itemsContainer.clientWidth;
+    }
+    const gameAreaEl = document.querySelector('.game-area');
+    if (gameAreaEl) {
+      return gameAreaEl.clientWidth - 40;
+    }
+    return Math.min(1100, window.innerWidth - 80);
+  }
+  
+  function generatePositions(containerWidth) {
+    positions = [];
+    const margin = 15;
+    const maxX = containerWidth - itemSize - margin;
+    const minX = margin;
+    
+    for (let i = 0; i < itemsForPlacement.length; i++) {
+      let attempts = 0;
+      let x, y;
+      do {
+        x = minX + Math.random() * (maxX - minX);
+        y = margin + Math.random() * (containerHeight - itemSize - margin);
+        attempts++;
+        if (attempts > 300) break;
+      } while (isOverlapping(x, y, itemSize, 25));
+      x = Math.min(maxX, Math.max(minX, x));
+      positions.push({ x: x, y: y, item: itemsForPlacement[i] });
     }
   }
   
-  // Перемешиваем дополнительно для рандомности
-  for (let i = items.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [items[i], items[j]] = [items[j], items[i]];
-  }
-  
-  // Определяем размер ячейки в зависимости от количества колонок
-  let cellSize = "65px";
-  let fontSize = "40px";
-  if (cols === 9) {
-    cellSize = "55px";
-    fontSize = "32px";
-  } else if (cols === 7) {
-    cellSize = "60px";
-    fontSize = "36px";
-  }
+  const initialWidth = getContainerWidth();
+  generatePositions(initialWidth);
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🎨 Найди предметы в комнате ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Найди предметы в комнате ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
-      📖 В комнате разбросаны разные предметы. Найди ВСЕ предметы из списка ниже!
-      <br>🖱️ Нажимай на предметы, которые нужно найти.
+      В ${bg.name} разбросаны разные предметы. Найди все предметы из списка ниже!
+      Нажимай на предметы, которые нужно найти.
     </div>
     <div class="attention-target" style="text-align: center; background: white; padding: 15px; border-radius: 20px; margin-bottom: 20px;">
-      🎯 Найди предметы: 
-      <div style="font-size: 48px; background: #f0f0ff; padding: 10px 20px; border-radius: 40px; display: inline-flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
-        ${toFind.map(i => `<span style="display: inline-block;">${i}</span>`).join('')}
+      Найди эти предметы:
+      <div style="display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
+        ${toFind.map((item, idx) => `<span id="targetItem_${idx}" style="display: inline-block; background: #f0f0ff; padding: 6px 10px; border-radius: 12px; border: 2px solid #765fde; font-size: 12px;">${item}</span>`).join('')}
       </div>
     </div>
-    <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin: 20px 0;">
-      <div class="room-grid" id="attentionGrid" style="display: grid; grid-template-columns: repeat(${cols}, 1fr); gap: 8px; background: #d4c8a8; padding: 20px; border-radius: 20px; border: 8px solid #8b5a2b; max-width: 100%; margin: 0 auto; box-shadow: 0 8px 20px rgba(0,0,0,0.2); overflow-x: auto;">
+    <div id="roomScene" style="position: relative; width: 100%; margin: 15px 0; height: ${containerHeight + 10}px;">
+      <div id="roomBackground" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: ${bg.fallbackColor}; background-image: url('${bg.image}'); background-size: cover; background-position: center; border-radius: 20px; z-index: 1;"></div>
+      <div id="itemsContainer" style="position: relative; width: 100%; height: ${containerHeight}px; z-index: 2;"></div>
+    </div>
+    <div style="display: flex; justify-content: center; margin: 15px 0;">
+      <div class="attention-stats" style="text-align: center; font-size: 18px; background: white; padding: 10px 20px; border-radius: 40px; display: inline-block;">
+        Найдено: <b id="foundCount" style="color: #ff8811; font-size: 28px;">0</b> / ${config.needToFind}
       </div>
     </div>
-    <div style="display: flex; justify-content: center; margin: 20px 0;">
-      <div class="attention-stats" style="text-align: center; font-size: 20px; background: white; padding: 12px 25px; border-radius: 40px; display: inline-block;">
-        📋 Найдено: <b id="foundCount" style="color: #f59e0b; font-size: 32px;">0</b> / ${config.needToFind}
-      </div>
-    </div>
-    <div style="display: flex; justify-content: center; margin-top: 10px;">
-      <button id="resetRoomBtn" class="btn-secondary" style="width: auto; padding: 12px 28px;">🔄 Новая комната</button>
+    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
+      <button id="resetRoomBtn" class="btn-secondary" style="width: auto; padding: 10px 24px;">Новая комната</button>
     </div>
   `;
   
-  const grid = document.getElementById("attentionGrid");
+  const roomBackground = document.getElementById("roomBackground");
+  const itemsContainer = document.getElementById("itemsContainer");
+  const roomScene = document.getElementById("roomScene");
+  
+  if (roomBackground) roomBackground.style.height = containerHeight + "px";
+  if (itemsContainer) itemsContainer.style.height = containerHeight + "px";
+  if (roomScene) roomScene.style.height = containerHeight + "px";
+  
+  setTimeout(() => {
+    const actualWidth = getContainerWidth();
+    if (Math.abs(actualWidth - initialWidth) > 30) {
+      generatePositions(actualWidth);
+      const items = document.querySelectorAll('.room-item');
+      items.forEach((item, idx) => {
+        if (positions[idx]) {
+          item.style.left = positions[idx].x + "px";
+          item.style.top = positions[idx].y + "px";
+        }
+      });
+    }
+  }, 50);
+  
+  const style = document.createElement('style');
+  style.textContent = `
+    #roomScene { position: relative; width: 100%; overflow: hidden; }
+    #roomBackground { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+    #itemsContainer { position: relative; width: 100%; }
+    .room-item {
+      position: absolute;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+    .room-item:hover {
+      transform: scale(1.08);
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+      z-index: 20;
+    }
+  `;
+  document.head.appendChild(style);
+  
   let found = new Set();
-  let gameCompleted = false; // Флаг, чтобы предотвратить повторный вызов
+  let gameCompleted = false;
   
   const updateCount = () => {
     document.getElementById("foundCount").textContent = found.size;
+    toFind.forEach((item, idx) => {
+      const targetSpan = document.getElementById(`targetItem_${idx}`);
+      if (targetSpan && found.has(item)) {
+        targetSpan.style.background = "#87d34c";
+        targetSpan.style.borderColor = "#87d34c";
+      }
+    });
     if (found.size === config.needToFind && !gameCompleted) {
       gameCompleted = true;
-      showToast("🎉 Отлично! Ты нашёл все предметы!", "success");
-      successAction(); // successAction сам вызовет showTaskSelection через 800 мс
-      // НЕ вызываем renderAttentionFindItems() здесь!
+      showToast("Отлично! Ты нашёл все предметы!", "success");
+      successAction();
     }
   };
   
-  items.forEach((item, idx) => {
+  positions.forEach((pos) => {
+    const item = pos.item;
     const cell = document.createElement("div");
-    cell.className = "room-cell";
-    cell.textContent = item;
-    cell.style.width = cellSize;
-    cell.style.height = cellSize;
-    cell.style.fontSize = fontSize;
+    cell.className = "room-item";
+    cell.innerHTML = item;
+    cell.style.left = pos.x + "px";
+    cell.style.top = pos.y + "px";
+    cell.style.width = itemSize + "px";
+    cell.style.height = itemSize + "px";
     cell.style.display = "flex";
     cell.style.alignItems = "center";
     cell.style.justifyContent = "center";
-    cell.style.backgroundColor = "#f5e6cc";
-    cell.style.borderRadius = "12px";
-    cell.style.cursor = "pointer";
-    cell.style.transition = "all 0.2s ease";
-    cell.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
-    cell.style.border = "2px solid #d4a574";
-    
-    cell.onmouseenter = () => {
-      if (!found.has(item) && toFind.includes(item) && !gameCompleted) {
-        cell.style.backgroundColor = "#ffe0b3";
-        cell.style.transform = "scale(1.05)";
-      }
-    };
-    cell.onmouseleave = () => {
-      if (!found.has(item) && !gameCompleted) {
-        cell.style.backgroundColor = "#f5e6cc";
-        cell.style.transform = "scale(1)";
-      }
-    };
     
     cell.onclick = () => {
       if (gameCompleted) return;
-      
       if (toFind.includes(item) && !found.has(item)) {
         found.add(item);
-        cell.classList.add("correct");
-        cell.style.backgroundColor = "#a5d6a5";
-        cell.style.transform = "scale(0.98)";
+        cell.style.opacity = "0.5";
+        cell.style.filter = "grayscale(0.6)";
+        cell.style.transform = "scale(0.95)";
         cell.style.cursor = "default";
-        showToast(`✅ Нашёл ${item}!`, "success");
+        showToast("Нашёл предмет!", "success");
         updateCount();
       } else if (!toFind.includes(item)) {
-        cell.classList.add("wrong");
-        cell.style.backgroundColor = "#ffb3b3";
+        cell.style.transform = "scale(0.95)";
+        cell.style.filter = "brightness(0.7)";
         setTimeout(() => {
-          cell.classList.remove("wrong");
           if (!gameCompleted && !found.has(item)) {
-            cell.style.backgroundColor = "#f5e6cc";
+            cell.style.transform = "scale(1)";
+            cell.style.filter = "none";
           }
-        }, 300);
+        }, 200);
         failAction();
       }
     };
-    grid.appendChild(cell);
+    itemsContainer.appendChild(cell);
   });
   
-  // Кнопка сброса
   const resetBtn = document.getElementById("resetRoomBtn");
   if (resetBtn) {
     resetBtn.onclick = () => {
       if (findItemsTimeout) clearTimeout(findItemsTimeout);
       renderAttentionFindItems();
-      showToast("🔄 Новая комната создана!", "success");
+      showToast("Новая комната создана!", "success");
     };
   }
 }
 
-// 3. НАЙДИ ЦИФРУ (РАНДОМНОЕ РАСПОЛОЖЕНИЕ + ВАШИ ЦВЕТА) - БЕЗ ЛАГОВ
+// 3. НАЙДИ ЦИФРУ - С КАРТИНКАМИ
 let findNumberTimeout = null;
 
 function renderAttentionFindNumber() {
-  // Очищаем предыдущий таймаут
   if (findNumberTimeout) {
     clearTimeout(findNumberTimeout);
     findNumberTimeout = null;
   }
   
+  const backgrounds = {
+    1: 'images/фон_сложность1.png',
+    2: 'images/фон_сложность2.png',
+    3: 'images/фон_сложность3.png'
+  };
+  
   const totals = { 1: 12, 2: 16, 3: 20 };
   const total = totals[state.level] || 12;
   
-  // ===== ВАША ПАЛИТРА ЦВЕТОВ =====
   const colorPalette = {
-    blue: {
-      100: "#2563EB", 80: "#3B82F6", 60: "#60A5FA", 40: "#93C5FD", 20: "#BFDBFE"
-    },
-    mint: {
-      100: "#0D9488", 80: "#14B8A6", 60: "#2DD4BF", 40: "#5EEAD4", 20: "#99F6E4"
-    },
-    purple: {
-      100: "#7C3AED", 80: "#8B5CF6", 60: "#A78BFA", 40: "#C4B5FD", 20: "#DDD6FE"
-    },
-    orange: {
-      100: "#EA580C", 80: "#F97316", 60: "#FB923C", 40: "#FDBA74", 20: "#FED7AA"
-    },
-    coral: {
-      100: "#E11D48", 80: "#F43F5E", 60: "#FB7185", 40: "#FDA4AF", 20: "#FECDD3"
-    },
-    green: {
-      100: "#15803D", 80: "#22C55E", 60: "#4ADE80", 40: "#86EFAC", 20: "#BBF7D0"
-    },
-    yellow: {
-      100: "#CA8A04", 80: "#EAB308", 60: "#FDE047", 40: "#FEF08A", 20: "#FEF9C3"
-    }
+    violet: { 80: "#8B7FD6", 60: "#A79EDC", 40: "#C1BBDD", 20: "#D9D6E6" },
+    orange: { 80: "#F2A354", 60: "#E9B47E", 40: "#E8C6A3", 20: "#E3D4C3" },
+    yellow: { 80: "#E9C86B", 60: "#E8D08F", 40: "#E6D8B2", 20: "#E3DCCD" }
   };
   
-  const colorNames = ["blue", "mint", "purple", "orange", "coral", "green", "yellow"];
-  const saturations = [100, 80, 60, 40, 20];
+  const colorNames = ["violet", "orange", "yellow"];
+  const saturations = [80, 60, 40, 20];
   
-  // Массив фигур (только простые, без transform)
   const shapes = [
-    { name: "круг", borderRadius: "50%", clipPath: "none" },
-    { name: "квадрат", borderRadius: "16px", clipPath: "none" },
-    { name: "скруглённый квадрат", borderRadius: "24px", clipPath: "none" },
-    { name: "прямоугольник", borderRadius: "12px", clipPath: "none", shapeWidth: "100px", shapeHeight: "80px" },
-    { name: "вытянутый круг", borderRadius: "50%", shapeWidth: "100px", shapeHeight: "80px" }
+    { name: "круг", borderRadius: "50%", width: 1, height: 1, padding: 0 },
+    { name: "овал", borderRadius: "50%", width: 1.3, height: 0.85, padding: 5 },
+    { name: "квадрат", borderRadius: "12px", width: 1, height: 1, padding: 8 },
+    { name: "скруглённый квадрат", borderRadius: "24px", width: 1, height: 1, padding: 8 },
+    { name: "прямоугольник", borderRadius: "12px", width: 1.2, height: 0.9, padding: 8 },
+    { name: "вытянутый круг", borderRadius: "50%", width: 1.4, height: 0.8, padding: 5 },
+    { name: "треугольник", clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)", width: 1.6, height: 1.4, padding: 15 },
+    { name: "перевёрнутый треугольник", clipPath: "polygon(50% 100%, 0% 0%, 100% 0%)", width: 1.6, height: 1.4, padding: 15 },
+    { name: "ромб", clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)", width: 1.4, height: 1.4, padding: 10 },
+    { name: "пятиугольник", clipPath: "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)", width: 1.4, height: 1.3, padding: 10 },
+    { name: "шестиугольник", clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)", width: 1.4, height: 1.3, padding: 10 },
+    { name: "звезда", clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)", width: 1.5, height: 1.5, padding: 12 }
   ];
   
-  // Массив шрифтов
-  const fonts = [
-    "Arial Black", "Comic Neue", "Impact", "Georgia", "Verdana",
-    "Trebuchet MS", "Segoe UI Black"
-  ];
-  
-  // Функция получения случайного цвета из палитры
   function getRandomColor() {
     const colorName = colorNames[Math.floor(Math.random() * colorNames.length)];
     const saturation = saturations[Math.floor(Math.random() * saturations.length)];
-    return {
-      bg: colorPalette[colorName][saturation],
-      name: `${colorName}-${saturation}`
-    };
+    return colorPalette[colorName][saturation];
+  }
+  
+  function getRandomShape() {
+    return shapes[Math.floor(Math.random() * shapes.length)];
+  }
+  
+  function getNumberImage(num) {
+    if (num <= 9) {
+      const animalFiles = {
+        1: '11.png', 2: '22.png', 3: '33.png',
+        4: '44.png', 5: '55.png', 6: '66.png',
+        7: '77.png', 8: '88.png', 9: '99.png'
+      };
+      return `<img src="images/${animalFiles[num]}" style="width: 70%; height: 70%; object-fit: contain;">`;
+    } else {
+      const tens = Math.floor(num / 10);
+      const units = num % 10;
+      return `<div style="display: flex; gap: 5px; align-items: center; justify-content: center; width: 100%; height: 100%;">
+        <img src="images/${tens}.png" style="width: 40%; height: 60%; object-fit: contain;">
+        <img src="images/${units}.png" style="width: 40%; height: 60%; object-fit: contain;">
+      </div>`;
+    }
   }
   
   let numbers = Array.from({ length: total }, (_, i) => i + 1);
-  // Перемешиваем для случайного порядка появления
   for (let i = numbers.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
@@ -4064,38 +4138,34 @@ function renderAttentionFindNumber() {
   let current = 1;
   let gameActive = true;
   let foundCount = 0;
-  
-  // Генерируем случайные позиции, чтобы элементы не накладывались
   let positions = [];
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔢 Найди цифру ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Найди цифру ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
-      📖 Нажимай на цифры по порядку: от 1 до ${total}.
-      🎨 Каждая цифра уникальна – найди нужную среди всех!
+      Нажимай на цифры по порядку: от 1 до ${total}.
     </div>
     
     <div class="current-task" style="text-align: center; margin-bottom: 25px;">
-      <div style="display: inline-block; background: linear-gradient(135deg, #667eea, #764ba2); padding: 5px; border-radius: 80px; box-shadow: 0 8px 20px rgba(102,126,234,0.3);">
+      <div style="display: inline-block; background: linear-gradient(135deg, #765fde, #ff8811); padding: 5px; border-radius: 80px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
         <div style="background: white; border-radius: 80px; padding: 12px 32px;">
-          <span style="font-size: 16px; font-weight: 600; color: #667eea;">🎯 НАЙДИ</span><br>
-          <span id="currentNumber" style="font-size: 72px; font-weight: 800; color: #f59e0b; line-height: 1;">1</span>
+          <span style="font-size: 16px; font-weight: 600; color: #765fde;">НАЙДИ</span><br>
+          <span id="currentNumber" style="font-size: 72px; font-weight: 800; color: #ff8811; line-height: 1;">1</span>
         </div>
       </div>
     </div>
     
     <div class="find-number-progress" style="text-align: center; margin-bottom: 20px;">
       <div style="background: #e5e7eb; height: 8px; border-radius: 10px; max-width: 300px; margin: 0 auto; overflow: hidden;">
-        <div id="progressFill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #10B981, #059669); transition: width 0.3s ease;"></div>
+        <div id="progressFill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #87d34c, #57a718); transition: width 0.3s ease;"></div>
       </div>
       <div style="margin-top: 8px; font-size: 14px; color: #666;">
         Найдено: <b id="foundCount">0</b> / ${total}
       </div>
     </div>
     
-    <div id="numberContainer" style="position: relative; min-height: 550px; background: linear-gradient(135deg, #f0f0ff, #e8e8ff); border-radius: 32px; overflow: hidden; margin-top: 10px;">
-    </div>
+    <div id="numberContainer" style="position: relative; min-height: 550px; background-image: url('${backgrounds[state.level]}'); background-size: cover; background-position: center; border-radius: 32px; overflow: hidden; margin-top: 10px;"></div>
   `;
   
   const container = document.getElementById("numberContainer");
@@ -4103,70 +4173,66 @@ function renderAttentionFindNumber() {
   const progressFill = document.getElementById("progressFill");
   const foundCountSpan = document.getElementById("foundCount");
   
-  // Получаем размеры контейнера
   const containerWidth = container.clientWidth || 800;
   const containerHeight = 550;
   
-  // Базовый размер ячейки
-  const baseSize = 110;
-  
-  function generateRandomPosition(index, width, height) {
-    let attempts = 0;
-    let pos = { left: 0, top: 0 };
-    let overlapping = true;
-    const margin = 15;
-    
-    while (overlapping && attempts < 100) {
-      pos = {
-        left: margin + Math.random() * (containerWidth - width - margin * 2),
-        top: margin + Math.random() * (containerHeight - height - margin * 2)
-      };
-      
-      overlapping = false;
-      for (let i = 0; i < positions.length; i++) {
-        const dx = Math.abs(pos.left - positions[i].left);
-        const dy = Math.abs(pos.top - positions[i].top);
-        const minDist = Math.min(width, height) + Math.min(positions[i].width, positions[i].height);
-        if (dx < minDist - 20 && dy < minDist - 20) {
-          overlapping = true;
-          break;
-        }
+  function isOverlapping(newX, newY, newW, newH, minDistance = 25) {
+    for (let pos of positions) {
+      const dx = Math.abs(newX - pos.x);
+      const dy = Math.abs(newY - pos.y);
+      const minDistX = (newW + pos.width) / 2 + minDistance;
+      const minDistY = (newH + pos.height) / 2 + minDistance;
+      if (dx < minDistX && dy < minDistY) {
+        return true;
       }
-      attempts++;
     }
-    return pos;
+    return false;
   }
   
-  // Создаём массив цифр с их стилями
+  function generateRandomPosition(width, height, index) {
+    const margin = 20;
+    let attempts = 0;
+    let x, y;
+    do {
+      x = margin + Math.random() * (containerWidth - width - margin);
+      y = margin + Math.random() * (containerHeight - height - margin);
+      attempts++;
+      if (attempts > 500) break;
+    } while (isOverlapping(x, y, width, height));
+    return { x, y };
+  }
+  
   const numberItems = numbers.map((num, index) => {
-    const shape = shapes[Math.floor(Math.random() * shapes.length)];
-    const color = getRandomColor();
-    const font = fonts[Math.floor(Math.random() * fonts.length)];
-    const fontSize = 32 + Math.floor(Math.random() * 20); // 32-52px
-    const rotate = (Math.random() - 0.5) * 15; // -7.5° до +7.5°
+    const shape = getRandomShape();
+    const bgColor = getRandomColor();
+    const rotate = (Math.random() - 0.5) * 15;
     
-    // Определяем размеры в зависимости от фигуры
-    let width = baseSize;
-    let height = baseSize;
-    if (shape.shapeWidth) {
-      width = parseInt(shape.shapeWidth);
-      height = parseInt(shape.shapeHeight);
+    let baseSize = 85 + Math.floor(Math.random() * 35);
+    let width = Math.floor(baseSize * (shape.width || 1));
+    let height = Math.floor(baseSize * (shape.height || 1));
+    
+    const pos = generateRandomPosition(width, height, index);
+    positions.push({ x: pos.x, y: pos.y, width: width, height: height });
+    
+    let additionalStyles = "";
+    if (shape.clipPath) {
+      additionalStyles = `clip-path: ${shape.clipPath};`;
     }
     
-    const pos = generateRandomPosition(index, width, height);
-    positions.push({ ...pos, width: width, height: height });
+    const padding = shape.padding || 8;
     
     return {
       value: num,
       shape: shape,
-      color: color,
-      font: font,
-      fontSize: fontSize,
+      bgColor: bgColor,
       rotate: rotate,
-      left: pos.left,
-      top: pos.top,
+      left: pos.x,
+      top: pos.y,
       width: width,
-      height: height
+      height: height,
+      padding: padding,
+      additionalStyles: additionalStyles,
+      imageHtml: getNumberImage(num)
     };
   });
   
@@ -4176,15 +4242,16 @@ function renderAttentionFindNumber() {
     if (foundCountSpan) foundCountSpan.textContent = foundCount;
   }
   
-  // Создаём и добавляем цифры в контейнер
   numberItems.forEach((item) => {
     const cell = document.createElement("div");
     cell.className = "number-cell";
-    cell.textContent = item.value;
+    cell.innerHTML = item.imageHtml;
     cell.setAttribute("data-value", item.value);
     
-    // Базовые стили (без transition для transform)
-    let styleString = `
+    let borderRadius = item.shape.borderRadius || "0";
+    if (item.shape.name === "овал") borderRadius = "50%";
+    
+    cell.style.cssText = `
       position: absolute;
       left: ${item.left}px;
       top: ${item.top}px;
@@ -4193,38 +4260,26 @@ function renderAttentionFindNumber() {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: ${item.fontSize}px;
-      font-weight: bold;
-      font-family: '${item.font}', cursive, sans-serif;
-      background: ${item.color.bg};
-      color: white;
+      background: ${item.bgColor};
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
       transform: rotate(${item.rotate}deg);
       z-index: ${item.value};
-      will-change: transform;
-      backface-visibility: hidden;
+      border-radius: ${borderRadius};
+      transition: all 0.15s ease;
+      ${item.additionalStyles}
     `;
     
-    // Добавляем border-radius
-    if (item.shape.borderRadius) {
-      styleString += `border-radius: ${item.shape.borderRadius};`;
-    }
-    
-    cell.style.cssText = styleString;
-    
-    // Простой эффект при наведении (без transform scale, только тень)
     cell.onmouseenter = () => {
       if (!cell.classList.contains("correct")) {
-        cell.style.boxShadow = "0 12px 28px rgba(0,0,0,0.25)";
-        cell.style.filter = "brightness(1.05)";
+        cell.style.transform = `rotate(${item.rotate}deg) scale(1.05)`;
+        cell.style.zIndex = "100";
       }
     };
     cell.onmouseleave = () => {
       if (!cell.classList.contains("correct")) {
-        cell.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
-        cell.style.filter = "none";
+        cell.style.transform = `rotate(${item.rotate}deg) scale(1)`;
+        cell.style.zIndex = item.value;
       }
     };
     
@@ -4235,12 +4290,11 @@ function renderAttentionFindNumber() {
       const value = parseInt(cell.getAttribute("data-value"));
       
       if (value === current) {
-        // Правильный клик
         cell.classList.add("correct");
-        cell.style.opacity = "0.6";
-        cell.style.filter = "grayscale(0.3)";
+        cell.style.opacity = "0.5";
+        cell.style.filter = "grayscale(0.4)";
         cell.style.pointerEvents = "none";
-        cell.style.transform = `rotate(${item.rotate}deg) scale(0.96)`;
+        cell.style.transform = `rotate(${item.rotate}deg) scale(0.95)`;
         
         foundCount++;
         current++;
@@ -4251,14 +4305,7 @@ function renderAttentionFindNumber() {
         
         if (current > total) {
           gameActive = false;
-          
-          // Праздничный эффект
-          container.style.background = "linear-gradient(135deg, #d1fae5, #a7f3d0)";
-          setTimeout(() => { 
-            container.style.background = "linear-gradient(135deg, #f0f0ff, #e8e8ff)";
-          }, 500);
-          
-          showToast(`🎉 ПОБЕДА! Все ${total} цифр найдены!`, "success");
+          showToast("ПОБЕДА! Все цифры найдены!", "success");
           successAction();
           
           findNumberTimeout = setTimeout(() => {
@@ -4267,42 +4314,37 @@ function renderAttentionFindNumber() {
             }
           }, 1500);
         } else {
-          showToast(`✅ ${value}! Теперь ищи ${current}`, "success");
+          showToast(`${value}! Теперь ищи ${current}`, "success");
         }
       } else {
-        // Неправильный клик
-        cell.classList.add("wrong");
         cell.style.animation = "shake 0.3s ease";
-        
         if (navigator.vibrate) navigator.vibrate(100);
         
         setTimeout(() => {
-          cell.classList.remove("wrong");
           cell.style.animation = "";
         }, 300);
         
         failAction();
         
-        // Подсказка
         const hint = document.createElement("div");
-        hint.textContent = `❌ Это ${value}! Ищем ${current}`;
+        hint.textContent = `Это ${value}! Ищем ${current}`;
         hint.style.cssText = `
           position: fixed;
           bottom: 80px;
           left: 50%;
           transform: translateX(-50%);
-          background: #EF4444;
+          background: #ea3117;
           color: white;
-          padding: 10px 24px;
+          padding: 8px 16px;
           border-radius: 40px;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: 600;
           z-index: 1000;
           animation: toastSlide 0.3s ease;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+          box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
         `;
         document.body.appendChild(hint);
-        setTimeout(() => hint.remove(), 800);
+        setTimeout(() => hint.remove(), 600);
       }
     };
     
@@ -4311,7 +4353,6 @@ function renderAttentionFindNumber() {
   
   updateProgress();
 }
-
 // 4. ЧЁРНО-БЕЛЫЕ ТАБЛИЦЫ (без дублей на одном цвете)
 function renderAttentionBlackWhite() {
   const sizes = { 1: 4, 2: 5, 3: 7 };
@@ -4341,9 +4382,9 @@ function renderAttentionBlackWhite() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">⚫⚪ Чёрно-белые таблицы ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Чёрно-белые таблицы ${'⭐'.repeat(state.level)}</div>
     <div class="current-task" style="text-align: center; margin-bottom: 20px; font-size: 22px;">
-      🎯 Найди: <b id="currentNumber" style="font-size: 42px;">1</b> на <b id="currentColor" style="font-size: 32px; color: #333;">чёрном</b> фоне
+      Найди: <b id="currentNumber" style="font-size: 42px;">1</b> на <b id="currentColor" style="font-size: 32px; color: #333;">чёрном</b> фоне
     </div>
     <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
       <div class="attention-grid" id="bwGrid" style="display: grid; grid-template-columns: repeat(${size}, 1fr); gap: 10px; justify-content: center; margin: 0 auto;"></div>
@@ -4445,24 +4486,24 @@ function renderAttentionCircleSquare() {
   
   let instructions = "";
   if (config.action === "cross") {
-    instructions = "✂️ Зачеркни все круги (⭕)!";
+    instructions = "Зачеркни все круги!";
   } else if (config.action === "circle") {
-    instructions = "🖍️ Обведи все квадраты (⬛)!";
+    instructions = "Обведи все квадраты!";
   } else {
-    instructions = "✂️ Зачеркни круги (⭕) и 🖍️ обведи квадраты (⬛)!";
+    instructions = "Зачеркни круги и обведи квадраты!";
   }
   
   gameArea.innerHTML = `
     ${renderHUD()}
     <div class="task-title">⭕ Зачеркни-обведи ${'⭐'.repeat(state.level)}</div>
     <div class="attention-target" style="text-align: center; font-size: 20px;">
-      📖 ${instructions}
+      ${instructions}
     </div>
     <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin: 20px 0;">
       <div class="attention-grid" id="shapesGrid" style="display: grid; grid-template-columns: repeat(${cols}, 1fr); gap: 10px; justify-content: center; margin: 0 auto;"></div>
     </div>
     <div style="display: flex; justify-content: center; margin-top: 20px;">
-      <button id="checkShapes" class="btn-primary" style="width: auto; padding: 12px 32px;">✅ Проверить</button>
+      <button id="checkShapes" class="btn-primary" style="width: auto; padding: 12px 32px;">Проверить</button>
     </div>
   `;
   
@@ -4516,11 +4557,11 @@ function renderAttentionCircleSquare() {
         if (shape === "⭕") {
           cell.classList.add("striked");
           cell.style.textDecoration = "line-through";
-          cell.style.backgroundColor = "#fee2e2";
+          cell.style.backgroundColor = "#ea311720";
         } else if (shape === "⬛") {
           cell.classList.add("bordered");
-          cell.style.border = "4px solid #10B981";
-          cell.style.backgroundColor = "#d1fae5";
+          cell.style.border = "4px solid #87d34c";
+          cell.style.backgroundColor = "#87d34c20";
         }
       }
     };
@@ -4580,33 +4621,33 @@ function renderAttentionCircleSquare() {
     
     if (correct) {
       successAction();
-      showToast("✅ Правильно! Все фигуры отмечены верно!", "success");
+      showToast("Правильно! Все фигуры отмечены верно!", "success");
     } else {
       failAction();
       let message = "";
       if (config.action === "cross") {
         if (circlesMarked < circlesCountTotal) {
-          message = `❌ Осталось зачеркнуть ${circlesCountTotal - circlesMarked} кругов!`;
+          message = `Осталось зачеркнуть ${circlesCountTotal - circlesMarked} кругов!`;
         } else if (circlesMarked > circlesCountTotal) {
-          message = "❌ Ты зачеркнул лишние фигуры!";
+          message = "Ты зачеркнул лишние фигуры!";
         } else {
-          message = "❌ Есть ошибки! Попробуй ещё раз";
+          message = "Есть ошибки! Попробуй ещё раз";
         }
       } else if (config.action === "circle") {
         if (squaresMarked < squaresCountTotal) {
-          message = `❌ Осталось обвести ${squaresCountTotal - squaresMarked} квадратов!`;
+          message = `Осталось обвести ${squaresCountTotal - squaresMarked} квадратов!`;
         } else if (squaresMarked > squaresCountTotal) {
-          message = "❌ Ты обвёл лишние фигуры!";
+          message = "Ты обвёл лишние фигуры!";
         } else {
-          message = "❌ Есть ошибки! Попробуй ещё раз";
+          message = "Есть ошибки! Попробуй ещё раз";
         }
       } else {
         const remainingCircles = circlesCountTotal - circlesMarked;
         const remainingSquares = squaresCountTotal - squaresMarked;
         if (remainingCircles > 0 || remainingSquares > 0) {
-          message = `❌ Осталось: ${remainingCircles} кругов зачеркнуть, ${remainingSquares} квадратов обвести!`;
+          message = `Осталось: ${remainingCircles} кругов зачеркнуть, ${remainingSquares} квадратов обвести!`;
         } else {
-          message = "❌ Есть ошибки! Попробуй ещё раз";
+          message = "Есть ошибки! Попробуй ещё раз";
         }
       }
       showToast(message, "error");
@@ -4614,87 +4655,166 @@ function renderAttentionCircleSquare() {
   };
 }
 
-// 6. НАЙДИ СРЕДИ (похожие эмодзи) - ИСПРАВЛЕНА
+// 6. НАЙДИ СРЕДИ (найди указанный предмет среди разных)
 function renderAttentionFindAmong() {
+  // ВСЕ ДОСТУПНЫЕ КАРТИНКИ (без повторов)
+  const allImages = [
+    { file: 'голубой_батут.png', name: 'батут' },
+    { file: 'голубой_мяч.png', name: 'мяч' },
+    { file: 'голубой_роликовый_конёк.png', name: 'роликовый конёк' },
+    { file: 'голубой_стул.png', name: 'стул' },
+    { file: 'голубой_кровать.png', name: 'кровать' },
+    { file: 'голубой_часы.png', name: 'часы' },
+    { file: 'голубой_рыба.png', name: 'рыба' },
+    { file: 'голубой_линейка.png', name: 'линейка' },
+    { file: 'голубой_сок.png', name: 'сок' },
+    { file: 'голубой_тюбик.png', name: 'тюбик' },
+    { file: 'голубой_пазл.png', name: 'пазл' },
+    { file: 'голубой_фото.png', name: 'фото' },
+    { file: 'желтый_груша.png', name: 'груша' },
+    { file: 'желтый_кубок.png', name: 'кубок' },
+    { file: 'желтый_лампочка.png', name: 'лампочка' },
+    { file: 'желтый_яблоко.png', name: 'яблоко' },
+    { file: 'желтый_яйцо.png', name: 'яйцо' },
+    { file: 'желтый_ракетка.png', name: 'ракетка' },
+    { file: 'желтый_палитра.png', name: 'палитра' },
+    { file: 'зелёный_яблоко.png', name: 'зелёное яблоко' },
+    { file: 'зелёный_брокколи.png', name: 'брокколи' },
+    { file: 'зелёный_галочка.png', name: 'галочка' },
+    { file: 'красный_арбуз.png', name: 'арбуз' },
+    { file: 'красный_вишня.png', name: 'вишня' },
+    { file: 'красный_помидор.png', name: 'помидор' },
+    { file: 'красный_яблоко.png', name: 'красное яблоко' },
+    { file: 'красный_мишень.png', name: 'мишень' },
+    { file: 'красный_вопрос.png', name: 'вопрос' },
+    { file: 'оранжевый_морковка.png', name: 'морковка' },
+    { file: 'оранжевый_гитара.png', name: 'гитара' },
+    { file: 'оранжевый_гриб.png', name: 'гриб' },
+    { file: 'оранжевый_щенок.png', name: 'щенок' },
+    { file: 'оранжевый_карандаш.png', name: 'карандаш' },
+    { file: 'оранжевый_сок.png', name: 'апельсиновый сок' },
+    { file: 'оранжевый_банка.png', name: 'банка' },
+    { file: 'синий_котёнок.png', name: 'котёнок' },
+    { file: 'синий_паук.png', name: 'паук' },
+    { file: 'синий_лампа.png', name: 'лампа' },
+    { file: 'синий_лупа.png', name: 'лупа' },
+    { file: 'синий_зуб.png', name: 'зуб' },
+    { file: 'синий_рюкзак.png', name: 'рюкзак' },
+    { file: 'синий_куртка.png', name: 'куртка' },
+    { file: 'сиреневый_ягода.png', name: 'ягода' },
+    { file: 'сиреневый_книга.png', name: 'книга' },
+    { file: 'сиреневый_наушники.png', name: 'наушники' },
+    { file: 'сиреневый_звезда.png', name: 'звезда' },
+    { file: 'сиреневый_песочные_часы.png', name: 'песочные часы' },
+    { file: 'сиреневый_замочек.png', name: 'замочек' },
+    { file: 'серый_голубь_1.png', name: 'голубь' },
+    { file: 'серый_голубь_2.png', name: 'голубь' }
+  ];
+  
   const configs = {
-    1: { total: 25, cols: 5, similarGroup: ["🐕", "🐩", "🐶"] },
-    2: { total: 36, cols: 6, similarGroup: ["🐕", "🐩", "🐶", "🐺"] },
-    3: { total: 49, cols: 7, similarGroup: ["🐕", "🐩", "🐶", "🐺", "🐕‍🦺"] }
+    1: { total: 16, cols: 4 },
+    2: { total: 25, cols: 5 },
+    3: { total: 36, cols: 6 }
   };
   
   const config = configs[state.level];
-  const similar = config.similarGroup;
+  const total = config.total;
+  const cols = config.cols;
   
-  // Выбираем случайный target из группы
-  const target = similar[Math.floor(Math.random() * similar.length)];
-  // Остальные эмодзи для заполнения
-  const others = similar.filter(emoji => emoji !== target);
+  // Выбираем случайный предмет для поиска
+  const targetIndex = Math.floor(Math.random() * allImages.length);
+  const target = allImages[targetIndex];
   
-  // ГАРАНТИРУЕМ, что target точно будет в сетке
+  // Создаём массив предметов (все разные)
   let items = [];
   
-  // Добавляем target в сетку (один или несколько раз)
-  const targetCount = state.level === 1 ? 1 : Math.floor(Math.random() * 2) + 1;
-  for (let i = 0; i < targetCount; i++) {
-    items.push(target);
+  // Добавляем target (1 раз)
+  items.push(`<img src="images/${target.file}" style="width: 60px; height: 60px; object-fit: contain;">`);
+  
+  // Добавляем остальные уникальные предметы (без повторов)
+  const otherImages = allImages.filter((_, idx) => idx !== targetIndex);
+  const shuffledOthers = [...otherImages].sort(() => Math.random() - 0.5);
+  
+  for (let i = 0; i < total - 1; i++) {
+    const randomItem = shuffledOthers[i % shuffledOthers.length];
+    items.push(`<img src="images/${randomItem.file}" style="width: 60px; height: 60px; object-fit: contain;">`);
   }
   
-  // Заполняем остальные ячейки случайными эмодзи из others
-  while (items.length < config.total) {
-    const randomEmoji = others[Math.floor(Math.random() * others.length)];
-    items.push(randomEmoji);
-  }
-  
-  // Перемешиваем массив
+  // Перемешиваем
   for (let i = items.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [items[i], items[j]] = [items[j], items[i]];
   }
   
-  // Дополнительная проверка: убеждаемся, что target есть в items
-  if (!items.includes(target)) {
-    items[Math.floor(Math.random() * items.length)] = target;
-  }
-  
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔍 Найди среди... ${'⭐'.repeat(state.level)}</div>
-    <div class="attention-target" style="text-align: center; font-size: 24px;">
-      🎯 Найди: <span class="target-highlight">${target}</span>
+    <div class="task-title">Найди среди... ${'⭐'.repeat(state.level)}</div>
+    <div class="attention-target" style="text-align: center; font-size: 26px; padding: 20px; background: #e8eaff; border-radius: 20px; margin-bottom: 20px; font-weight: 700;">
+      Найди: ${target.name}
     </div>
     <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 20px;">
-      <div class="attention-grid" id="animalsGrid" style="display: grid; grid-template-columns: repeat(${config.cols}, 1fr); gap: 10px; justify-content: center; margin: 0 auto;"></div>
+      <div class="attention-grid" id="itemsGrid" style="display: grid; grid-template-columns: repeat(${cols}, 1fr); gap: 12px; justify-content: center; margin: 0 auto;"></div>
     </div>
   `;
   
-  const grid = document.getElementById("animalsGrid");
+  const grid = document.getElementById("itemsGrid");
   
-  items.forEach(animal => {
+  items.forEach((item, idx) => {
+    const isTarget = item.includes(target.file);
+    
     const cell = document.createElement("div");
     cell.className = "attention-cell";
-    cell.style.width = "65px";
-    cell.style.height = "65px";
-    cell.style.fontSize = "40px";
+    cell.style.width = "70px";
+    cell.style.height = "70px";
     cell.style.display = "flex";
     cell.style.alignItems = "center";
     cell.style.justifyContent = "center";
-    cell.textContent = animal;
+    cell.style.background = "white";
+    cell.style.borderRadius = "16px";
+    cell.style.cursor = "pointer";
+    cell.style.transition = "all 0.2s ease";
+    cell.style.boxShadow = "6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8)";
+    cell.style.padding = "8px";
+    cell.innerHTML = item;
+    
     cell.onclick = () => {
-      if (animal === target) {
+      if (isTarget) {
         cell.classList.add("correct");
+        cell.style.background = "linear-gradient(135deg, #87d34c, #57a718)";
+        cell.style.transform = "scale(1.05)";
+        showToast(`Правильно! Это ${target.name}`, "success");
         successAction();
-        showToast(`🎉 Нашёл ${target}!`, "success");
       } else {
         cell.classList.add("wrong");
-        setTimeout(() => cell.classList.remove("wrong"), 300);
+        cell.style.background = "#ea3117";
+        cell.style.transform = "scale(0.95)";
+        setTimeout(() => {
+          cell.classList.remove("wrong");
+          cell.style.background = "white";
+          cell.style.transform = "scale(1)";
+        }, 300);
         failAction();
       }
     };
+    
+    cell.onmouseenter = () => {
+      if (!cell.classList.contains("correct") && !cell.classList.contains("wrong")) {
+        cell.style.transform = "scale(1.08)";
+        cell.style.boxShadow = "6px 6px 12px rgba(0,0,0,0.1), -3px -3px 10px rgba(255,255,255,0.8)";
+      }
+    };
+    cell.onmouseleave = () => {
+      if (!cell.classList.contains("correct") && !cell.classList.contains("wrong")) {
+        cell.style.transform = "scale(1)";
+        cell.style.boxShadow = "6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8)";
+      }
+    };
+    
     grid.appendChild(cell);
   });
 }
 
-/// 7. ФИДЖИТАЛ: РАСКРАСКА (ОБВЕДЕНИЕ ПО КОНТУРУ)
+// 7. ФИДЖИТАЛ: РАСКРАСКА (ОБВЕДЕНИЕ ПО КОНТУРУ)
 function renderPhygitalColoring() {
   // ===== КОНТУРЫ ДЛЯ РАЗНЫХ УРОВНЕЙ (по 6 вариантов) =====
   const contours = {
@@ -4881,120 +5001,6 @@ function renderPhygitalColoring() {
           ctx.beginPath();
           ctx.ellipse(w/2 + size/2, h/2 + size, size/3, size/4, 0, 0, Math.PI * 2);
           ctx.stroke();
-        } },
-      { name: "Дракончик", draw: (ctx, w, h) => {
-          const size = Math.min(w, h) * 0.3;
-          ctx.beginPath();
-          ctx.ellipse(w/2, h/2 - size/2, size/1.2, size/1, 0, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.ellipse(w/2, h/2 + size/3, size, size/1.2, 0, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.rect(w/2 - size/3, h/2 - size/4, size/1.5, size/1.5);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 - size, h/2);
-          ctx.lineTo(w/2 - size*1.8, h/2 - size);
-          ctx.lineTo(w/2 - size*1.3, h/2 - size/2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 + size, h/2);
-          ctx.lineTo(w/2 + size*1.8, h/2 - size);
-          ctx.lineTo(w/2 + size*1.3, h/2 - size/2);
-          ctx.stroke();
-        } },
-      { name: "Робот", draw: (ctx, w, h) => {
-          const size = Math.min(w, h) * 0.3;
-          ctx.strokeRect(w/2 - size/1.5, h/2 - size, size/0.75, size/1);
-          ctx.strokeRect(w/2 - size/1.3, h/2 - size/4, size/0.85, size/0.8);
-          ctx.strokeRect(w/2 - size/2, h/2 - size/1.5, size/4, size/4);
-          ctx.strokeRect(w/2 + size/4, h/2 - size/1.5, size/4, size/4);
-          ctx.strokeRect(w/2 - size/3, h/2 - size/2, size/1.5, size/4);
-          ctx.beginPath();
-          ctx.moveTo(w/2, h/2 - size*1.3);
-          ctx.lineTo(w/2, h/2 - size*1.6);
-          ctx.stroke();
-        } },
-      { name: "Принцесса", draw: (ctx, w, h) => {
-          const size = Math.min(w, h) * 0.3;
-          ctx.beginPath();
-          ctx.moveTo(w/2, h/2 + size/2);
-          ctx.lineTo(w/2 - size, h/2 + size);
-          ctx.lineTo(w/2, h/2 + size*1.3);
-          ctx.lineTo(w/2 + size, h/2 + size);
-          ctx.closePath();
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.arc(w/2, h/2 - size/3, size/1.2, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 - size/2, h/2 - size);
-          ctx.lineTo(w/2 - size/4, h/2 - size*1.3);
-          ctx.lineTo(w/2, h/2 - size/1.1);
-          ctx.lineTo(w/2 + size/4, h/2 - size*1.3);
-          ctx.lineTo(w/2 + size/2, h/2 - size);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 - size, h/2);
-          ctx.lineTo(w/2 - size*1.5, h/2 + size/2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 + size, h/2);
-          ctx.lineTo(w/2 + size*1.5, h/2 + size/2);
-          ctx.stroke();
-        } },
-      { name: "Бабочка", draw: (ctx, w, h) => {
-          const size = Math.min(w, h) * 0.3;
-          ctx.beginPath();
-          ctx.ellipse(w/2 - size/1.5, h/2, size/1.2, size, 0.5, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.ellipse(w/2 + size/1.5, h/2, size/1.2, size, -0.5, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.ellipse(w/2 - size/2.5, h/2 + size/3, size/1.3, size/1.5, 0.3, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.ellipse(w/2 + size/2.5, h/2 + size/3, size/1.3, size/1.5, -0.3, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.ellipse(w/2, h/2, size/3, size/1.2, 0, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2, h/2 - size/1.8);
-          ctx.quadraticCurveTo(w/2 - size/2, h/2 - size*1.3, w/2 - size/1.2, h/2 - size*1.3);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2, h/2 - size/1.8);
-          ctx.quadraticCurveTo(w/2 + size/2, h/2 - size*1.3, w/2 + size/1.2, h/2 - size*1.3);
-          ctx.stroke();
-        } },
-      { name: "Сова", draw: (ctx, w, h) => {
-          const size = Math.min(w, h) * 0.3;
-          ctx.beginPath();
-          ctx.ellipse(w/2, h/2, size, size/1.1, 0, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.arc(w/2 - size/2.5, h/2 - size/4, size/4, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.arc(w/2 + size/2.5, h/2 - size/4, size/4, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 - size/1.5, h/2 - size/1.5);
-          ctx.lineTo(w/2 - size/3, h/2 - size/2);
-          ctx.lineTo(w/2 - size/1.8, h/2 - size/3);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 + size/1.5, h/2 - size/1.5);
-          ctx.lineTo(w/2 + size/3, h/2 - size/2);
-          ctx.lineTo(w/2 + size/1.8, h/2 - size/3);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 - size/2, h/2 + size/3);
-          ctx.quadraticCurveTo(w/2, h/2 + size/2, w/2 + size/2, h/2 + size/3);
-          ctx.stroke();
         } }
     ]
   };
@@ -5003,36 +5009,35 @@ function renderPhygitalColoring() {
   const levelContours = contours[state.level];
   const selectedContour = levelContours[Math.floor(Math.random() * levelContours.length)];
   
-  // Определяем размер холста
   const canvasSize = 450;
   const brushSize = 3;
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
   let instructions = "";
   if (isMobile) {
-    instructions = "📱 Возьми телефон в другую руку! Обведи рисунок пальцем по пунктирной линии.";
+    instructions = "Возьми телефон в другую руку! Обведи рисунок пальцем по пунктирной линии.";
   } else {
-    instructions = "🖱️ Возьми мышку в другую руку! Обведи рисунок по пунктирной линии, удерживая левую кнопку.";
+    instructions = "Возьми мышку в другую руку! Обведи рисунок по пунктирной линии, удерживая левую кнопку.";
   }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🎯 Фиджитал: Обведи по контуру ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Фиджитал: Обведи по контуру ${'⭐'.repeat(state.level)}</div>
     <div class="phygital-hint" style="background: #fef3c7; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-      🔐 Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
-      <br>💡 ${instructions}
+      Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+      <br> ${instructions}
     </div>
     <div class="contour-area" style="display: flex; justify-content: center; margin: 20px 0;">
-      <div style="background: white; padding: 20px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-        <canvas id="drawingCanvas" width="${canvasSize}" height="${canvasSize}" style="border: 3px dashed #667eea; border-radius: 16px; cursor: crosshair; background: white; touch-action: none;"></canvas>
+      <div style="background: white; padding: 20px; border-radius: 20px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
+        <canvas id="drawingCanvas" width="${canvasSize}" height="${canvasSize}" style="border: 3px dashed #765fde; border-radius: 16px; cursor: crosshair; background: white; touch-action: none;"></canvas>
       </div>
     </div>
     <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
-      <button id="clearCanvasBtn" class="btn-secondary" style="width: auto; padding: 10px 24px;">🗑️ Очистить</button>
-      <button id="readyBtn" class="btn-primary" style="width: auto; padding: 12px 32px;">✅ Готово, я обвёл(а)!</button>
+      <button id="clearCanvasBtn" class="btn-secondary" style="width: auto; padding: 10px 24px;">Очистить</button>
+      <button id="readyBtn" class="btn-primary" style="width: auto; padding: 12px 32px;">Готово, я обвёл(а)!</button>
     </div>
     <div class="drawing-hint" style="text-align: center; margin-top: 15px; font-size: 14px; color: #666;">
-      🎨 Обведи рисунок как можно точнее! Линия останется там, где ты провёл(а).
+      Обведи рисунок как можно точнее! Линия останется там, где ты провёл(а).
     </div>
   `;
   
@@ -5043,7 +5048,7 @@ function renderPhygitalColoring() {
   ctx.save();
   ctx.beginPath();
   ctx.setLineDash([8, 8]);
-  ctx.strokeStyle = "#667eea";
+  ctx.strokeStyle = "#765fde";
   ctx.lineWidth = 3;
   ctx.fillStyle = "transparent";
   
@@ -5053,7 +5058,7 @@ function renderPhygitalColoring() {
   // Восстанавливаем настройки для рисования
   ctx.beginPath();
   ctx.setLineDash([]);
-  ctx.strokeStyle = "#10B981";
+  ctx.strokeStyle = "#87d34c";
   ctx.lineWidth = brushSize;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
@@ -5127,11 +5132,11 @@ function renderPhygitalColoring() {
   document.getElementById("clearCanvasBtn").onclick = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.setLineDash([8, 8]);
-    ctx.strokeStyle = "#667eea";
+    ctx.strokeStyle = "#765fde";
     ctx.lineWidth = 3;
     selectedContour.draw(ctx, canvasSize, canvasSize);
     ctx.setLineDash([]);
-    ctx.strokeStyle = "#10B981";
+    ctx.strokeStyle = "#87d34c";
     ctx.lineWidth = brushSize;
     showToast("🖌️ Линии очищены! Обводи заново", "success");
   };
@@ -5214,13 +5219,13 @@ function renderMemorySequence() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">💾 Запомни порядок ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Запомни порядок ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задание: Запомни порядок карточек. Через 3 секунды они закроются, перемешаются и откроются снова. 
+      Задание: Запомни порядок карточек. Через 3 секунды они закроются, перемешаются и откроются снова. 
       Нажимай на карточки в правильном порядке!
     </div>
     <div class="memory-board" id="memoryBoard" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;"></div>
-    <div class="memory-hint" id="memoryHint">⏳ Смотри и запоминай порядок... 3 секунды</div>
+    <div class="memory-hint" id="memoryHint">Смотри и запоминай порядок... 3 секунды</div>
   `;
   
   const board = document.getElementById("memoryBoard");
@@ -5239,11 +5244,11 @@ function renderMemorySequence() {
     card.style.display = "flex";
     card.style.alignItems = "center";
     card.style.justifyContent = "center";
-    card.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+    card.style.background = "linear-gradient(135deg, #765fde, #ff8811)";
     card.style.borderRadius = "24px";
     card.style.cursor = "pointer";
     card.style.transition = "all 0.3s ease";
-    card.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
+    card.style.boxShadow = "6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8)";
     board.appendChild(card);
     cards.push(card);
   }
@@ -5255,7 +5260,7 @@ function renderMemorySequence() {
     // Закрываем все карточки
     cards.forEach(card => {
       card.textContent = "?";
-      card.style.background = "#667eea";
+      card.style.background = "#765fde";
       card.style.fontSize = "56px";
     });
     document.getElementById("memoryHint").innerHTML = "🃏 Карточки закрываются и перемешиваются...";
@@ -5276,7 +5281,7 @@ function renderMemorySequence() {
       cards.length = 0;
       newCardsOrder.forEach(card => cards.push(card));
       
-      document.getElementById("memoryHint").innerHTML = "🎴 Карточки перемешаны! Сейчас откроются...";
+      document.getElementById("memoryHint").innerHTML = "Карточки перемешаны! Сейчас откроются...";
       
       // Фаза 3: Открываем карточки (показываем эмодзи)
       memorySequenceTimeouts.push(setTimeout(() => {
@@ -5286,10 +5291,10 @@ function renderMemorySequence() {
         cards.forEach(card => {
           card.textContent = card.dataset.value;
           card.style.fontSize = "72px";
-          card.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+          card.style.background = "linear-gradient(135deg, #765fde, #ff8811)";
         });
         
-        document.getElementById("memoryHint").innerHTML = "🎯 Теперь нажимай на карточки в том порядке, в котором они были ИЗНАЧАЛЬНО!";
+        document.getElementById("memoryHint").innerHTML = "Теперь нажимай на карточки в том порядке, в котором они были ИЗНАЧАЛЬНО!";
         
         // Сбрасываем состояние игры
         currentSelectionIndex = 0;
@@ -5307,31 +5312,31 @@ function renderMemorySequence() {
             if (cardOriginalIndex === expectedIndex) {
               // Правильный выбор
               card.classList.add("correct");
-              card.style.background = "linear-gradient(135deg, #10B981, #059669)";
+              card.style.background = "linear-gradient(135deg, #87d34c, #57a718)";
               card.style.transform = "scale(1.05)";
               currentSelectionIndex++;
               
-              document.getElementById("memoryHint").innerHTML = `✅ Правильно! Осталось выбрать ${length - currentSelectionIndex} карточек`;
+              document.getElementById("memoryHint").innerHTML = `Правильно! Осталось выбрать ${length - currentSelectionIndex} карточек`;
               
               if (currentSelectionIndex === length) {
-                document.getElementById("memoryHint").innerHTML = "🎉 Отлично! Ты запомнил весь порядок!";
+                document.getElementById("memoryHint").innerHTML = "Отлично! Ты запомнил весь порядок!";
                 endGame(true);
               }
             } else {
               // Неправильный выбор
               canPlay = false;
               card.classList.add("wrong");
-              card.style.background = "#EF4444";
-              document.getElementById("memoryHint").innerHTML = "❌ Неправильный порядок! Начинаем заново...";
+              card.style.background = "#ea3117";
+              document.getElementById("memoryHint").innerHTML = "Неправильный порядок! Начинаем заново...";
               
               // Подсвечиваем правильную карточку
               cards.forEach(c => {
                 if (parseInt(c.dataset.originalIndex) === expectedIndex) {
-                  c.style.background = "#FFD700";
+                  c.style.background = "#ff8811";
                   c.style.transform = "scale(1.05)";
                   setTimeout(() => {
                     if (gameActive) {
-                      c.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+                      c.style.background = "linear-gradient(135deg, #765fde, #ff8811)";
                       c.style.transform = "scale(1)";
                     }
                   }, 800);
@@ -5399,13 +5404,13 @@ function renderMemoryWhatMissing() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">❓ Что пропало? ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Что пропало? ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задание: Запомни все карточки. Сейчас они закроются, одна исчезнет, а потом откроются снова. 
+      Задание: Запомни все карточки. Сейчас они закроются, одна исчезнет, а потом откроются снова. 
       Выбери, какая карточка пропала!
     </div>
     <div class="memory-board" id="memoryBoard" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;"></div>
-    <div class="memory-hint" id="memoryHint">⏳ Запомни все карточки... 3 секунды</div>
+    <div class="memory-hint" id="memoryHint">Запомни все карточки... 3 секунды</div>
   `;
   
   const board = document.getElementById("memoryBoard");
@@ -5422,11 +5427,11 @@ function renderMemoryWhatMissing() {
     card.style.display = "flex";
     card.style.alignItems = "center";
     card.style.justifyContent = "center";
-    card.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+    card.style.background = "linear-gradient(135deg, #765fde, #ff8811)";
     card.style.borderRadius = "24px";
     card.style.cursor = "pointer";
     card.style.transition = "all 0.3s ease";
-    card.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
+    card.style.boxShadow = "6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8)";
     board.appendChild(card);
   });
   
@@ -5438,7 +5443,7 @@ function renderMemoryWhatMissing() {
     
     const allCards = document.querySelectorAll(".memory-card");
     allCards.forEach(card => {
-      card.style.background = "#667eea";
+      card.style.background = "#765fde";
       card.style.color = "white";
       card.textContent = "?";
     });
@@ -5465,13 +5470,13 @@ function renderMemoryWhatMissing() {
         
         const remainingCards = document.querySelectorAll(".memory-card");
         remainingCards.forEach(card => {
-          card.style.background = "linear-gradient(135deg, #10B981, #059669)";
+          card.style.background = "linear-gradient(135deg, #87d34c, #57a718)";
           card.style.color = "white";
           card.textContent = card.dataset.value;
           card.style.fontSize = "72px";
         });
         
-        document.getElementById("memoryHint").innerHTML = "❓ Какая карточка пропала? Выбери ответ";
+        document.getElementById("memoryHint").innerHTML = "Какая карточка пропала? Выбери ответ";
         
         // Создаём контейнер для вариантов ответов (горизонтально)
         const optionsContainer = document.createElement("div");
@@ -5497,34 +5502,34 @@ function renderMemoryWhatMissing() {
           btn.style.padding = "16px 32px";
           btn.style.fontSize = "28px";
           btn.style.fontWeight = "600";
-          btn.style.border = "3px solid #e5e7eb";
+          btn.style.border = "2px solid #d5d5da";
           btn.style.borderRadius = "60px";
-          btn.style.background = "white";
+          btn.style.background = "#ffffff";
           btn.style.cursor = "pointer";
           btn.style.transition = "all 0.2s ease";
           btn.style.minWidth = "100px";
-          btn.style.color = "#333";
+          btn.style.color = "#2f2f45";
           
           btn.onclick = () => {
             if (!gameActive) return;
             
             if (cardValue === missingCard) {
               btn.classList.add("correct");
-              btn.style.background = "linear-gradient(135deg, #10B981, #059669)";
+              btn.style.background = "#87d34c";
               btn.style.color = "white";
-              document.getElementById("memoryHint").innerHTML = "✅ Правильно! Ты угадал пропавшую карточку!";
+              document.getElementById("memoryHint").innerHTML = "Правильно! Ты угадал пропавшую карточку!";
               endGame(true);
             } else {
               btn.classList.add("wrong");
-              btn.style.background = "#EF4444";
+              btn.style.background = "#ea3117";
               btn.style.color = "white";
-              document.getElementById("memoryHint").innerHTML = `❌ Неправильно! Пропала карточка: ${missingCard}`;
+              document.getElementById("memoryHint").innerHTML = `Неправильно! Пропала карточка: ${missingCard}`;
               
               // Подсвечиваем правильный ответ
               const allBtns = document.querySelectorAll(".option-btn-horizontal");
               allBtns.forEach(b => {
                 if (b.textContent === missingCard) {
-                  b.style.background = "linear-gradient(135deg, #10B981, #059669)";
+                  b.style.background = "#87d34c";
                   b.style.color = "white";
                 }
               });
@@ -5534,16 +5539,16 @@ function renderMemoryWhatMissing() {
           };
           
           btn.onmouseenter = () => {
-            if (btn.style.background !== "linear-gradient(135deg, #10B981, #059669)" && 
-                btn.style.background !== "#EF4444") {
+            if (btn.style.background !== "#87d34c" && 
+                btn.style.background !== "#ea3117") {
               btn.style.background = "#f8f9ff";
               btn.style.transform = "translateY(-3px)";
             }
           };
           btn.onmouseleave = () => {
-            if (btn.style.background !== "linear-gradient(135deg, #10B981, #059669)" && 
-                btn.style.background !== "#EF4444") {
-              btn.style.background = "white";
+            if (btn.style.background !== "#87d34c" && 
+                btn.style.background !== "#ea3117") {
+              btn.style.background = "#ffffff";
               btn.style.transform = "translateY(0)";
             }
           };
@@ -5688,35 +5693,35 @@ function renderMemoryQuiz() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">📝 Мини-опрос ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Мини-опрос ${'⭐'.repeat(state.level)}</div>
     
     <div style="display: flex; justify-content: center; margin-bottom: 20px;">
       <div class="memory-sign" style="
-        background: linear-gradient(135deg, #FFD700, #FF8C00, #FF6B6B);
+        background: linear-gradient(135deg, #FFD700, #ff8811, #ea3117);
         transform: rotate(-3deg);
         padding: 12px 28px;
         border-radius: 20px;
         display: inline-flex;
         align-items: center;
         gap: 12px;
-        box-shadow: 8px 8px 0px rgba(0,0,0,0.15);
+        box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
         border: 3px solid white;
       ">
-        <span style="font-size: 36px;">⚠️</span>
+        <span style="font-size: 36px;"></span>
         <span style="font-size: 28px; font-weight: 800; color: white; text-shadow: 2px 2px 0px rgba(0,0,0,0.2); letter-spacing: 2px;">А ТЫ ЗАПОМНИЛ!?</span>
-        <span style="font-size: 36px;">❓</span>
+        <span style="font-size: 36px;"></span>
       </div>
     </div>
     
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
-      📖 Задание: Вспомни и напиши ответ. Здесь нет правильных или неправильных ответов — просто ответь честно!
+      Задание: Вспомни и напиши ответ. Здесь нет правильных или неправильных ответов — просто ответь честно!
     </div>
-    <div class="quiz-question" style="background: linear-gradient(135deg, #667eea15, #764ba215); padding: 30px; border-radius: 30px; margin: 20px 0; text-align: center;">
+    <div class="quiz-question" style="background: linear-gradient(135deg, #765fde15, #ff881115); padding: 30px; border-radius: 30px; margin: 20px 0; text-align: center;">
       <div style="font-size: ${fontSize}; font-weight: 700; line-height: 1.4;">${question}</div>
     </div>
     <textarea id="quizAnswer" class="answer-input" placeholder="Напиши свой ответ здесь..." style="width: 100%; min-height: 150px; padding: 20px; font-size: 20px; border-radius: 20px; border: 2px solid #e0e0e0; resize: vertical; font-family: inherit; margin-top: 20px;"></textarea>
     <div style="display: flex; justify-content: center; margin-top: 30px;">
-      <button id="checkBtn" class="btn-primary" style="width: auto; padding: 16px 48px; font-size: 20px;">✅ Сохранить ответ</button>
+      <button id="checkBtn" class="btn-primary" style="width: auto; padding: 16px 48px; font-size: 20px;">Сохранить ответ</button>
     </div>
   `;
   
@@ -5757,13 +5762,13 @@ function renderMemoryQuiz() {
       localStorage.setItem("quiz_answers", JSON.stringify(savedAnswers));
       
       successAction();
-      showToast("📝 Ответ сохранён! Молодец!", "success");
+      showToast("Ответ сохранён! Молодец!", "success");
       
       quizTimeout = setTimeout(() => {
         renderMemoryQuiz();
       }, 1500);
     } else {
-      showToast("✏️ Напиши ответ в поле выше!", "error");
+      showToast("Напиши ответ в поле выше!", "error");
     }
   };
   
@@ -5774,7 +5779,6 @@ function renderMemoryQuiz() {
     }
   });
 }
-
 
 // БЛОК 4. ФИДЖИТАЛ: ЗАПОМНИ НА СЛУХ (phygital_audio)
 let audioTimeout = null;
@@ -5840,7 +5844,7 @@ function renderPhygitalAudio() {
   
   function speakWords() {
     if (isPlaying) {
-      showToast("🌀 Слова уже озвучиваются, подожди...", "info");
+      showToast("Слова уже озвучиваются, подожди...", "info");
       return;
     }
     
@@ -5859,8 +5863,8 @@ function renderPhygitalAudio() {
       if (currentWordIndex >= selectedWords.length) {
         // Озвучивание завершено
         if (statusSpan) {
-          statusSpan.innerHTML = "✅ Все слова произнесены! Теперь запиши их на листочек и покажи родителям!";
-          statusSpan.style.background = "#d1fae5";
+          statusSpan.innerHTML = "Все слова произнесены! Теперь запиши их на листочек и покажи родителям!";
+          statusSpan.style.background = "#87d34c20";
           statusSpan.style.color = "#065f46";
         }
         showToast("🔊 Готово! Все слова произнесены", "success");
@@ -5873,7 +5877,7 @@ function renderPhygitalAudio() {
       
       const word = selectedWords[currentWordIndex];
       if (statusSpan) {
-        statusSpan.innerHTML = `🎙️ Слово ${currentWordIndex + 1} из ${selectedWords.length}: <strong style="color: #8B5CF6;">"${word}"</strong>`;
+        statusSpan.innerHTML = `🎙️ Слово ${currentWordIndex + 1} из ${selectedWords.length}: <strong style="color: #ff8811;">"${word}"</strong>`;
       }
       
       const utterance = new SpeechSynthesisUtterance(word);
@@ -5894,8 +5898,8 @@ function renderPhygitalAudio() {
       utterance.onerror = (e) => {
         console.error("Speech error:", e);
         if (statusSpan) {
-          statusSpan.innerHTML = "❌ Ошибка озвучивания. Попробуй ещё раз!";
-          statusSpan.style.background = "#fee2e2";
+          statusSpan.innerHTML = "Ошибка озвучивания. Попробуй ещё раз!";
+          statusSpan.style.background = "#ea311720";
           statusSpan.style.color = "#991b1b";
         }
         speakBtn.disabled = false;
@@ -5923,43 +5927,43 @@ function renderPhygitalAudio() {
     if (speakBtn) {
       speakBtn.disabled = false;
       speakBtn.style.opacity = "1";
-      speakBtn.textContent = "🔊 Прослушать слова";
+      speakBtn.textContent = "Прослушать слова";
     }
     if (statusSpan) {
-      statusSpan.innerHTML = "💡 Нажми на кнопку, чтобы начать";
-      statusSpan.style.background = "#f0f0ff";
-      statusSpan.style.color = "#667eea";
+      statusSpan.innerHTML = "Нажми на кнопку, чтобы начать";
+      statusSpan.style.background = "#e8eaff";
+      statusSpan.style.color = "#765fde";
     }
   }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🎯 Фиджитал: Запомни на слух ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Фиджитал: Запомни на слух ${'⭐'.repeat(state.level)}</div>
     
     <div class="phygital-hint" style="background: #fef3c7; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-      🔐 Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+      Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
     </div>
     
-    <div class="audio-info" style="background: linear-gradient(135deg, #667eea15, #764ba215); padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: center;">
-      <div style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">🎧 Слушай внимательно!</div>
+    <div class="audio-info" style="background: linear-gradient(135deg, #765fde15, #ff881115); padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: center;">
+      <div style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">Слушай внимательно!</div>
       <div style="font-size: 14px; color: #666;">Будет произнесено <strong>${wordsCount} слов</strong>. Запомни их и запиши на листочек.</div>
     </div>
     
-    <div id="audioStatus" style="text-align: center; margin-bottom: 20px; padding: 15px; background: #f0f0ff; border-radius: 16px; font-size: 16px; color: #667eea;">
-      💡 Нажми на кнопку, чтобы начать
+    <div id="audioStatus" style="text-align: center; margin-bottom: 20px; padding: 15px; background: #e8eaff; border-radius: 16px; font-size: 16px; color: #765fde;">
+      Нажми на кнопку, чтобы начать
     </div>
     
     <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-      <button id="speakBtn" class="btn-primary" style="width: auto; padding: 14px 32px; background: linear-gradient(135deg, #8B5CF6, #7C3AED);">🔊 Прослушать слова</button>
+      <button id="speakBtn" class="btn-primary" style="width: auto; padding: 14px 32px; background: linear-gradient(135deg, #765fde, #ff8811);">🔊 Прослушать слова</button>
       <button id="stopBtn" class="btn-secondary" style="width: auto; padding: 14px 32px; display: none;">⏹️ Остановить</button>
     </div>
     
     <div class="phygital-tip" style="background: #E0E7FF; padding: 16px 24px; border-radius: 24px; margin: 25px 0 15px 0; text-align: center;">
-      💡 Совет: Закрой глаза и сосредоточься! Записывай слова по мере запоминания.
+      Совет: Закрой глаза и сосредоточься! Записывай слова по мере запоминания.
     </div>
     
     <div style="display: flex; justify-content: center; margin-top: 15px;">
-      <button id="readyBtn" class="btn-primary" style="width: auto; padding: 16px 48px; background: linear-gradient(135deg, #10B981, #059669);">✅ Я всё запомнил(а) и записал(а)!</button>
+      <button id="readyBtn" class="btn-primary" style="width: auto; padding: 16px 48px; background: linear-gradient(135deg, #87d34c, #57a718);">Я всё запомнил(а) и записал(а)!</button>
     </div>
   `;
   
@@ -5976,12 +5980,12 @@ function renderPhygitalAudio() {
   stopBtn.onclick = () => {
     stopAndReset();
     stopBtn.style.display = "none";
-    showToast("⏹️ Озвучивание остановлено", "info");
+    showToast("⏹Озвучивание остановлено", "info");
   };
   
   readyBtn.onclick = () => {
     if (isPlaying) {
-      showToast("⏳ Подожди, слова ещё озвучиваются...", "info");
+      showToast("Подожди, слова ещё озвучиваются...", "info");
       return;
     }
     showParentPasswordModal(() => {
@@ -6033,17 +6037,17 @@ function renderReaction() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">⚡ Реакция ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Реакция ${'⭐'.repeat(state.level)}</div>
     <div class="reaction-stats">
-      <div>🎯 Попаданий: <span id="hitCount">0</span> / ${requiredHits}</div>
-      <div>⏱️ Время реакции: <span id="reactionTime">0</span> мс</div>
-      <div>🏆 Рекорд: <span id="reactionRecord">${reactionRecord ? reactionRecord + ' мс' : '—'}</span></div>
+      <div>Попаданий: <span id="hitCount">0</span> / ${requiredHits}</div>
+      <div>Время реакции: <span id="reactionTime">0</span> мс</div>
+      <div>Рекорд: <span id="reactionRecord">${reactionRecord ? reactionRecord + ' мс' : '—'}</span></div>
     </div>
     <div class="reaction-field" id="reactionField">
-      <div class="reaction-placeholder">🎯 Нажми "Старт"</div>
+      <div class="reaction-placeholder"></div>
     </div>
     <div style="display: flex; justify-content: center; margin-top: 20px; gap: 15px;">
-      <button id="startReactionBtn" class="btn-primary" style="width: auto; padding: 12px 32px;">▶️ Старт</button>
+      <button id="startReactionBtn" class="btn-primary" style="width: auto; padding: 12px 32px;">▶Старт</button>
     </div>
   `;
   
@@ -6068,7 +6072,7 @@ function renderReaction() {
   function showTarget() {
     if (!active) return;
     
-    field.innerHTML = '<div class="reaction-placeholder">👀 Жди...</div>';
+    field.innerHTML = '<div class="reaction-placeholder"></div>';
     
     const delay = Math.random() * 1500 + 500;
     
@@ -6084,7 +6088,7 @@ function renderReaction() {
       
       const target = document.createElement('div');
       target.className = 'reaction-target';
-      target.textContent = '🎯';
+      target.textContent = '';
       target.style.left = x + 'px';
       target.style.top = y + 'px';
       
@@ -6104,12 +6108,12 @@ function renderReaction() {
         if (hits >= requiredHits) {
           active = false;
           if (timeout) clearTimeout(timeout);
-          field.innerHTML = '<div class="reaction-placeholder">🎉 ПОБЕДА! 🎉</div>';
+          field.innerHTML = '<div class="reaction-placeholder"></div>';
           startBtn.disabled = false;
           startBtn.style.opacity = '1';
-          startBtn.textContent = '▶️ Ещё раз';
+          startBtn.textContent = 'Ещё раз';
           successAction();
-          showToast(`✅ Отлично! ${requiredHits} попаданий!`, "success");
+          showToast(`Отлично! ${requiredHits} попаданий!`, "success");
         } else {
           showTarget();
         }
@@ -6141,7 +6145,7 @@ function renderReaction() {
   };
 }
 
-// ===== 2. НАЙДИ СЛОВА (ИСПРАВЛЕНАЯ ВЕРСИЯ) =====
+// ===== 2. НАЙДИ СЛОВА (ИСПРАВЛЕННАЯ ВЕРСИЯ) =====
 let findWordsTimeout = null;
 
 // Функция для генерации случайной строки-заполнителя
@@ -6162,10 +6166,7 @@ function insertWordIntoString(baseString, word, startPos) {
 // Функция для создания задания с одинаковой длиной строк
 function createTask(word, lineLength, lineCount) {
   const lines = [];
-  // Для каждой строки генерируем уникальную случайную позицию
   for (let i = 0; i < lineCount; i++) {
-    // Генерируем случайную позицию от 0 до (lineLength - word.length - 5)
-    // Чтобы слово точно поместилось и был запас
     const maxStartPos = lineLength - word.length - 2;
     const startPos = Math.floor(Math.random() * (maxStartPos - 3)) + 3;
     
@@ -6184,36 +6185,30 @@ function renderFindWords() {
   }
   
   // ===== КОНФИГУРАЦИЯ ДЛЯ КАЖДОГО УРОВНЯ =====
-  // Уровень 1: 1 строка, 30 символов, слова 3-5 букв
   const wordsLevel1 = ["кот", "дом", "лес", "сад", "мяч", "сон", "день", "нос", "рот", "рука", "нога", "зуб", "сыр", "хлеб", "сок", "чай", "суп", "мир", "год", "час"];
-  
-  // Уровень 2: 2 строки, по 40 символов, слова 5-7 букв
   const wordsLevel2 = ["кошка", "собака", "белка", "лисица", "птица", "рыбка", "мышка", "ёжик", "заяц", "волк", "медведь", "дерево", "цветок", "солнце", "луна", "звезда", "книга", "тетрадь", "ручка", "учитель"];
-  
-  // Уровень 3: 3 строки, по 50 символов, слова 7-10 букв
   const wordsLevel3 = ["верблюд", "дельфин", "попугай", "жираф", "кенгуру", "компьютер", "библиотека", "путешествие", "фотография", "строитель", "приключение", "образование", "современный", "фантастика", "транспорт", "правительство", "исследование", "электричество", "достопримечательность", "предприниматель"];
   
   let wordsList, lineLength, lineCount, currentWord;
   
   if (state.level === 1) {
     wordsList = wordsLevel1;
-    lineLength = 23;  // 23 символов в строке
-    lineCount = 1;    // 1 строка
+    lineLength = 23;
+    lineCount = 1;
   } else if (state.level === 2) {
     wordsList = wordsLevel2;
-    lineLength = 46;  // 40 символов в строке
-    lineCount = 1;    // 2 строки
+    lineLength = 46;
+    lineCount = 1;
   } else {
     wordsList = wordsLevel3;
-    lineLength = 69;  // 50 символов в строке
-    lineCount = 1;    // 3 строки
+    lineLength = 69;
+    lineCount = 1;
   }
   
   // Выбираем случайное слово
   currentWord = wordsList[Math.floor(Math.random() * wordsList.length)];
   
-  // Создаём задание: слово будет ТОЛЬКО в ПЕРВОЙ строке (чтобы было понятно где искать)
-  // Но позиция начала слова будет РАЗНОЙ: от 3 до (lineLength - длина слова - 2)
+  // Создаём задание
   const generatedLines = createTask(currentWord, lineLength, lineCount);
   
   let found = false;
@@ -6221,13 +6216,12 @@ function renderFindWords() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">🔍 Найди слово ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Найди слово ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      📖 Задача: В строке из букв спрятано слово. Найди его и нажми на ПЕРВУЮ букву слова!
-      ${lineCount === 1 ? '🔍 Одна строка, найди слово!' : lineCount === 2 ? '🔍 Две строки, внимательно ищи!' : '🔍 Три строки, будь внимателен!'}
+      Задача: В строке из букв спрятано слово. Найди его и нажми на ПЕРВУЮ букву слова!
     </div>
     <div class="findword-target" style="text-align: center; margin-bottom: 20px;">
-      🎯 Найди слово: <span class="target-word" style="background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 8px 24px; border-radius: 40px; font-size: 28px;">${currentWord.toUpperCase()}</span>
+      Найди слово: <span class="target-word" style="background: linear-gradient(135deg, #ff8811, #d97706); color: white; padding: 8px 24px; border-radius: 40px; font-size: 28px;">${currentWord.toUpperCase()}</span>
     </div>
     <div class="findword-grid" id="findwordGrid" style="background: white; border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 15px; margin: 20px 0; border: 2px solid #E5E7EB;">
       ${generatedLines.map((line, lineIdx) => `
@@ -6239,7 +6233,7 @@ function renderFindWords() {
       `).join('')}
     </div>
     <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
-      <button id="newFindWordBtn" class="btn-secondary" style="width: auto; padding: 12px 24px;">🔄 Новое слово</button>
+      <button id="newFindWordBtn" class="btn-secondary" style="width: auto; padding: 12px 24px;">Новое слово</button>
     </div>
   `;
   
@@ -6254,17 +6248,15 @@ function renderFindWords() {
       const line = parseInt(char.dataset.line);
       const pos = parseInt(char.dataset.pos);
       
-      // Проверяем ТОЛЬКО первую строку (где спрятано слово)
-      // На других уровнях слово тоже только в первой строке
       if (line !== 0) {
         char.classList.add('wrong');
-        char.style.background = "#EF4444";
+        char.style.background = "#ea3117";
         char.style.color = "white";
         setTimeout(() => {
           if (char.classList.contains('wrong')) {
             char.classList.remove('wrong');
             char.style.background = "#F3F4F6";
-            char.style.color = "#333";
+            char.style.color = "#2f2f45";
           }
         }, 300);
         failAction();
@@ -6278,42 +6270,40 @@ function renderFindWords() {
         found = true;
         isAnswered = true;
         
-        // Подсвечиваем найденное слово
         for (let j = 0; j < currentWord.length; j++) {
           const foundChar = document.querySelector(`.findword-char[data-line="${line}"][data-pos="${pos + j}"]`);
           if (foundChar) {
             foundChar.classList.add('found');
-            foundChar.style.background = "linear-gradient(135deg, #10B981, #059669)";
+            foundChar.style.background = "linear-gradient(135deg, #87d34c, #57a718)";
             foundChar.style.color = "white";
           }
         }
         
         successAction();
-        showToast(`✅ Нашёл слово "${currentWord}"!`, "success");
+        showToast(`Нашёл слово "${currentWord}"!`, "success");
         
         findWordsTimeout = setTimeout(() => {
           renderFindWords();
         }, 1500);
       } else {
         char.classList.add('wrong');
-        char.style.background = "#EF4444";
+        char.style.background = "#ea3117";
         char.style.color = "white";
         setTimeout(() => {
           if (char.classList.contains('wrong')) {
             char.classList.remove('wrong');
             char.style.background = "#F3F4F6";
-            char.style.color = "#333";
+            char.style.color = "#2f2f45";
           }
         }, 300);
         failAction();
       }
     };
     
-    // Эффект при наведении
     char.onmouseenter = () => {
       if (!found && !isAnswered && !char.classList.contains('found')) {
         char.style.transform = "scale(1.1)";
-        char.style.background = "#8B5CF6";
+        char.style.background = "#765fde";
         char.style.color = "white";
       }
     };
@@ -6321,7 +6311,7 @@ function renderFindWords() {
       if (!found && !isAnswered && !char.classList.contains('found') && !char.classList.contains('wrong')) {
         char.style.transform = "scale(1)";
         char.style.background = "#F3F4F6";
-        char.style.color = "#333";
+        char.style.color = "#2f2f45";
       }
     };
   });
@@ -6331,7 +6321,7 @@ function renderFindWords() {
       clearTimeout(findWordsTimeout);
     }
     renderFindWords();
-    showToast("🔄 Новое слово сгенерировано!", "success");
+    showToast("Новое слово сгенерировано!", "success");
   };
 }
 
@@ -6351,8 +6341,8 @@ function renderSchulte() {
   const cols = Math.sqrt(total);
   
   // Адаптивные размеры ячеек (увеличены в 1.5 раза)
-  let cellSize = "105px";      // было 70px * 1.5
-  let fontSize = "36px";       // было 24px * 1.5
+  let cellSize = "105px";
+  let fontSize = "36px";
   
   if (state.level === 1) {
     cellSize = "min(105px, calc(90vw / 3 - 10px))";
@@ -6378,42 +6368,42 @@ function renderSchulte() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">📊 Таблица Шульте ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Таблица Шульте ${'⭐'.repeat(state.level)}</div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
-      📖 Нажимай на цифры по порядку от 1 до ${total}. 
-      ⏱️ Чем быстрее, тем лучше! За ошибку +0.5 сек.
+      Нажимай на цифры по порядку от 1 до ${total}. 
+      Чем быстрее, тем лучше! За ошибку +0.5 сек.
     </div>
     
-    <div class="schulte-stats" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; background: linear-gradient(135deg, #667eea15, #764ba215); padding: 15px 20px; border-radius: 60px; margin-bottom: 25px;">
-      <div class="schulte-timer" style="display: flex; align-items: center; gap: 8px; background: white; padding: 8px 20px; border-radius: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-        <span style="font-size: 24px;">⏱️</span>
+    <div class="schulte-stats" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; background: linear-gradient(135deg, #765fde15, #ff881115); padding: 15px 20px; border-radius: 60px; margin-bottom: 25px;">
+      <div class="schulte-timer" style="display: flex; align-items: center; gap: 8px; background: white; padding: 8px 20px; border-radius: 40px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
+        <span style="font-size: 24px;"></span>
         <span style="font-weight: 600;">Время:</span>
-        <span id="timerValue" style="font-size: 28px; font-weight: 800; color: #f59e0b; font-family: monospace;">0.00</span>
+        <span id="timerValue" style="font-size: 28px; font-weight: 800; color: #ff8811; font-family: monospace;">0.00</span>
         <span>сек</span>
       </div>
       
-      <div class="schulte-target" style="display: flex; align-items: center; gap: 8px; background: white; padding: 8px 20px; border-radius: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-        <span style="font-size: 24px;">🎯</span>
+      <div class="schulte-target" style="display: flex; align-items: center; gap: 8px; background: white; padding: 8px 20px; border-radius: 40px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
+        <span style="font-size: 24px;"></span>
         <span style="font-weight: 600;">Найди:</span>
-        <span id="currentTarget" style="font-size: 32px; font-weight: 800; color: #667eea; min-width: 40px; text-align: center;">1</span>
+        <span id="currentTarget" style="font-size: 32px; font-weight: 800; color: #765fde; min-width: 40px; text-align: center;">1</span>
       </div>
       
-      <div class="schulte-record" style="display: flex; align-items: center; gap: 8px; background: white; padding: 8px 20px; border-radius: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-        <span style="font-size: 24px;">🏆</span>
+      <div class="schulte-record" style="display: flex; align-items: center; gap: 8px; background: white; padding: 8px 20px; border-radius: 40px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
+        <span style="font-size: 24px;"></span>
         <span style="font-weight: 600;">Рекорд:</span>
-        <span id="recordValue" style="font-size: 20px; font-weight: 700; color: #f59e0b;">${savedRecord ? savedRecord + ' сек' : '—'}</span>
+        <span id="recordValue" style="font-size: 20px; font-weight: 700; color: #ff8811;">${savedRecord ? savedRecord + ' сек' : '—'}</span>
       </div>
     </div>
     
     <div style="display: flex; justify-content: center; margin: 20px 0;">
-      <div class="schulte-grid-wrapper" style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 20px; border-radius: 32px; box-shadow: 0 12px 28px rgba(102,126,234,0.4);">
+      <div class="schulte-grid-wrapper" style="background: linear-gradient(135deg, #765fde, #ff8811); padding: 20px; border-radius: 32px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
         <div class="schulte-grid" id="schulteGrid" style="display: grid; grid-template-columns: repeat(${cols}, 1fr); gap: 12px; margin: 0 auto;"></div>
       </div>
     </div>
     
     <div style="display: flex; justify-content: center; gap: 15px; margin-top: 25px;">
       <button id="resetSchulteBtn" class="btn-secondary" style="width: auto; padding: 12px 24px; display: inline-flex; align-items: center; gap: 8px;">
-        🔄 Новая таблица
+        Новая таблица
       </button>
     </div>
   `;
@@ -6432,7 +6422,6 @@ function renderSchulte() {
     
     .schulte-grid-wrapper:hover {
       transform: scale(1.01);
-      box-shadow: 0 16px 32px rgba(102,126,234,0.5);
     }
     
     .schulte-cell {
@@ -6446,40 +6435,38 @@ function renderSchulte() {
       font-weight: 800;
       cursor: pointer;
       transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-      border: 2px solid rgba(102,126,234,0.3);
-      color: #333;
+      box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
+      border: 2px solid rgba(118,95,222,0.3);
+      color: #2f2f45;
       width: ${cellSize};
       height: ${cellSize};
     }
     
     .schulte-cell:hover {
       transform: scale(1.08);
-      background: linear-gradient(135deg, #667eea20, #764ba220);
-      border-color: #667eea;
-      box-shadow: 0 10px 24px rgba(102,126,234,0.4);
+      background: linear-gradient(135deg, #765fde20, #ff881120);
+      border-color: #765fde;
     }
     
     .schulte-cell.correct {
-      background: linear-gradient(135deg, #10B981, #059669);
+      background: linear-gradient(135deg, #87d34c, #57a718);
       color: white;
-      border-color: #10B981;
+      border-color: #87d34c;
       transform: scale(0.96);
       animation: schultePulse 0.3s ease;
       cursor: default;
-      box-shadow: 0 4px 12px rgba(16,185,129,0.4);
     }
     
     .schulte-cell.wrong {
-      background: linear-gradient(135deg, #EF4444, #DC2626);
+      background: linear-gradient(135deg, #ea3117, #d5260e);
       color: white;
-      border-color: #EF4444;
+      border-color: #ea3117;
       animation: schulteShake 0.3s ease;
     }
     
     @keyframes schultePulse {
       0%, 100% { transform: scale(0.96); }
-      50% { transform: scale(1.05); background: #059669; }
+      50% { transform: scale(1.05); background: #57a718; }
     }
     
     @keyframes schulteShake {
@@ -6495,9 +6482,9 @@ function renderSchulte() {
     }
     
     @keyframes borderGlow {
-      0% { box-shadow: 0 12px 28px rgba(102,126,234,0.4); }
-      50% { box-shadow: 0 12px 32px rgba(102,126,234,0.7); border-color: #a855f7; }
-      100% { box-shadow: 0 12px 28px rgba(102,126,234,0.4); }
+      0% { box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8); }
+      50% { box-shadow: 6px 6px 12px rgba(118,95,222,0.3), -3px -3px 10px rgba(255,255,255,0.8); border-color: #ff8811; }
+      100% { box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8); }
     }
     
     .schulte-grid-wrapper {
@@ -6538,7 +6525,6 @@ function renderSchulte() {
   function createGrid() {
     grid.innerHTML = '';
     numbers = Array.from({ length: total }, (_, i) => i + 1);
-    // Перемешиваем числа
     for (let i = numbers.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
@@ -6566,13 +6552,11 @@ function renderSchulte() {
         const clickedNum = parseInt(cell.textContent);
         
         if (clickedNum === current) {
-          // Правильный клик
           cell.classList.add('correct');
           cell.style.pointerEvents = 'none';
           current++;
           if (targetSpan) targetSpan.textContent = current;
           
-          // Вибрация на мобильных (если есть)
           if (navigator.vibrate) navigator.vibrate(50);
           
           if (current > total) {
@@ -6581,7 +6565,6 @@ function renderSchulte() {
             const finalTime = ((Date.now() - startTime) / 1000 + penalty).toFixed(2);
             const isNewRecord = saveRecord(finalTime);
             
-            // Праздничная анимация для wrapper
             const wrapper = document.querySelector('.schulte-grid-wrapper');
             if (wrapper) {
               wrapper.style.animation = 'schulteCelebrate 0.5s ease';
@@ -6589,13 +6572,12 @@ function renderSchulte() {
             }
             
             if (isNewRecord) {
-              showToast(`🏆 НОВЫЙ РЕКОРД! ${finalTime} сек`, 'success');
+              showToast(`НОВЫЙ РЕКОРД! ${finalTime} сек`, 'success');
             } else {
-              showToast(`🎉 МОЛОДЕЦ! Время: ${finalTime} сек`, 'success');
+              showToast(`МОЛОДЕЦ! Время: ${finalTime} сек`, 'success');
             }
             successAction();
             
-            // Запускаем новую таблицу только один раз
             schulteTimeout = setTimeout(() => {
               if (state.levelProgress < state.tasksPerLevel) {
                 renderSchulte();
@@ -6603,7 +6585,6 @@ function renderSchulte() {
             }, 1500);
           }
         } else {
-          // Ошибка
           penalty += 0.5;
           cell.classList.add('wrong');
           
@@ -6619,7 +6600,6 @@ function renderSchulte() {
           }
           failAction();
           
-          // Подсказка: показываем, какую цифру ищем
           const hintToast = document.createElement('div');
           hintToast.textContent = `🔍 Ищем цифру ${current}!`;
           hintToast.style.cssText = `
@@ -6627,7 +6607,7 @@ function renderSchulte() {
             bottom: 80px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+            background: linear-gradient(135deg, #ff8811, #d97706);
             color: white;
             padding: 10px 20px;
             border-radius: 40px;
@@ -6635,7 +6615,7 @@ function renderSchulte() {
             font-weight: 600;
             z-index: 999;
             animation: toastSlide 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
           `;
           document.body.appendChild(hintToast);
           setTimeout(() => hintToast.remove(), 800);
@@ -6654,7 +6634,7 @@ function renderSchulte() {
         clearTimeout(schulteTimeout);
       }
       createGrid();
-      showToast("🔄 Новая таблица создана!", "success");
+      showToast("Новая таблица создана!", "success");
     };
   }
 }
