@@ -1988,9 +1988,83 @@ function renderLogicChain() {
   
   // ===== БИБЛИОТЕКИ ЭЛЕМЕНТОВ =====
   const numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-  const letters = ["А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З", "И", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Э", "Ю", "Я"];
-  const emojis = ["🍎", "🍌", "🍇", "🍒", "🍓", "🥝", "🍊", "🍉", "🍑", "🥭", "🐱", "🐶", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", "🦁", "🐮", "🐷", "🐸", "🐵", "⭐", "🌟", "❤️", "💙", "💚", "💛", "💜", "🧡"];
-  const shapes = ["●", "■", "▲", "◆", "★", "♠", "♣", "♥", "♦", "⬤", "🔴", "🔵", "🟢", "🟡", "🟣", "🟠", "🔷", "🔶", "🔺", "🔻"];
+  const letters = ["А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З", "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ы", "Ь", "Э", "Ю", "Я"];
+  
+  // КАРТИНКИ (все из списка, кроме фонов и цифр)
+  const imageItems = [
+    '<img src="images/голубой_батут.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_мяч.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_роликовый_конёк.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_стул.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_кровать.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_часы.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_рыба.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_линейка.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_сок.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_тюбик.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_пазл.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_фото.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/желтый_груша.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/желтый_кубок.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/желтый_лампочка.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/желтый_яблоко.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/желтый_яйцо.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/желтый_ракетка.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/желтый_палитра.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/зелёный_яблоко.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/зелёный_брокколи.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/зелёный_галочка.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/красный_арбуз.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/красный_вишня.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/красный_помидор.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/красный_яблоко.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/красный_мишень.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/красный_вопрос.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/оранжевый_морковка.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/оранжевый_гитара.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/оранжевый_гриб.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/оранжевый_щенок.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/оранжевый_карандаш.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/оранжевый_сок.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/оранжевый_банка.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/синий_котёнок.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/синий_паук.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/синий_лампа.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/синий_лупа.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/синий_зуб.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/синий_рюкзак.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/синий_куртка.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/сиреневый_ягода.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/сиреневый_книга.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/сиреневый_наушники.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/сиреневый_звезда.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/сиреневый_песочные_часы.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/сиреневый_замочек.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/серый_голубь_1.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/серый_голубь_2.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/розовый_мозг.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/дракон_лого_1.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/дракон_лого_2.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/дракон_лого_3.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">'
+  ];
+  
+  // ФИГУРЫ/СМАЙЛИКИ
+  const shapeItems = [
+    '<img src="images/желтый_смайл_1.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/желтый_смайл_2.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/желтый_смайл_3.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/желтый_смайл_4.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/красный_чудик.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/сиреневый_чудик_1.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/сиреневый_чудик_2.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/сиреневый_чудик_3.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/серый_чудик_1.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/серый_чудик_2.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_чудик.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_чудик_2.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_чудик_3.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">',
+    '<img src="images/голубой_чудик_4.png" style="width: 60px; height: 60px; object-fit: contain; vertical-align: middle;">'
+  ];
   
   // ===== ФУНКЦИЯ ГЕНЕРАЦИИ СЛУЧАЙНОГО ПАТТЕРНА =====
   function generatePattern(level) {
@@ -2001,37 +2075,26 @@ function renderLogicChain() {
     let result;
     
     if (level === 1) {
-      // 1 уровень: простые паттерны из 3-4 элементов (только один тип)
-      patternLength = Math.floor(Math.random() * 2) + 3; // 3 или 4
-      
-      // Выбираем случайный тип элементов
-      const types = ["numbers", "letters", "emojis", "shapes"];
+      patternLength = Math.floor(Math.random() * 2) + 3;
+      const types = ["numbers", "letters", "images", "shapes"];
       elementType = types[Math.floor(Math.random() * types.length)];
       
       if (elementType === "numbers") availablePool = [...numbers];
       else if (elementType === "letters") availablePool = [...letters];
-      else if (elementType === "emojis") availablePool = [...emojis];
-      else availablePool = [...shapes];
+      else if (elementType === "images") availablePool = [...imageItems];
+      else availablePool = [...shapeItems];
       
-      // Берём уникальные элементы для паттерна
       const shuffled = [...availablePool].sort(() => Math.random() - 0.5);
       const uniqueItems = shuffled.slice(0, patternLength);
-      
-      // Строим последовательность с повторением
       const repeats = 2;
       for (let i = 0; i < repeats; i++) {
         patternItems.push(...uniqueItems);
       }
-      
-      // Правильный ответ - следующий элемент паттерна
       result = uniqueItems[0];
       
     } else if (level === 2) {
-      // 2 уровень: комбинация двух типов, 4-5 элементов
-      patternLength = Math.floor(Math.random() * 2) + 4; // 4 или 5
-      
-      // Выбираем два типа элементов
-      const types = ["numbers", "letters", "emojis", "shapes"];
+      patternLength = Math.floor(Math.random() * 2) + 4;
+      const types = ["numbers", "letters", "images", "shapes"];
       const type1 = types[Math.floor(Math.random() * types.length)];
       let type2 = types[Math.floor(Math.random() * types.length)];
       while (type2 === type1) {
@@ -2041,15 +2104,14 @@ function renderLogicChain() {
       let pool1, pool2;
       if (type1 === "numbers") pool1 = [...numbers];
       else if (type1 === "letters") pool1 = [...letters];
-      else if (type1 === "emojis") pool1 = [...emojis];
-      else pool1 = [...shapes];
+      else if (type1 === "images") pool1 = [...imageItems];
+      else pool1 = [...shapeItems];
       
       if (type2 === "numbers") pool2 = [...numbers];
       else if (type2 === "letters") pool2 = [...letters];
-      else if (type2 === "emojis") pool2 = [...emojis];
-      else pool2 = [...shapes];
+      else if (type2 === "images") pool2 = [...imageItems];
+      else pool2 = [...shapeItems];
       
-      // Берём уникальные элементы из обоих пулов
       const shuffled1 = [...pool1].sort(() => Math.random() - 0.5);
       const shuffled2 = [...pool2].sort(() => Math.random() - 0.5);
       
@@ -2062,83 +2124,64 @@ function renderLogicChain() {
         }
       }
       
-      // Строим последовательность с повторением
       const repeats = 2;
       for (let i = 0; i < repeats; i++) {
         patternItems.push(...uniqueItems);
       }
-      
-      // Правильный ответ - следующий элемент паттерна
       result = uniqueItems[0];
       
     } else {
-      // 3 уровень: сложные комбинации из 5-6 элементов (буквы + цифры + эмодзи + фигуры)
-      patternLength = Math.floor(Math.random() * 2) + 5; // 5 или 6
-      
-      // Используем все типы
-      const types = ["numbers", "letters", "emojis", "shapes"];
-      
+      patternLength = Math.floor(Math.random() * 2) + 5;
+      const types = ["numbers", "letters", "images", "shapes"];
       const uniqueItems = [];
       for (let i = 0; i < patternLength; i++) {
         const type = types[i % types.length];
         let pool;
         if (type === "numbers") pool = [...numbers];
         else if (type === "letters") pool = [...letters];
-        else if (type === "emojis") pool = [...emojis];
-        else pool = [...shapes];
+        else if (type === "images") pool = [...imageItems];
+        else pool = [...shapeItems];
         
         const shuffled = [...pool].sort(() => Math.random() - 0.5);
         uniqueItems.push(shuffled[0]);
       }
       
-      // Строим последовательность с повторением
       const repeats = 2;
       for (let i = 0; i < repeats; i++) {
         patternItems.push(...uniqueItems);
       }
-      
-      // Правильный ответ - следующий элемент паттерна
       result = uniqueItems[0];
     }
     
-    // Формируем строку паттерна
-    const patternString = patternItems.join(" → ") + " → ?";
+    const patternString = patternItems.join(" → ");
     
-    // Генерируем варианты ответов (1 правильный + 3 неправильных)
     let allOptions = [result];
-    
-    // Собираем пул для неправильных ответов
     let wrongPool = [];
+    
     if (level === 1) {
       if (elementType === "numbers") wrongPool = [...numbers];
       else if (elementType === "letters") wrongPool = [...letters];
-      else if (elementType === "emojis") wrongPool = [...emojis];
-      else wrongPool = [...shapes];
+      else if (elementType === "images") wrongPool = [...imageItems];
+      else wrongPool = [...shapeItems];
     } else if (level === 2) {
-      // Для 2 уровня берём из тех же типов, что использовались
-      const types = ["numbers", "letters", "emojis", "shapes"];
+      const types = ["numbers", "letters", "images", "shapes"];
       for (let t of types) {
         if (t === "numbers") wrongPool.push(...numbers);
         else if (t === "letters") wrongPool.push(...letters);
-        else if (t === "emojis") wrongPool.push(...emojis);
-        else wrongPool.push(...shapes);
+        else if (t === "images") wrongPool.push(...imageItems);
+        else wrongPool.push(...shapeItems);
       }
     } else {
-      // Для 3 уровня берём из всех типов
-      wrongPool.push(...numbers, ...letters, ...emojis, ...shapes);
+      wrongPool.push(...numbers, ...letters, ...imageItems, ...shapeItems);
     }
     
-    // Убираем правильный ответ из пула
     wrongPool = wrongPool.filter(item => item !== result);
-    // Убираем дубликаты
     wrongPool = [...new Set(wrongPool)];
     
-    // Выбираем 3 случайных неправильных ответа
     const shuffledWrong = [...wrongPool].sort(() => Math.random() - 0.5);
     const wrongOptions = shuffledWrong.slice(0, 3);
     allOptions = [result, ...wrongOptions];
     
-    // Перемешиваем варианты
     for (let i = allOptions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [allOptions[i], allOptions[j]] = [allOptions[j], allOptions[i]];
@@ -2147,16 +2190,12 @@ function renderLogicChain() {
     return {
       pattern: patternString,
       correct: result,
-      options: allOptions,
-      patternLength: patternLength,
-      elementType: elementType
+      options: allOptions
     };
   }
   
-  // Генерируем задание в зависимости от уровня
   const chain = generatePattern(state.level);
   
-  // Определяем размер шрифта и стиль в зависимости от уровня
   let fontSize = "28px";
   if (state.level === 2) {
     fontSize = "26px";
@@ -2170,20 +2209,21 @@ function renderLogicChain() {
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задача: Посмотри на последовательность. Найди закономерность и выбери следующий элемент!
     </div>
-    <div class="logic-task" style="background: white; padding: 30px; font-size: ${fontSize}; text-align: center; word-break: break-word;">
-      ${chain.pattern}
+    <div class="logic-task" style="background: white; padding: 30px; font-size: ${fontSize}; text-align: center; word-break: break-word; line-height: 2;">
+      ${chain.pattern} → ?
     </div>
-    <div class="options-list-horizontal">
-      ${chain.options.map(opt => `
-        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 20px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 80px; color: #2f2f45;">
-          ${opt}
-        </button>
-      `).join('')}
+    <div class="options-list-horizontal" id="optionsContainer" style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 30px;">
     </div>
     <button id="checkBtn" class="btn-primary" style="margin-top: 30px;">Проверить</button>
   `;
   
-  // Настраиваем выбор вариантов
+  const optionsContainer = document.getElementById("optionsContainer");
+  optionsContainer.innerHTML = chain.options.map(opt => `
+    <button class="option-btn-horizontal" data-answer="${opt.replace(/"/g, '&quot;')}" style="padding: 12px 24px; font-size: 20px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 80px; color: #2f2f45;">
+      ${opt}
+    </button>
+  `).join('');
+  
   let selected = null;
   let selectedButton = null;
   let isAnswered = false;
@@ -2192,7 +2232,6 @@ function renderLogicChain() {
   buttons.forEach(btn => {
     btn.onclick = () => {
       if (isAnswered) return;
-      
       buttons.forEach(b => {
         b.classList.remove("selected");
         b.style.background = "#ffffff";
@@ -2201,7 +2240,7 @@ function renderLogicChain() {
       btn.classList.add("selected");
       btn.style.background = "#765fde";
       btn.style.color = "white";
-      selected = btn.dataset.answer;
+      selected = btn.getAttribute("data-answer");
       selectedButton = btn;
     };
   });
@@ -2209,7 +2248,6 @@ function renderLogicChain() {
   const checkBtn = document.getElementById("checkBtn");
   checkBtn.onclick = () => {
     if (isAnswered) return;
-    
     if (!selected) {
       showToast("Выбери ответ!", "error");
       return;
@@ -2244,7 +2282,7 @@ function renderLogicChain() {
         }, 800);
       }
       failAction();
-      showToast(`Неправильно! Правильный ответ: ${chain.correct}`, "error");
+      showToast("Неправильно! Попробуй ещё раз", "error");
     }
   };
 }
@@ -4077,15 +4115,21 @@ function renderAttentionFindNumber() {
   const totals = { 1: 12, 2: 16, 3: 20 };
   const total = totals[state.level] || 12;
   
+  // НОВЫЕ ЦВЕТА ПО ПАЛИТРЕ
   const colorPalette = {
-    violet: { 80: "#8B7FD6", 60: "#A79EDC", 40: "#C1BBDD", 20: "#D9D6E6" },
-    orange: { 80: "#F2A354", 60: "#E9B47E", 40: "#E8C6A3", 20: "#E3D4C3" },
-    yellow: { 80: "#E9C86B", 60: "#E8D08F", 40: "#E6D8B2", 20: "#E3DCCD" }
+    blue: { 80: "#3aafff", 60: "#75c7ff", 40: "#9dd7ff", 20: "#c4e7ff" },
+    mint: { 80: "#00b2a8", 60: "#4cc9c2", 40: "#80d9d3", 20: "#b3e8e5" },
+    purple: { 80: "#765fde", 60: "#9f8fe8", 40: "#bbafef", 20: "#d6cff5" },
+    orange: { 80: "#ff8811", 60: "#ffac58", 40: "#ffc388", 20: "#ffdbb8" },
+    coral: { 80: "#ff6170", 60: "#ff909b", 40: "#ffb0b8", 20: "#ffd0d4" },
+    green: { 80: "#10c84e", 60: "#58d883", 40: "#87e3a7", 20: "#b7eeca" },
+    yellow: { 80: "#fbcc3c", 60: "#fcdb76", 40: "#fde59e", 20: "#fef0c5" }
   };
   
-  const colorNames = ["violet", "orange", "yellow"];
+  const colorNames = ["blue", "mint", "purple", "orange", "coral", "green", "yellow"];
   const saturations = [80, 60, 40, 20];
   
+  // ПРОСТЫЕ ФИГУРЫ (БЕЗ ТРЕУГОЛЬНИКОВ И ЗВЁЗД)
   const shapes = [
     { name: "круг", borderRadius: "50%", width: 1, height: 1, padding: 0 },
     { name: "овал", borderRadius: "50%", width: 1.3, height: 0.85, padding: 5 },
@@ -4093,12 +4137,9 @@ function renderAttentionFindNumber() {
     { name: "скруглённый квадрат", borderRadius: "24px", width: 1, height: 1, padding: 8 },
     { name: "прямоугольник", borderRadius: "12px", width: 1.2, height: 0.9, padding: 8 },
     { name: "вытянутый круг", borderRadius: "50%", width: 1.4, height: 0.8, padding: 5 },
-    { name: "треугольник", clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)", width: 1.6, height: 1.4, padding: 15 },
-    { name: "перевёрнутый треугольник", clipPath: "polygon(50% 100%, 0% 0%, 100% 0%)", width: 1.6, height: 1.4, padding: 15 },
     { name: "ромб", clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)", width: 1.4, height: 1.4, padding: 10 },
     { name: "пятиугольник", clipPath: "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)", width: 1.4, height: 1.3, padding: 10 },
-    { name: "шестиугольник", clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)", width: 1.4, height: 1.3, padding: 10 },
-    { name: "звезда", clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)", width: 1.5, height: 1.5, padding: 12 }
+    { name: "шестиугольник", clipPath: "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)", width: 1.4, height: 1.3, padding: 10 }
   ];
   
   function getRandomColor() {
@@ -4158,7 +4199,7 @@ function renderAttentionFindNumber() {
     
     <div class="find-number-progress" style="text-align: center; margin-bottom: 20px;">
       <div style="background: #e5e7eb; height: 8px; border-radius: 10px; max-width: 300px; margin: 0 auto; overflow: hidden;">
-        <div id="progressFill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #87d34c, #57a718); transition: width 0.3s ease;"></div>
+        <div id="progressFill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #10c84e, #58d883); transition: width 0.3s ease;"></div>
       </div>
       <div style="margin-top: 8px; font-size: 14px; color: #666;">
         Найдено: <b id="foundCount">0</b> / ${total}
@@ -4816,208 +4857,42 @@ function renderAttentionFindAmong() {
 
 // 7. ФИДЖИТАЛ: РАСКРАСКА (ОБВЕДЕНИЕ ПО КОНТУРУ)
 function renderPhygitalColoring() {
-  // ===== КОНТУРЫ ДЛЯ РАЗНЫХ УРОВНЕЙ (по 6 вариантов) =====
-  const contours = {
+  // ===== КАРТИНКИ ДЛЯ РАЗНЫХ УРОВНЕЙ =====
+  const imagesByLevel = {
     1: [
-      { name: "Круг", draw: (ctx, w, h) => {
-          ctx.beginPath();
-          ctx.arc(w/2, h/2, Math.min(w, h) * 0.35, 0, Math.PI * 2);
-          ctx.stroke();
-        } },
-      { name: "Квадрат", draw: (ctx, w, h) => {
-          const size = Math.min(w, h) * 0.6;
-          ctx.strokeRect(w/2 - size/2, h/2 - size/2, size, size);
-        } },
-      { name: "Треугольник", draw: (ctx, w, h) => {
-          ctx.beginPath();
-          ctx.moveTo(w/2, h/2 - Math.min(w, h) * 0.35);
-          ctx.lineTo(w/2 - Math.min(w, h) * 0.4, h/2 + Math.min(w, h) * 0.25);
-          ctx.lineTo(w/2 + Math.min(w, h) * 0.4, h/2 + Math.min(w, h) * 0.25);
-          ctx.closePath();
-          ctx.stroke();
-        } },
-      { name: "Звезда", draw: (ctx, w, h) => {
-          const spikes = 5;
-          const outerRadius = Math.min(w, h) * 0.35;
-          const innerRadius = outerRadius * 0.4;
-          let rot = Math.PI / 2 * 3;
-          let step = Math.PI / spikes;
-          ctx.beginPath();
-          for (let i = 0; i < spikes; i++) {
-            const x1 = w/2 + Math.cos(rot) * outerRadius;
-            const y1 = h/2 + Math.sin(rot) * outerRadius;
-            ctx.lineTo(x1, y1);
-            rot += step;
-            const x2 = w/2 + Math.cos(rot) * innerRadius;
-            const y2 = h/2 + Math.sin(rot) * innerRadius;
-            ctx.lineTo(x2, y2);
-            rot += step;
-          }
-          ctx.closePath();
-          ctx.stroke();
-        } },
-      { name: "Сердце", draw: (ctx, w, h) => {
-          const scale = Math.min(w, h) * 0.35;
-          ctx.beginPath();
-          ctx.moveTo(w/2, h/2 - scale * 0.6);
-          ctx.bezierCurveTo(w/2 - scale, h/2 - scale, w/2 - scale, h/2 + scale * 0.4, w/2, h/2 + scale * 0.8);
-          ctx.bezierCurveTo(w/2 + scale, h/2 + scale * 0.4, w/2 + scale, h/2 - scale, w/2, h/2 - scale * 0.6);
-          ctx.stroke();
-        } },
-      { name: "Рыбка", draw: (ctx, w, h) => {
-          ctx.beginPath();
-          ctx.ellipse(w/2, h/2, Math.min(w, h) * 0.3, Math.min(w, h) * 0.2, 0, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 + Math.min(w, h) * 0.35, h/2);
-          ctx.lineTo(w/2 + Math.min(w, h) * 0.5, h/2 - Math.min(w, h) * 0.15);
-          ctx.lineTo(w/2 + Math.min(w, h) * 0.5, h/2 + Math.min(w, h) * 0.15);
-          ctx.closePath();
-          ctx.stroke();
-        } }
+      { name: "Фиджитал_просто1", file: "images/Фиджитал_просто1.png" },
+      { name: "Фиджитал_просто2", file: "images/Фиджитал_просто2.png" },
+      { name: "Фиджитал_просто3", file: "images/Фиджитал_просто3.png" },
+      { name: "Фиджитал_просто4", file: "images/Фиджитал_просто4.png" }
     ],
     2: [
-      { name: "Домик", draw: (ctx, w, h) => {
-          const size = Math.min(w, h) * 0.4;
-          ctx.strokeRect(w/2 - size/2, h/2 - size/4, size, size);
-          ctx.beginPath();
-          ctx.moveTo(w/2 - size/1.8, h/2 - size/4);
-          ctx.lineTo(w/2, h/2 - size/1.6);
-          ctx.lineTo(w/2 + size/1.8, h/2 - size/4);
-          ctx.stroke();
-          ctx.strokeRect(w/2 - size/8, h/2 - size/8, size/4, size/3);
-          ctx.strokeRect(w/2 - size/3, h/2 - size/5, size/4, size/4);
-        } },
-      { name: "Кораблик", draw: (ctx, w, h) => {
-          const size = Math.min(w, h) * 0.35;
-          ctx.beginPath();
-          ctx.moveTo(w/2 - size, h/2 + size/2);
-          ctx.lineTo(w/2, h/2 + size/2);
-          ctx.lineTo(w/2 + size, h/2 + size/2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 - size/2, h/2 + size/2);
-          ctx.lineTo(w/2, h/2 - size/2);
-          ctx.lineTo(w/2 + size/2, h/2 + size/2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2, h/2 - size/2);
-          ctx.lineTo(w/2, h/2 - size);
-          ctx.stroke();
-        } },
-      { name: "Цветок", draw: (ctx, w, h) => {
-          const size = Math.min(w, h) * 0.3;
-          ctx.beginPath();
-          ctx.moveTo(w/2, h/2 + size/1.5);
-          ctx.lineTo(w/2, h/2 - size/1.2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2, h/2);
-          ctx.quadraticCurveTo(w/2 - size/2, h/2 + size/2, w/2 - size/1.5, h/2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2, h/2 + size/2);
-          ctx.quadraticCurveTo(w/2 + size/2, h/2 + size, w/2 + size/1.5, h/2 + size/2);
-          ctx.stroke();
-          for (let i = 0; i < 6; i++) {
-            const angle = (i * 60) * Math.PI / 180;
-            const x = w/2 + Math.cos(angle) * size;
-            const y = h/2 - size/1.5 + Math.sin(angle) * size/2;
-            ctx.beginPath();
-            ctx.ellipse(x, y, size/2, size/3, 0, 0, Math.PI * 2);
-            ctx.stroke();
-          }
-          ctx.beginPath();
-          ctx.arc(w/2, h/2 - size/1.5, size/3, 0, Math.PI * 2);
-          ctx.stroke();
-        } },
-      { name: "Машинка", draw: (ctx, w, h) => {
-          const size = Math.min(w, h) * 0.4;
-          ctx.strokeRect(w/2 - size, h/2 - size/3, size * 2, size/1.5);
-          ctx.strokeRect(w/2 - size/1.5, h/2 - size/1.5, size, size/1.2);
-          ctx.beginPath();
-          ctx.arc(w/2 - size/1.5, h/2 + size/3, size/4, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.arc(w/2 + size/1.5, h/2 + size/3, size/4, 0, Math.PI * 2);
-          ctx.stroke();
-        } },
-      { name: "Ракета", draw: (ctx, w, h) => {
-          const size = Math.min(w, h) * 0.35;
-          ctx.beginPath();
-          ctx.moveTo(w/2, h/2 - size);
-          ctx.lineTo(w/2 - size/1.5, h/2 + size/2);
-          ctx.lineTo(w/2 - size/3, h/2 + size/3);
-          ctx.lineTo(w/2 - size/3, h/2 + size);
-          ctx.lineTo(w/2, h/2 + size/1.5);
-          ctx.lineTo(w/2 + size/3, h/2 + size);
-          ctx.lineTo(w/2 + size/3, h/2 + size/3);
-          ctx.lineTo(w/2 + size/1.5, h/2 + size/2);
-          ctx.closePath();
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.arc(w/2, h/2 - size/2, size/3, 0, Math.PI * 2);
-          ctx.stroke();
-        } },
-      { name: "Рыбка2", draw: (ctx, w, h) => {
-          const size = Math.min(w, h) * 0.3;
-          ctx.beginPath();
-          ctx.ellipse(w/2, h/2, size, size/1.5, 0, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 - size, h/2);
-          ctx.lineTo(w/2 - size*1.3, h/2 - size/2);
-          ctx.lineTo(w/2 - size*1.3, h/2 + size/2);
-          ctx.closePath();
-          ctx.stroke();
-        } }
+      { name: "Фиджитал_средне1", file: "images/Фиджитал_средне1.png" },
+      { name: "Фиджитал_средне2", file: "images/Фиджитал_средне2.png" },
+      { name: "Фиджитал_средне3", file: "images/Фиджитал_средне3.png" },
+      { name: "Фиджитал_средне4", file: "images/Фиджитал_средне4.png" }
     ],
     3: [
-      { name: "Котик", draw: (ctx, w, h) => {
-          const size = Math.min(w, h) * 0.3;
-          ctx.beginPath();
-          ctx.arc(w/2, h/2 - size/3, size/1.2, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 - size/1.6, h/2 - size);
-          ctx.lineTo(w/2 - size/2, h/2 - size/1.3);
-          ctx.lineTo(w/2 - size/4, h/2 - size/1.3);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 + size/1.6, h/2 - size);
-          ctx.lineTo(w/2 + size/2, h/2 - size/1.3);
-          ctx.lineTo(w/2 + size/4, h/2 - size/1.3);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.ellipse(w/2, h/2 + size/3, size/1.2, size/1.5, 0, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(w/2 + size/1.3, h/2 + size/2);
-          ctx.quadraticCurveTo(w/2 + size, h/2 + size, w/2 + size/1.5, h/2 + size/1.2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.ellipse(w/2 - size/2, h/2 + size, size/3, size/4, 0, 0, Math.PI * 2);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.ellipse(w/2 + size/2, h/2 + size, size/3, size/4, 0, 0, Math.PI * 2);
-          ctx.stroke();
-        } }
+      { name: "Фиджитал_сложно1", file: "images/Фиджитал_сложно1.png" },
+      { name: "Фиджитал_сложно2", file: "images/Фиджитал_сложно2.png" },
+      { name: "Фиджитал_сложно3", file: "images/Фиджитал_сложно3.png" },
+      { name: "Фиджитал_сложно4", file: "images/Фиджитал_сложно4.png" },
+      { name: "Фиджитал_сложно5", file: "images/Фиджитал_сложно5.png" }
     ]
   };
   
-  // Выбираем случайный контур в зависимости от уровня
-  const levelContours = contours[state.level];
-  const selectedContour = levelContours[Math.floor(Math.random() * levelContours.length)];
+  // Выбираем случайную картинку в зависимости от уровня
+  const levelImages = imagesByLevel[state.level];
+  const selectedImage = levelImages[Math.floor(Math.random() * levelImages.length)];
   
   const canvasSize = 450;
-  const brushSize = 3;
+  const brushSize = 9;
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
   let instructions = "";
   if (isMobile) {
-    instructions = "Возьми телефон в другую руку! Обведи рисунок пальцем по пунктирной линии.";
+    instructions = "Возьми телефон в другую руку! Обведи рисунок неведущей рукой.";
   } else {
-    instructions = "Возьми мышку в другую руку! Обведи рисунок по пунктирной линии, удерживая левую кнопку.";
+    instructions = "Возьми мышку в другую руку! Обведи рисунок неведущей рукой.";
   }
   
   gameArea.innerHTML = `
@@ -5037,34 +4912,58 @@ function renderPhygitalColoring() {
       <button id="readyBtn" class="btn-primary" style="width: auto; padding: 12px 32px;">Готово, я обвёл(а)!</button>
     </div>
     <div class="drawing-hint" style="text-align: center; margin-top: 15px; font-size: 14px; color: #666;">
-      Обведи рисунок как можно точнее! Линия останется там, где ты провёл(а).
+      Обведи рисунок неведущей рукой. Если ты пишешь правой рукой, тогда обводи левой.
+    </div>
+    <div style="display: flex; justify-content: center; margin-top: 15px;">
+      <button id="saveAndPrintBtn" class="btn-secondary" style="width: auto; padding: 12px 32px; background: linear-gradient(135deg, #ff8811, #d97706); color: white;">💾 Сохранить и распечатать</button>
     </div>
   `;
   
   const canvas = document.getElementById("drawingCanvas");
   const ctx = canvas.getContext("2d");
   
-  // Устанавливаем стили для пунктирной линии и рисуем контур
-  ctx.save();
-  ctx.beginPath();
-  ctx.setLineDash([8, 8]);
-  ctx.strokeStyle = "#765fde";
-  ctx.lineWidth = 3;
-  ctx.fillStyle = "transparent";
+  // Загружаем и рисуем фоновую картинку
+  const backgroundImage = new Image();
   
-  // Рисуем выбранный контур
-  selectedContour.draw(ctx, canvasSize, canvasSize);
+  backgroundImage.onload = () => {
+    ctx.drawImage(backgroundImage, 0, 0, canvasSize, canvasSize);
+    window.currentBackgroundImage = backgroundImage;
+  };
   
-  // Восстанавливаем настройки для рисования
-  ctx.beginPath();
-  ctx.setLineDash([]);
-  ctx.strokeStyle = "#87d34c";
+  backgroundImage.onerror = () => {
+    console.error("Не удалось загрузить картинку:", selectedImage.file);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvasSize, canvasSize);
+    ctx.strokeStyle = "#765fde";
+    ctx.lineWidth = 3;
+    ctx.setLineDash([8, 8]);
+    ctx.strokeRect(10, 10, canvasSize - 20, canvasSize - 20);
+    ctx.setLineDash([]);
+    window.currentBackgroundImage = null;
+  };
+  
+  backgroundImage.src = selectedImage.file;
+  
+  // Настройки для рисования поверх картинки
+  ctx.strokeStyle = "#ff8811";
   ctx.lineWidth = brushSize;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
   
-  // Переменные для рисования
   let drawing = false;
+  
+  function restoreBackground() {
+    if (window.currentBackgroundImage) {
+      ctx.drawImage(window.currentBackgroundImage, 0, 0, canvasSize, canvasSize);
+    } else {
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvasSize, canvasSize);
+    }
+    ctx.strokeStyle = "#ff8811";
+    ctx.lineWidth = brushSize;
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+  }
   
   function getCoordinates(e) {
     const rect = canvas.getBoundingClientRect();
@@ -5116,32 +5015,108 @@ function renderPhygitalColoring() {
     ctx.beginPath();
   }
   
-  // Поддержка мыши
   canvas.addEventListener("mousedown", startDrawing);
   canvas.addEventListener("mousemove", draw);
   canvas.addEventListener("mouseup", stopDrawing);
   canvas.addEventListener("mouseleave", stopDrawing);
   
-  // Поддержка touch (мобильные устройства)
   canvas.addEventListener("touchstart", startDrawing);
   canvas.addEventListener("touchmove", draw);
   canvas.addEventListener("touchend", stopDrawing);
   canvas.addEventListener("touchcancel", stopDrawing);
   
-  // Очистка холста (только линии, контур остаётся)
   document.getElementById("clearCanvasBtn").onclick = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.setLineDash([8, 8]);
-    ctx.strokeStyle = "#765fde";
-    ctx.lineWidth = 3;
-    selectedContour.draw(ctx, canvasSize, canvasSize);
-    ctx.setLineDash([]);
-    ctx.strokeStyle = "#87d34c";
-    ctx.lineWidth = brushSize;
+    restoreBackground();
     showToast("🖌️ Линии очищены! Обводи заново", "success");
   };
   
-  // Кнопка готовности
+  // Функция сохранения изображения
+  function saveDrawing() {
+    try {
+      // Получаем данные с холста в формате PNG
+      const dataURL = canvas.toDataURL("image/png");
+      
+      // Создаём временную ссылку для скачивания
+      const link = document.createElement("a");
+      const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, "-");
+      link.download = `фиджитал_обводка_${selectedImage.name}_${timestamp}.png`;
+      link.href = dataURL;
+      link.click();
+      
+      showToast("✅ Рисунок сохранён!", "success");
+      
+      // Пробуем открыть диалог печати
+      setTimeout(() => {
+        const printWindow = window.open();
+        if (printWindow) {
+          printWindow.document.write(`
+            <html>
+              <head>
+                <title>Фиджитал - Обведённый рисунок</title>
+                <style>
+                  body { 
+                    display: flex; 
+                    justify-content: center; 
+                    align-items: center; 
+                    min-height: 100vh; 
+                    margin: 0; 
+                    background: white;
+                    font-family: Arial, sans-serif;
+                  }
+                  .print-container {
+                    text-align: center;
+                    padding: 20px;
+                  }
+                  img {
+                    max-width: 100%;
+                    height: auto;
+                    border: 2px solid #ddd;
+                    border-radius: 8px;
+                  }
+                  h3 {
+                    color: #765fde;
+                    margin-top: 20px;
+                  }
+                  p {
+                    color: #666;
+                  }
+                </style>
+              </head>
+              <body>
+                <div class="print-container">
+                  <h3>🎨 Фиджитал-задание Учи.ру</h3>
+                  <img src="${dataURL}" alt="Обведи рисунок неведущей рукой или двумя руками одновременно">
+                  <p>Дата: ${new Date().toLocaleDateString()}</p>
+                </div>
+                <script>
+                  window.onload = () => {
+                    setTimeout(() => {
+                      window.print();
+                      setTimeout(() => window.close(), 500);
+                    }, 500);
+                  };
+                <\/script>
+              </body>
+            </html>
+          `);
+          printWindow.document.close();
+        } else {
+          showToast("🖨️ Нажмите Ctrl+P для печати", "info");
+        }
+      }, 300);
+    } catch (error) {
+      console.error("Ошибка сохранения:", error);
+      showToast("Ошибка при сохранении рисунка", "error");
+    }
+  }
+  
+  // Кнопка "Сохранить и распечатать" с запросом родительского пароля
+  document.getElementById("saveAndPrintBtn").onclick = () => {
+    showParentPasswordModal(() => {
+      saveDrawing();
+    });
+  };
+  
   document.getElementById("readyBtn").onclick = () => {
     showParentPasswordModal(() => {
       successAction();
@@ -5178,28 +5153,74 @@ function renderMemorySequence() {
   const lengths = { 1: 3, 2: 4, 3: 5 };
   const length = lengths[state.level] || 3;
   
-  // Все возможные эмодзи
-  const allEmojis = [
-    "🍎", "🍌", "🍇", "🍒", "🥝", "🍊", "🍉", "🍑", "🥭", "🍓",
-    "🐱", "🐶", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯"
+  // Все возможные картинки
+  const allImages = [
+    { file: 'голубой_батут.png', name: 'батут' },
+    { file: 'голубой_мяч.png', name: 'мяч' },
+    { file: 'голубой_роликовый_конёк.png', name: 'роликовый конёк' },
+    { file: 'голубой_стул.png', name: 'стул' },
+    { file: 'голубой_кровать.png', name: 'кровать' },
+    { file: 'голубой_часы.png', name: 'часы' },
+    { file: 'голубой_рыба.png', name: 'рыба' },
+    { file: 'голубой_линейка.png', name: 'линейка' },
+    { file: 'голубой_сок.png', name: 'сок' },
+    { file: 'голубой_тюбик.png', name: 'тюбик' },
+    { file: 'голубой_пазл.png', name: 'пазл' },
+    { file: 'голубой_фото.png', name: 'фото' },
+    { file: 'желтый_груша.png', name: 'груша' },
+    { file: 'желтый_кубок.png', name: 'кубок' },
+    { file: 'желтый_лампочка.png', name: 'лампочка' },
+    { file: 'желтый_яблоко.png', name: 'яблоко' },
+    { file: 'желтый_яйцо.png', name: 'яйцо' },
+    { file: 'желтый_ракетка.png', name: 'ракетка' },
+    { file: 'желтый_палитра.png', name: 'палитра' },
+    { file: 'зелёный_яблоко.png', name: 'зелёное яблоко' },
+    { file: 'зелёный_брокколи.png', name: 'брокколи' },
+    { file: 'зелёный_галочка.png', name: 'галочка' },
+    { file: 'красный_арбуз.png', name: 'арбуз' },
+    { file: 'красный_вишня.png', name: 'вишня' },
+    { file: 'красный_помидор.png', name: 'помидор' },
+    { file: 'красный_яблоко.png', name: 'красное яблоко' },
+    { file: 'красный_мишень.png', name: 'мишень' },
+    { file: 'красный_вопрос.png', name: 'вопрос' },
+    { file: 'оранжевый_морковка.png', name: 'морковка' },
+    { file: 'оранжевый_гитара.png', name: 'гитара' },
+    { file: 'оранжевый_гриб.png', name: 'гриб' },
+    { file: 'оранжевый_щенок.png', name: 'щенок' },
+    { file: 'оранжевый_карандаш.png', name: 'карандаш' },
+    { file: 'оранжевый_сок.png', name: 'апельсиновый сок' },
+    { file: 'оранжевый_банка.png', name: 'банка' },
+    { file: 'синий_котёнок.png', name: 'котёнок' },
+    { file: 'синий_паук.png', name: 'паук' },
+    { file: 'синий_лампа.png', name: 'лампа' },
+    { file: 'синий_лупа.png', name: 'лупа' },
+    { file: 'синий_зуб.png', name: 'зуб' },
+    { file: 'синий_рюкзак.png', name: 'рюкзак' },
+    { file: 'синий_куртка.png', name: 'куртка' },
+    { file: 'сиреневый_ягода.png', name: 'ягода' },
+    { file: 'сиреневый_книга.png', name: 'книга' },
+    { file: 'сиреневый_наушники.png', name: 'наушники' },
+    { file: 'сиреневый_звезда.png', name: 'звезда' },
+    { file: 'сиреневый_песочные_часы.png', name: 'песочные часы' },
+    { file: 'сиреневый_замочек.png', name: 'замочек' },
+    { file: 'серый_голубь_1.png', name: 'голубь' },
+    { file: 'серый_голубь_2.png', name: 'голубь' }
   ];
   
-  // Выбираем случайные эмодзи для текущей игры
-  const shuffledEmojis = [...allEmojis].sort(() => Math.random() - 0.5);
-  const sequence = shuffledEmojis.slice(0, length);
+  // Выбираем случайные картинки для текущей игры
+  const shuffledImages = [...allImages].sort(() => Math.random() - 0.5);
+  const sequence = shuffledImages.slice(0, length);
   
   // Переменные состояния игры
   let currentSelectionIndex = 0;
   let canPlay = true;
   let gameActive = true;
   
-  // Функция для безопасного завершения игры
   function endGame(isSuccess) {
     if (!gameActive) return;
     gameActive = false;
     canPlay = false;
     
-    // Очищаем все таймеры
     memorySequenceTimeouts.forEach(id => clearTimeout(id));
     memorySequenceTimeouts = [];
     
@@ -5209,7 +5230,6 @@ function renderMemorySequence() {
       failAction();
     }
     
-    // Запускаем новую игру только один раз
     memorySequenceTimeout = setTimeout(() => {
       if (state.levelProgress < state.tasksPerLevel) {
         renderMemorySequence();
@@ -5231,16 +5251,15 @@ function renderMemorySequence() {
   const board = document.getElementById("memoryBoard");
   const cards = [];
   
-  // Создаём карточки
+  // Создаём карточки с картинками
   for (let i = 0; i < length; i++) {
     const card = document.createElement("div");
     card.className = "memory-card";
-    card.textContent = sequence[i];
+    card.innerHTML = `<img src="images/${sequence[i].file}" style="width: 80px; height: 80px; object-fit: contain;">`;
     card.dataset.originalIndex = i;
-    card.dataset.value = sequence[i];
+    card.dataset.value = sequence[i].file;
     card.style.width = "140px";
     card.style.height = "140px";
-    card.style.fontSize = "72px";
     card.style.display = "flex";
     card.style.alignItems = "center";
     card.style.justifyContent = "center";
@@ -5259,7 +5278,7 @@ function renderMemorySequence() {
     
     // Закрываем все карточки
     cards.forEach(card => {
-      card.textContent = "?";
+      card.innerHTML = "?";
       card.style.background = "#765fde";
       card.style.fontSize = "56px";
     });
@@ -5269,38 +5288,33 @@ function renderMemorySequence() {
     memorySequenceTimeouts.push(setTimeout(() => {
       if (!gameActive) return;
       
-      // Перемешиваем DOM-элементы
       for (let i = cards.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         board.insertBefore(cards[j], cards[i]);
         board.insertBefore(cards[i], cards[j]);
       }
       
-      // Обновляем массив cards в соответствии с новым порядком в DOM
       const newCardsOrder = Array.from(board.children);
       cards.length = 0;
       newCardsOrder.forEach(card => cards.push(card));
       
       document.getElementById("memoryHint").innerHTML = "Карточки перемешаны! Сейчас откроются...";
       
-      // Фаза 3: Открываем карточки (показываем эмодзи)
+      // Фаза 3: Открываем карточки
       memorySequenceTimeouts.push(setTimeout(() => {
         if (!gameActive) return;
         
-        // Открываем карточки (показываем эмодзи)
         cards.forEach(card => {
-          card.textContent = card.dataset.value;
-          card.style.fontSize = "72px";
+          card.innerHTML = `<img src="images/${card.dataset.value}" style="width: 80px; height: 80px; object-fit: contain;">`;
           card.style.background = "linear-gradient(135deg, #765fde, #ff8811)";
+          card.style.fontSize = "72px";
         });
         
         document.getElementById("memoryHint").innerHTML = "Теперь нажимай на карточки в том порядке, в котором они были ИЗНАЧАЛЬНО!";
         
-        // Сбрасываем состояние игры
         currentSelectionIndex = 0;
         canPlay = true;
         
-        // Добавляем обработчики кликов
         cards.forEach(card => {
           card.onclick = () => {
             if (!canPlay || !gameActive) return;
@@ -5310,7 +5324,6 @@ function renderMemorySequence() {
             const cardOriginalIndex = parseInt(card.dataset.originalIndex);
             
             if (cardOriginalIndex === expectedIndex) {
-              // Правильный выбор
               card.classList.add("correct");
               card.style.background = "linear-gradient(135deg, #87d34c, #57a718)";
               card.style.transform = "scale(1.05)";
@@ -5323,13 +5336,11 @@ function renderMemorySequence() {
                 endGame(true);
               }
             } else {
-              // Неправильный выбор
               canPlay = false;
               card.classList.add("wrong");
               card.style.background = "#ea3117";
               document.getElementById("memoryHint").innerHTML = "Неправильный порядок! Начинаем заново...";
               
-              // Подсвечиваем правильную карточку
               cards.forEach(c => {
                 if (parseInt(c.dataset.originalIndex) === expectedIndex) {
                   c.style.background = "#ff8811";
@@ -5357,7 +5368,6 @@ let whatMissingTimeout = null;
 let whatMissingTimeouts = [];
 
 function renderMemoryWhatMissing() {
-  // Очищаем все предыдущие таймеры
   if (whatMissingTimeout) {
     clearTimeout(whatMissingTimeout);
     whatMissingTimeout = null;
@@ -5368,15 +5378,62 @@ function renderMemoryWhatMissing() {
   const lengths = { 1: 3, 2: 4, 3: 5 };
   const length = lengths[state.level] || 3;
   
-  // ===== НОВЫЕ 20 ЭМОДЗИ (транспорт, предметы, еда, техника) =====
-  const allEmojis = [
-    "🚗", "🚕", "🚙", "🚌", "🚎", "🏎️", "🚓", "🚑", "🚒", "🚐",
-    "✈️", "🚀", "🚁", "🛸", "🚂", "🚲", "🛵", "🏍️", "🚢", "⛵"
+  // Все возможные картинки
+  const allImages = [
+    { file: 'голубой_батут.png', name: 'батут' },
+    { file: 'голубой_мяч.png', name: 'мяч' },
+    { file: 'голубой_роликовый_конёк.png', name: 'роликовый конёк' },
+    { file: 'голубой_стул.png', name: 'стул' },
+    { file: 'голубой_кровать.png', name: 'кровать' },
+    { file: 'голубой_часы.png', name: 'часы' },
+    { file: 'голубой_рыба.png', name: 'рыба' },
+    { file: 'голубой_линейка.png', name: 'линейка' },
+    { file: 'голубой_сок.png', name: 'сок' },
+    { file: 'голубой_тюбик.png', name: 'тюбик' },
+    { file: 'голубой_пазл.png', name: 'пазл' },
+    { file: 'голубой_фото.png', name: 'фото' },
+    { file: 'желтый_груша.png', name: 'груша' },
+    { file: 'желтый_кубок.png', name: 'кубок' },
+    { file: 'желтый_лампочка.png', name: 'лампочка' },
+    { file: 'желтый_яблоко.png', name: 'яблоко' },
+    { file: 'желтый_яйцо.png', name: 'яйцо' },
+    { file: 'желтый_ракетка.png', name: 'ракетка' },
+    { file: 'желтый_палитра.png', name: 'палитра' },
+    { file: 'зелёный_яблоко.png', name: 'зелёное яблоко' },
+    { file: 'зелёный_брокколи.png', name: 'брокколи' },
+    { file: 'зелёный_галочка.png', name: 'галочка' },
+    { file: 'красный_арбуз.png', name: 'арбуз' },
+    { file: 'красный_вишня.png', name: 'вишня' },
+    { file: 'красный_помидор.png', name: 'помидор' },
+    { file: 'красный_яблоко.png', name: 'красное яблоко' },
+    { file: 'красный_мишень.png', name: 'мишень' },
+    { file: 'красный_вопрос.png', name: 'вопрос' },
+    { file: 'оранжевый_морковка.png', name: 'морковка' },
+    { file: 'оранжевый_гитара.png', name: 'гитара' },
+    { file: 'оранжевый_гриб.png', name: 'гриб' },
+    { file: 'оранжевый_щенок.png', name: 'щенок' },
+    { file: 'оранжевый_карандаш.png', name: 'карандаш' },
+    { file: 'оранжевый_сок.png', name: 'апельсиновый сок' },
+    { file: 'оранжевый_банка.png', name: 'банка' },
+    { file: 'синий_котёнок.png', name: 'котёнок' },
+    { file: 'синий_паук.png', name: 'паук' },
+    { file: 'синий_лампа.png', name: 'лампа' },
+    { file: 'синий_лупа.png', name: 'лупа' },
+    { file: 'синий_зуб.png', name: 'зуб' },
+    { file: 'синий_рюкзак.png', name: 'рюкзак' },
+    { file: 'синий_куртка.png', name: 'куртка' },
+    { file: 'сиреневый_ягода.png', name: 'ягода' },
+    { file: 'сиреневый_книга.png', name: 'книга' },
+    { file: 'сиреневый_наушники.png', name: 'наушники' },
+    { file: 'сиреневый_звезда.png', name: 'звезда' },
+    { file: 'сиреневый_песочные_часы.png', name: 'песочные часы' },
+    { file: 'сиреневый_замочек.png', name: 'замочек' },
+    { file: 'серый_голубь_1.png', name: 'голубь' },
+    { file: 'серый_голубь_2.png', name: 'голубь' }
   ];
   
-  // Выбираем случайные эмодзи для текущей игры
-  const shuffledEmojis = [...allEmojis].sort(() => Math.random() - 0.5);
-  const cards = shuffledEmojis.slice(0, length);
+  const shuffledImages = [...allImages].sort(() => Math.random() - 0.5);
+  const cards = shuffledImages.slice(0, length);
   
   let missingCard = null;
   let missingIndex = null;
@@ -5415,15 +5472,13 @@ function renderMemoryWhatMissing() {
   
   const board = document.getElementById("memoryBoard");
   
-  // Создаём увеличенные карточки
   cards.forEach(item => {
     const card = document.createElement("div");
     card.className = "memory-card";
-    card.textContent = item;
-    card.dataset.value = item;
+    card.innerHTML = `<img src="images/${item.file}" style="width: 80px; height: 80px; object-fit: contain;">`;
+    card.dataset.value = item.file;
     card.style.width = "140px";
     card.style.height = "140px";
-    card.style.fontSize = "72px";
     card.style.display = "flex";
     card.style.alignItems = "center";
     card.style.justifyContent = "center";
@@ -5435,7 +5490,6 @@ function renderMemoryWhatMissing() {
     board.appendChild(card);
   });
   
-  // Фаза 1: Показ карточек (3 секунды)
   whatMissingTimeouts.push(setTimeout(() => {
     if (!gameActive) return;
     
@@ -5444,11 +5498,10 @@ function renderMemoryWhatMissing() {
     const allCards = document.querySelectorAll(".memory-card");
     allCards.forEach(card => {
       card.style.background = "#765fde";
-      card.style.color = "white";
-      card.textContent = "?";
+      card.innerHTML = "?";
+      card.style.fontSize = "56px";
     });
     
-    // Фаза 2: Исчезновение одной карточки
     whatMissingTimeouts.push(setTimeout(() => {
       if (!gameActive) return;
       
@@ -5462,7 +5515,6 @@ function renderMemoryWhatMissing() {
       cardsToRemove.style.opacity = "0";
       cardsToRemove.style.transform = "scale(0)";
       
-      // Фаза 3: Открытие оставшихся карточек
       whatMissingTimeouts.push(setTimeout(() => {
         if (!gameActive) return;
         
@@ -5471,14 +5523,12 @@ function renderMemoryWhatMissing() {
         const remainingCards = document.querySelectorAll(".memory-card");
         remainingCards.forEach(card => {
           card.style.background = "linear-gradient(135deg, #87d34c, #57a718)";
-          card.style.color = "white";
-          card.textContent = card.dataset.value;
+          card.innerHTML = `<img src="images/${card.dataset.value}" style="width: 80px; height: 80px; object-fit: contain;">`;
           card.style.fontSize = "72px";
         });
         
         document.getElementById("memoryHint").innerHTML = "Какая карточка пропала? Выбери ответ";
         
-        // Создаём контейнер для вариантов ответов (горизонтально)
         const optionsContainer = document.createElement("div");
         optionsContainer.className = "options-list-horizontal";
         optionsContainer.style.display = "flex";
@@ -5488,32 +5538,36 @@ function renderMemoryWhatMissing() {
         optionsContainer.style.marginTop = "30px";
         optionsContainer.style.padding = "20px";
         
-        // Перемешиваем варианты
         const shuffledOptions = [...cards];
         for (let i = shuffledOptions.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
         }
         
-        shuffledOptions.forEach(cardValue => {
+        shuffledOptions.forEach(cardItem => {
           const btn = document.createElement("button");
           btn.className = "option-btn-horizontal";
-          btn.textContent = cardValue;
-          btn.style.padding = "16px 32px";
-          btn.style.fontSize = "28px";
+          btn.innerHTML = `<img src="images/${cardItem.file}" style="width: 50px; height: 50px; object-fit: contain; vertical-align: middle;"> <span style="margin-left: 8px;">${cardItem.name}</span>`;
+          btn.dataset.value = cardItem.file;
+          btn.style.padding = "12px 24px";
+          btn.style.fontSize = "20px";
           btn.style.fontWeight = "600";
           btn.style.border = "2px solid #d5d5da";
           btn.style.borderRadius = "60px";
           btn.style.background = "#ffffff";
           btn.style.cursor = "pointer";
           btn.style.transition = "all 0.2s ease";
-          btn.style.minWidth = "100px";
+          btn.style.minWidth = "150px";
           btn.style.color = "#2f2f45";
+          btn.style.display = "inline-flex";
+          btn.style.alignItems = "center";
+          btn.style.justifyContent = "center";
+          btn.style.gap = "8px";
           
           btn.onclick = () => {
             if (!gameActive) return;
             
-            if (cardValue === missingCard) {
+            if (cardItem.file === missingCard.file) {
               btn.classList.add("correct");
               btn.style.background = "#87d34c";
               btn.style.color = "white";
@@ -5523,12 +5577,11 @@ function renderMemoryWhatMissing() {
               btn.classList.add("wrong");
               btn.style.background = "#ea3117";
               btn.style.color = "white";
-              document.getElementById("memoryHint").innerHTML = `Неправильно! Пропала карточка: ${missingCard}`;
+              document.getElementById("memoryHint").innerHTML = `Неправильно! Пропала карточка: ${missingCard.name}`;
               
-              // Подсвечиваем правильный ответ
               const allBtns = document.querySelectorAll(".option-btn-horizontal");
               allBtns.forEach(b => {
-                if (b.textContent === missingCard) {
+                if (b.dataset.value === missingCard.file) {
                   b.style.background = "#87d34c";
                   b.style.color = "white";
                 }
@@ -5539,15 +5592,13 @@ function renderMemoryWhatMissing() {
           };
           
           btn.onmouseenter = () => {
-            if (btn.style.background !== "#87d34c" && 
-                btn.style.background !== "#ea3117") {
+            if (btn.style.background !== "#87d34c" && btn.style.background !== "#ea3117") {
               btn.style.background = "#f8f9ff";
               btn.style.transform = "translateY(-3px)";
             }
           };
           btn.onmouseleave = () => {
-            if (btn.style.background !== "#87d34c" && 
-                btn.style.background !== "#ea3117") {
+            if (btn.style.background !== "#87d34c" && btn.style.background !== "#ea3117") {
               btn.style.background = "#ffffff";
               btn.style.transform = "translateY(0)";
             }
