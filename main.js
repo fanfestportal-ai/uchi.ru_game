@@ -27,7 +27,8 @@ function getTaskIcon(taskId) {
     "phygital_audio": "",
     "reaction": "",
     "findwords": "",
-    "schulte": ""
+    "schulte": "",
+    "readingspeed": ""
   };
   return icons[taskId] || "";
 }
@@ -348,7 +349,8 @@ function getTaskName(taskId) {
     // Ловкость 
     "reaction": " Реакция",
     "findwords": " Найди слова",
-    "schulte": " Таблица Шульте"
+    "schulte": " Таблица Шульте",
+    "readingspeed": " Фиджитал: Скорость чтения" 
   };
   return names[taskId] || taskId;
 }
@@ -7134,6 +7136,385 @@ function getStars() {
   return stars[state.level] || '⭐';
 }
 
+// ===== ФИДЖИТАЛ: ЗАМЕР СКОРОСТИ ЧТЕНИЯ =====
+let readingSpeedTimeout = null;
+let readingSpeedTimer = null;
+
+function renderReadingSpeed() {
+  if (readingSpeedTimeout) {
+    clearTimeout(readingSpeedTimeout);
+    readingSpeedTimeout = null;
+  }
+  if (readingSpeedTimer) {
+    clearInterval(readingSpeedTimer);
+    readingSpeedTimer = null;
+  }
+  
+  // Тексты по уровням сложности
+  const textsByLevel = {
+    1: [
+      {
+        title: "Моя любимая книга",
+        text: "Я очень люблю читать. Моя любимая книга называется Приключения Незнайки. Мне её подарили на день рождения. В ней рассказывается про маленьких человечков. Они живут в Цветочном городе. Главный герой Незнайка очень любопытный. Он постоянно попадает в разные истории. Книга учит слушать советы друзей. Ещё она учит тому, что хвастаться нехорошо. Я советую прочитать эту книгу всем ребятам.",
+        wordCount: 90
+      },
+      {
+        title: "Мой любимый питомец",
+        text: "У меня есть кот. Его зовут Барсик. Он пушистый и рыжий. Барсик любит спать на диване. Когда он просыпается, он потягивается и зевает. Потом он идёт к миске и просит есть. Барсик ест рыбу и мясо. Ещё он любит пить молоко. После еды кот умывается лапой. Вечером Барсик играет с клубком ниток. Он бегает по комнате и прыгает. Иногда он ловит солнечных зайчиков. Я очень люблю своего кота. Он мой лучший друг.",
+        wordCount: 120
+      },
+      {
+        title: "Первый снег",
+        text: "Ночью выпал первый снег. Утром я выглянул в окно и удивился. Всё вокруг стало белым и красивым. Деревья надели белые шапки. Дома стояли как пряничные. Я быстро оделся и выбежал на улицу. Снег хрустел под ногами. Я набрал снега в ладони и сделал снежок. Крик друзей звал меня играть. Мы стали лепить снеговика. Потом мы играли в снежки. Щёки горели от мороза, но было очень весело. Скоро наступит зима и настоящие холода.",
+        wordCount: 115
+      }
+    ],
+    2: [
+      {
+        title: "Как я провёл лето",
+        text: "Этим летом я поехал к бабушке в деревню. Там очень красиво. Вокруг поля и леса. Бабушка живёт в маленьком доме с большим садом. В саду растут яблони, груши и вишни. Я помогал бабушке поливать грядки. Мы собирали клубнику и смородину. Каждый день я ходил на речку купаться. Вода была тёплой и чистой. Однажды мы с друзьями ходили в лес за грибами. Мы нашли много подберёзовиков и лисичек. Мама пожарила грибы с картошкой. Было очень вкусно. Ещё я научился кататься на велосипеде. В начале у меня не получалось, я падал. Но потом я освоился и теперь могу ездить быстро. Я буду скучать по лету и по бабушке.",
+        wordCount: 165
+      },
+      {
+        title: "Школьная экскурсия",
+        text: "В прошлую пятницу наш класс ездил на экскурсию в музей. Мы собрались у школы рано утром. Погода была отличная. Мы сели в большой автобус и поехали. В музее нас встретила экскурсовод. Она рассказала нам много интересного о истории нашего города. Мы увидели старинные вещи и одежду. Больше всего мне понравился зал с оружием. Там были мечи, щиты и доспехи рыцарей. Потом мы пошли в зал природы. Там стояли чучела животных и птиц. Экскурсия длилась два часа. После этого мы пошли обедать в кафе. Я очень устал, но мне всё понравилось. Я хочу поехать на такую экскурсию ещё раз.",
+        wordCount: 158
+      },
+      {
+        title: "Путешествие на поезде",
+        text: "Этим летом я впервые поехал на поезде. Мы с родителями отправились в Санкт-Петербург. Когда объявили посадку, мы пошли на перрон. Наш поезд был длинным и красивым. Мы нашли своё купе. В купе были мягкие полки и маленький столик. Поезд тронулся, и за окном поплыли дома. Потом начались поля и леса. Я смотрел в окно и считал деревья. Мама достала еду, и мы пообедали. Потом я читал книгу и играл в настольные игры с папой. Это путешествие запомнится мне надолго. Теперь я мечтаю поехать на поезде в другой город.",
+        wordCount: 140
+      }
+    ],
+    3: [
+      {
+        title: "Прогулка в парке",
+      text: "Сегодня солнечное утро. Мама и дети пошли гулять в парк. В парке много зелёных деревьев и красивых цветов. Дети увидели белку. Белка прыгала с ветки на ветку. Мальчик показал на неё рукой и засмеялся. Девочка достала из рюкзака хлеб и покрошила его на землю. Прилетели голуби и воробьи. Птицы весело клевали угощение. Потом дети пошли к пруду. В пруду плавали утки и лебеди. Вода блестела на солнце. Наступил вечер, и семья отправилась домой. Дети очень устали, но были счастливы. Мама пообещала, что они ещё придут в парк. В воскресенье они снова пошли гулять. На этот раз они взяли с собой бабушку. Бабушка рассказала много интересных историй о деревьях. Она показала детям, какие птицы живут в этом парке. Оказывается, здесь живут не только голуби и воробьи. Дети увидели дятла, который стучал по дереву. Девочка нашла на земле красивое пёрышко. Мальчик нашёл жёлудь и посадил его в землю. Он хочет, чтобы вырос новый дуб. Бабушка похвалила внука и сказала, что он заботится о природе. Дети пообещали, что будут поливать жёлудь каждую неделю. Потом они пошли на детскую площадку. Там были качели и горки. Дети долго катались и смеялись. Вечером они пили чай с бабушкиным пирогом. Это был замечательный выходной день. Теперь дети каждый месяц ходят в парк всей семьёй.",
+      wordCount: 235
+      },
+      {
+        title: "Мой любимый питомец",
+      text: "У меня есть кот. Его зовут Барсик. Он пушистый и рыжий. Барсик любит спать на диване. Когда он просыпается, он потягивается и зевает. Потом он идёт к миске и просит есть. Барсик ест рыбу и мясо. Ещё он любит пить молоко. После еды кот умывается лапой. Вечером Барсик играет с клубком ниток. Он бегает по комнате и прыгает. Иногда он ловит солнечных зайчиков. Я очень люблю своего кота. Он мой лучший друг. Барсик всегда встречает меня из школы. Он трётся о ноги и мурлычет. Если я грустный, он приходит и ложится рядом. От этого сразу становится теплее на душе. Однажды Барсик заболел. Мы с мамой повели его к ветеринару. Врач сказал, что у кота температура. Он выписал лекарства и уколы. Несколько дней мы ухаживали за Барсиком. Я каждые два часа давал ему лекарство. Мама делала уколы. Наконец Барсик поправился. Он снова начал играть и бегать. Я был очень рад. Теперь я знаю, что домашние питомцы нуждаются в нашей заботе. Мы должны следить за их здоровьем. Барсику уже пять лет. За это время у нас было много приключений. Однажды он залез на дерево и не мог слезть. Пришлось вызывать папу с лестницей. Другой раз он поймал мышку и принёс её на кухню. Мама очень испугалась. Но Барсик просто хотел нас порадовать. Я уверен, что Барсик самый лучший кот на свете. Мы никогда не расстанемся.",
+      wordCount: 315
+      },
+      {
+        title: "Первый снег",
+      text: "Ночью выпал первый снег. Утром я выглянул в окно и удивился. Всё вокруг стало белым и красивым. Деревья надели белые шапки. Дома стояли как пряничные. Я быстро оделся и выбежал на улицу. Снег хрустел под ногами. Я набрал снега в ладони и сделал снежок. Крик друзей звал меня играть. Мы стали лепить снеговика. Сначала мы скатали большой ком для туловища. Потом сделали средний ком для головы. Глаза сделали из угольков, нос из морковки. Рот нарисовали веточкой. Вместо рук вставили сухие ветки. На голову надели старое ведро. Получился отличный снеговик! Потом мы играли в снежки. Мы разделились на две команды. Снежки летели в разные стороны. Щёки горели от мороза, но было очень весело. К нам присоединились другие ребята. Мы построили снежную крепость. Одна команда защищала крепость, другая штурмовала. Игра продолжалась до самого обеда. Мамы звали нас домой, но никто не хотел уходить. Тогда мы договорились встретиться после обеда. Дома я пил горячий чай с мёдом. Мама сказала, что такой чай помогает не заболеть. После обеда я опять вышел на улицу. Снега стало ещё больше. Мы продолжили игру. Вечером мы с папой сделали кормушку для птиц. Повесили её на дерево во дворе. Насыпали туда семечек и хлебных крошек. Теперь птицы не будут голодать зимой. Я понял, что зима может быть очень весёлой. Главное, одеваться тепло и много двигаться. Тогда никакой мороз не страшен. Скоро наступят настоящие холода и метели. Но мы не боимся, потому что зима дарит нам столько радости!",
+      wordCount: 325
+      }
+    ]
+  };
+  
+  const currentTexts = textsByLevel[state.level];
+  const selectedText = currentTexts[Math.floor(Math.random() * currentTexts.length)];
+  
+  let timerInterval = null;
+  let timeLeft = 60;
+  let isRunning = false;
+  let selectedWordIndex = -1;
+  let allWordSpans = [];
+  
+  function updateTimerDisplay() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    const timerDisplay = document.getElementById('timerDisplay');
+    if (timerDisplay) {
+      timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+    const progressPercent = ((60 - timeLeft) / 60) * 100;
+    const progressFill = document.getElementById('timerProgressFill');
+    if (progressFill) {
+      progressFill.style.width = `${progressPercent}%`;
+    }
+  }
+  
+  function stopTimer() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+    isRunning = false;
+  }
+  
+  function calculateSpeed() {
+    const wordsRead = selectedWordIndex >= 0 ? selectedWordIndex + 1 : 0;
+    const speed = Math.round(wordsRead / 1);
+    const accuracy = Math.min(100, Math.round(wordsRead / selectedText.wordCount * 100));
+    return { speed, wordsRead, accuracy };
+  }
+  
+  function saveRecord(speed) {
+    const recordKey = `readingspeed_record_${state.level}`;
+    const savedRecord = localStorage.getItem(recordKey);
+    if (!savedRecord || speed > parseInt(savedRecord)) {
+      localStorage.setItem(recordKey, speed);
+      return true;
+    }
+    return false;
+  }
+  
+  function enableWordSelection() {
+    console.log("Включаем выбор слов");
+    allWordSpans.forEach(wordSpan => {
+      wordSpan.style.pointerEvents = 'auto';
+      wordSpan.style.cursor = 'pointer';
+    });
+  }
+  
+  function disableWordSelection() {
+    allWordSpans.forEach(wordSpan => {
+      wordSpan.style.pointerEvents = 'none';
+      wordSpan.style.cursor = 'default';
+    });
+  }
+  
+  function buildWordsList() {
+    const text = selectedText.text;
+    const wordsArray = text.split(/(\s+)/);
+    const container = document.getElementById('readingText');
+    if (!container) return [];
+    
+    container.innerHTML = '';
+    const spans = [];
+    let wordCounter = 0;
+    
+    for (let i = 0; i < wordsArray.length; i++) {
+      const token = wordsArray[i];
+      if (token.trim().length > 0) {
+        const wordSpan = document.createElement('span');
+        wordSpan.className = 'reading-word';
+        wordSpan.textContent = token;
+        wordSpan.dataset.wordIndex = wordCounter;
+        wordSpan.style.display = 'inline-block';
+        wordSpan.style.padding = '2px 4px';
+        wordSpan.style.borderRadius = '8px';
+        wordSpan.style.margin = '0 -2px';
+        wordSpan.style.transition = 'all 0.2s ease';
+        wordSpan.style.pointerEvents = 'none';
+        wordSpan.style.cursor = 'default';
+        
+        wordSpan.onclick = (e) => {
+          e.stopPropagation();
+          console.log("Клик по слову, isRunning:", isRunning, "timeLeft:", timeLeft);
+          if (!isRunning && timeLeft === 0) {
+            document.querySelectorAll('.reading-word').forEach(w => w.classList.remove('selected'));
+            wordSpan.classList.add('selected');
+            selectedWordIndex = wordCounter;
+            
+            const { speed, wordsRead, accuracy } = calculateSpeed();
+            const isNewRecord = saveRecord(speed);
+            
+            document.getElementById('speedResult').textContent = speed;
+            document.getElementById('wordsReadResult').textContent = wordsRead;
+            document.getElementById('accuracyResult').textContent = accuracy;
+            
+            const recordBadge = document.getElementById('recordBadge');
+            if (isNewRecord) {
+              recordBadge.innerHTML = 'НОВЫЙ РЕКОРД!';
+              recordBadge.style.background = '#87d34c';
+              recordBadge.style.color = 'white';
+            } else {
+              const savedRecord = localStorage.getItem(`readingspeed_record_${state.level}`);
+              recordBadge.innerHTML = savedRecord ? `Рекорд: ${savedRecord} слов/мин` : 'Попробуй побить рекорд!';
+              recordBadge.style.background = '#eae6ff';
+              recordBadge.style.color = '#765fde';
+            }
+            
+            document.getElementById('resultPanel').style.display = 'block';
+          }
+        };
+        
+        wordSpan.onmouseenter = () => {
+          if (!isRunning && timeLeft === 0) {
+            wordSpan.style.background = '#eae6ff';
+            wordSpan.style.transform = 'scale(1.02)';
+          }
+        };
+        wordSpan.onmouseleave = () => {
+          if (!isRunning && timeLeft === 0 && !wordSpan.classList.contains('selected')) {
+            wordSpan.style.background = 'transparent';
+            wordSpan.style.transform = 'scale(1)';
+          }
+        };
+        
+        container.appendChild(wordSpan);
+        spans.push(wordSpan);
+        wordCounter++;
+      } else {
+        const spaceSpan = document.createElement('span');
+        spaceSpan.textContent = token;
+        spaceSpan.style.whiteSpace = 'pre';
+        container.appendChild(spaceSpan);
+      }
+    }
+    return spans;
+  }
+  
+  gameArea.innerHTML = `
+    ${renderHUD()}
+    <div class="task-title">Фиджитал: Замер скорости чтения ${'⭐'.repeat(state.level)}</div>
+    
+    <div class="phygital-hint" style="background: #fef3c7; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
+      Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+    </div>
+    
+    <div style="background: linear-gradient(135deg, #765fde15, #ff881115); border-radius: 20px; padding: 15px; margin-bottom: 20px;">
+      <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">${selectedText.title}</div>
+      <div style="font-size: 14px; color: #666;">Объём текста: примерно ${selectedText.wordCount} слов</div>
+    </div>
+    
+    <div style="background: white; border-radius: 20px; padding: 15px; margin-bottom: 20px; text-align: center; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
+      <div style="font-size: 14px; font-weight: 600; color: #765fde;">ВРЕМЯ ЧТЕНИЯ</div>
+      <div id="timerDisplay" style="font-size: 64px; font-weight: 800; color: #ff8811; font-family: monospace; line-height: 1.2;">1:00</div>
+      <div style="background: #e5e7eb; height: 8px; border-radius: 10px; margin-top: 10px; overflow: hidden;">
+        <div id="timerProgressFill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #87d34c, #ff8811); transition: width 0.3s ease;"></div>
+      </div>
+      <div id="timerStatus" style="margin-top: 10px; font-size: 13px; color: #765fde;">Нажми «Старт» и читай вслух</div>
+    </div>
+    
+    <div style="background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
+      <div id="readingText" class="reading-text" style="font-size: 20px; line-height: 1.8; user-select: none;"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-bottom: 20px;">
+      <button id="startReadingBtn" class="btn-primary" style="width: auto; padding: 12px 32px; background: linear-gradient(135deg, #87d34c, #57a718);">СТАРТ</button>
+    </div>
+    
+    <div id="resultPanel" style="display: none; background: linear-gradient(135deg, #e8eaff, #f8f9ff); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px;">
+      <h3 style="color: #765fde; margin-bottom: 15px;">Результат замера</h3>
+      <div style="font-size: 48px; font-weight: 800; color: #ff8811;" id="speedResult">0</div>
+      <div style="font-size: 14px; color: #666; margin-bottom: 15px;">слов в минуту</div>
+      <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 15px;">
+        <div><span style="font-weight: 600;">Прочитано слов:</span> <span id="wordsReadResult">0</span></div>
+        <div><span style="font-weight: 600;">Точность:</span> <span id="accuracyResult">0</span>%</div>
+      </div>
+      <div id="recordBadge" style="padding: 8px; border-radius: 40px; font-size: 14px;"></div>
+    </div>
+    
+    <div style="display: flex; justify-content: center; gap: 15px;">
+      <button id="resetReadingBtn" class="btn-secondary" style="width: auto; padding: 10px 24px;">Новый текст</button>
+    </div>
+  `;
+  
+  allWordSpans = buildWordsList();
+  disableWordSelection();
+  
+  const startBtn = document.getElementById('startReadingBtn');
+  const resetBtn = document.getElementById('resetReadingBtn');
+  const resultPanel = document.getElementById('resultPanel');
+  
+  function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    isRunning = true;
+    timerInterval = setInterval(() => {
+      if (timeLeft <= 1) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        isRunning = false;
+        timeLeft = 0;
+        updateTimerDisplay();
+        
+        const timerStatus = document.getElementById('timerStatus');
+        if (timerStatus) {
+          timerStatus.innerHTML = 'Время вышло! Теперь выбери слово, на котором остановился.';
+          timerStatus.style.background = '#ea311720';
+          timerStatus.style.color = '#ea3117';
+        }
+        
+        enableWordSelection();
+        
+        if (startBtn) {
+          startBtn.disabled = true;
+          startBtn.style.opacity = '0.5';
+        }
+        
+        showToast("Время вышло! Выбери слово, на котором остановился", "info");
+      } else {
+        timeLeft--;
+        updateTimerDisplay();
+      }
+    }, 1000);
+  }
+  
+  startBtn.onclick = () => {
+    if (isRunning) return;
+    
+    timeLeft = 60;
+    selectedWordIndex = -1;
+    resultPanel.style.display = 'none';
+    updateTimerDisplay();
+    
+    document.querySelectorAll('.reading-word').forEach(w => {
+      w.classList.remove('selected');
+      w.style.background = 'transparent';
+    });
+    
+    disableWordSelection();
+    startTimer();
+    
+    startBtn.disabled = true;
+    startBtn.style.opacity = '0.5';
+    const timerStatus = document.getElementById('timerStatus');
+    if (timerStatus) {
+      timerStatus.innerHTML = 'Читай вслух... Время идёт!';
+      timerStatus.style.background = '#87d34c20';
+      timerStatus.style.color = '#2f2f45';
+    }
+    
+    showToast("Начали! Читай вслух ровно минуту", "success");
+  };
+  
+  resetBtn.onclick = () => {
+    stopTimer();
+    isRunning = false;
+    timeLeft = 60;
+    updateTimerDisplay();
+    
+    startBtn.disabled = false;
+    startBtn.style.opacity = '1';
+    const timerStatus = document.getElementById('timerStatus');
+    if (timerStatus) {
+      timerStatus.innerHTML = 'Нажми «Старт» и читай вслух';
+      timerStatus.style.background = '';
+      timerStatus.style.color = '#765fde';
+    }
+    
+    disableWordSelection();
+    document.querySelectorAll('.reading-word').forEach(w => {
+      w.classList.remove('selected');
+      w.style.background = 'transparent';
+    });
+    resultPanel.style.display = 'none';
+    
+    showToast("Таймер сброшен", "success");
+  };
+  
+  // Наблюдатель для кнопки подтверждения
+  const observer = new MutationObserver(() => {
+    const resultPanelDisplay = resultPanel.style.display;
+    if (resultPanelDisplay === 'block' && !document.getElementById('confirmReadingBtn')) {
+      const confirmBtn = document.createElement('button');
+      confirmBtn.id = 'confirmReadingBtn';
+      confirmBtn.className = 'btn-primary';
+      confirmBtn.textContent = 'Подтвердить выполнение';
+      confirmBtn.style.width = 'auto';
+      confirmBtn.style.padding = '12px 32px';
+      confirmBtn.style.marginTop = '20px';
+      confirmBtn.onclick = () => {
+        showParentPasswordModal(() => {
+          successAction();
+        });
+      };
+      resultPanel.appendChild(confirmBtn);
+    }
+  });
+  
+  observer.observe(resultPanel, { attributes: true, attributeFilter: ['style'] });
+}
+
+// Регистрация задания
+TASKS.dexterity["readingspeed"] = renderReadingSpeed;
+
 // ===== РЕГИСТРАЦИЯ ЗАДАНИЙ =====
 // Чтение
 TASKS.reading["flipped_text"] = renderFlippedText;
@@ -7172,6 +7553,7 @@ TASKS.memory["phygital_audio"] = renderPhygitalAudio;
 TASKS.dexterity["reaction"] = renderReaction;
 TASKS.dexterity["findwords"] = renderFindWords;
 TASKS.dexterity["schulte"] = renderSchulte;
+TASKS.dexterity["readingspeed"] = renderReadingSpeed;
 
 // ===== КАТЕГОРИИ =====
 document.querySelectorAll(".category-btn").forEach(btn => {

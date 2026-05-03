@@ -1629,6 +1629,176 @@ body {
     margin-top: 4px;
   }
 }
+/* ===== ФИДЖИТАЛ: ЗАМЕР СКОРОСТИ ЧТЕНИЯ ===== */
+.reading-speed-container {
+  width: 100%;
+}
+
+.reading-speed-info {
+  background: linear-gradient(135deg, #765fde15, #ff881115);
+  border-radius: 20px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.reading-speed-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.reading-speed-stats {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.timer-container {
+  background: var(--bg-surface);
+  border-radius: 20px;
+  padding: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  box-shadow: 6px 6px 12px var(--shadow-soft-dark), -3px -3px 10px var(--shadow-soft-light);
+}
+
+.timer-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-base);
+}
+
+.timer-display {
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--orange-base);
+  font-family: monospace;
+  line-height: 1.2;
+}
+
+.timer-progress {
+  background: #e5e7eb;
+  height: 8px;
+  border-radius: 10px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.timer-progress-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--success-base), var(--orange-base));
+  transition: width 0.3s ease;
+}
+
+.timer-status {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--primary-base);
+}
+
+.reading-text-container {
+  background: var(--bg-surface);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: 6px 6px 12px var(--shadow-soft-dark), -3px -3px 10px var(--shadow-soft-light);
+}
+
+.reading-text {
+  font-size: 20px;
+  line-height: 1.8;
+  font-family: inherit;
+  user-select: none;
+  pointer-events: none;
+}
+
+.reading-speed-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.reading-start-btn {
+  width: auto;
+  padding: 12px 32px;
+  background: linear-gradient(135deg, var(--success-base), #57a718);
+}
+
+.reading-result-panel {
+  background: linear-gradient(135deg, #e8eaff, #f8f9ff);
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.result-title {
+  color: var(--primary-base);
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+
+.result-speed {
+  margin-bottom: 15px;
+}
+
+.result-speed-value {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--orange-base);
+}
+
+.result-speed-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.result-details {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.record-badge {
+  padding: 8px;
+  border-radius: 40px;
+  font-size: 14px;
+}
+
+.reading-speed-reset {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 767px) {
+  .timer-display {
+    font-size: 48px;
+  }
+  
+  .reading-text {
+    font-size: 16px;
+  }
+  
+  .result-speed-value {
+    font-size: 36px;
+  }
+  
+  .reading-word {
+    padding: 1px 2px;
+  }
+}
 
 /* ============================================
    МОБИЛЬНАЯ ВЕРСИЯ (ТОЛЬКО ДЛЯ ЭКРАНОВ ДО 767px)
