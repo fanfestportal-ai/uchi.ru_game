@@ -76,6 +76,8 @@ const gameArea = document.getElementById("gameArea");
 let schulteInterval = null;
 let reactionTimeout = null;
 let pendingPhygitalSuccess = null;
+let globalTimerInterval = null;
+let globalTimerSeconds = 0;
 
 // ===== РЕЕСТР ЗАДАНИЙ =====
 const TASKS = {
@@ -95,6 +97,7 @@ function loadProgress() {
       state.score = data.score || 0;
       state.metrics = data.metrics || { totalTime: 0, totalErrors: 0, totalCorrect: 0, sessions: [] };
       state.records = data.records || { schulte: {}, double_schulte: {}, reaction: {} };
+      globalTimerSeconds = data.totalTime || 0;  // загружаем время
     } catch(e) {}
   }
 }
@@ -103,7 +106,8 @@ function saveProgress() {
   const toSave = {
     score: state.score,
     metrics: state.metrics,
-    records: state.records
+    records: state.records,
+    totalTime: globalTimerSeconds  // добавляем текущее время
   };
   localStorage.setItem("umnye_priklucheniya", JSON.stringify(toSave));
 }
@@ -178,7 +182,7 @@ function successAction() {
   saveProgress();
   
   if (state.streak >= 5) {
-    showToast("🏆 Серия завершена! +50 очков", "success");
+    showToast("Серия завершена! +50 очков", "success");
     state.score += 50;
     state.streak = 0;
   }
@@ -191,6 +195,47 @@ function successAction() {
     setTimeout(() => {
       showTaskSelection();
     }, 800);
+  }
+}
+
+// ===== ЗАВЕРШЕНИЕ УРОВНЯ =====
+function showLevelComplete() {
+  clearTimers();
+  stopGlobalTimer(); // ОСТАНАВЛИВАЕМ ТАЙМЕР
+  
+  const time = globalTimerSeconds; // Используем глобальное время
+  const accuracy = Math.round((state.levelProgress / state.tasksPerLevel) * 100);
+  
+  gameArea.innerHTML = `
+    <div class="result-screen">
+      <h2>Уровень завершён!</h2>
+      <p>Ошибки: ${state.errors}</p>
+      <p>Точность: ${accuracy}%</p>
+      <p>Всего очков: ${state.score}</p>
+      <button id="nextLevel" class="btn-primary">Следующий уровень</button>
+      <button id="resetProgress" class="btn-secondary">Начать заново</button>
+    </div>
+  `;
+  
+  const nextBtn = document.getElementById("nextLevel");
+  if (nextBtn) {
+    nextBtn.onclick = () => {
+      state.level = Math.min(state.level + 1, 3);
+      state.levelProgress = 0;
+      state.errors = 0;
+      startGlobalTimer(); // ЗАПУСКАЕМ ТАЙМЕР ЗАНОВО
+      showTaskSelection();
+    };
+  }
+  
+  const resetBtn = document.getElementById("resetProgress");
+  if (resetBtn) {
+    resetBtn.onclick = () => {
+      state.levelProgress = 0;
+      state.errors = 0;
+      startGlobalTimer(); // ЗАПУСКАЕМ ТАЙМЕР ЗАНОВО
+      showTaskSelection();
+    };
   }
 }
 
@@ -208,49 +253,16 @@ function failAction() {
   showToast("Неправильно! Попробуй ещё раз", "error");
 }
 
-// ===== ЗАВЕРШЕНИЕ УРОВНЯ =====
-function showLevelComplete() {
-  clearTimers();
-  const time = Math.floor((Date.now() - state.timeStart) / 1000);
-  const accuracy = Math.round((state.levelProgress / state.tasksPerLevel) * 100);
-  
-  gameArea.innerHTML = `
-    <div class="result-screen">
-      <h2>Уровень завершён!</h2>
-      <p>Время: ${time} сек</p>
-      <p>Ошибки: ${state.errors}</p>
-      <p>Точность: ${accuracy}%</p>
-      <p>Всего очков: ${state.score}</p>
-      <button id="nextLevel" class="btn-primary">Следующий уровень</button>
-      <button id="resetProgress" class="btn-secondary">Начать заново</button>
-    </div>
-  `;
-  
-  const nextBtn = document.getElementById("nextLevel");
-  if (nextBtn) {
-    nextBtn.onclick = () => {
-      state.level = Math.min(state.level + 1, 3);
-      state.levelProgress = 0;
-      state.errors = 0;
-      showTaskSelection();
-    };
-  }
-  
-  const resetBtn = document.getElementById("resetProgress");
-  if (resetBtn) {
-    resetBtn.onclick = () => {
-      state.levelProgress = 0;
-      state.errors = 0;
-      showTaskSelection();
-    };
-  }
-}
-
 // ===== ПОКАЗ ВЫБОРА ЗАДАНИЯ =====
 function showTaskSelection() {
   const taskSelectPanel = document.getElementById("taskSelectPanel");
   const taskSelectButtons = document.getElementById("taskSelectButtons");
+  // Запускаем глобальный таймер при первом показе заданий
   
+  if (!globalTimerInterval) {
+    startGlobalTimer();
+  }
+
   const tasks = TASKS[state.category];
   const taskList = Object.keys(tasks);
   
@@ -418,6 +430,40 @@ function setupCheckboxAnswers(questions) {
       failAction();
     }
   };
+}
+
+function startGlobalTimer() {
+  if (globalTimerInterval) {
+    clearInterval(globalTimerInterval);
+  }
+  globalTimerSeconds = 0;
+  globalTimerInterval = setInterval(() => {
+    globalTimerSeconds++;
+    const statTimeEl = document.getElementById("statTime");
+    if (statTimeEl) {
+      statTimeEl.textContent = globalTimerSeconds;
+    }
+  }, 1000);
+}
+
+function stopGlobalTimer() {
+  if (globalTimerInterval) {
+    clearInterval(globalTimerInterval);
+    globalTimerInterval = null;
+  }
+}
+
+function clearTimers() {
+  if (schulteInterval) {
+    clearInterval(schulteInterval);
+    schulteInterval = null;
+  }
+  if (reactionTimeout) {
+    clearTimeout(reactionTimeout);
+    reactionTimeout = null;
+  }
+  // Останавливаем глобальный таймер при очистке
+  stopGlobalTimer();
 }
 
 // ===== ФИДЖИТАЛ С ПАРОЛЕМ =====
@@ -1958,17 +2004,13 @@ function renderPhygitalFlipped() {
       <div id="flippedTableContainer" style="transform: rotate(180deg); display: inline-block; width: 100%;">
         <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden;">
           <thead>
-            <tr><th colspan="6" style="padding: 10px; background: #765fde; color: white; font-size: 18px;">🔃 АЛФАВИТ</th></tr>
+            <tr><th colspan="6" style="padding: 10px; background: #765fde; color: white; font-size: 18px;">АЛФАВИТ</th></tr>
           </thead>
           <tbody>
             ${tableRows.join("")}
           </tbody>
         </table>
       </div>
-    </div>
-    <div class="phygital-hint" style="background: #e8eaff; padding: 12px; border-radius: 12px; margin-top: 10px; text-align: center;">
-      Подсказка: Буквы должны смотреть в правильную сторону!<br>
-      Попробуй написать перевёрнутое слово, глядя на эту таблицу.
     </div>
     <div class="options-list">
       <button class="option-btn" data-answer="idea">Напиши перевёрнутое имя</button>
@@ -2313,76 +2355,76 @@ function renderLogicRiddle() {
   
   // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 20 загадок, 3 варианта ответа =====
 const riddlesEasy = [
-  { question: "Висит груша, нельзя скушать. Что это?", options: ["Яблоко", "Лампочка", "Груша"], correct: "Лампочка" },
+  { question: "Висит груша, нельзя скушать. Что это?", options: ["Яблоко", "Лампочка", "Фрукт"], correct: "Лампочка" },
   { question: "Что можно приготовить, но нельзя съесть?", options: ["Уроки", "Суп", "Кашу"], correct: "Уроки" },
-  { question: "Какой месяц короче всех?", options: ["Февраль", "Май", "Июнь"], correct: "Май" },
-  { question: "Что с земли легко поднимешь, но далеко не закинешь?", options: ["Пух", "Камень", "Мяч"], correct: "Пух" },
-  { question: "Что все люди делают одновременно?", options: ["Стареют", "Спят", "Едят"], correct: "Стареют" },
-  { question: "Какой рукой лучше размешивать чай?", options: ["Правой", "Левой", "Ложкой"], correct: "Ложкой" },
-  { question: "Когда кошке легче всего пробраться в дом?", options: ["Ночью", "Когда дверь открыта", "Днём"], correct: "Когда дверь открыта" },
-  { question: "Какой нос не чувствует запаха?", options: ["Нос ботинка", "Нос человека", "Нос собаки"], correct: "Нос ботинка" },
-  { question: "Что идет в гору и с горы, но остаётся на месте?", options: ["Дорога", "Машина", "Человек"], correct: "Дорога" },
-  { question: "Что сырым не едят, а сварят — выбросят?", options: ["Лавровый лист", "Картошку", "Рыбу"], correct: "Лавровый лист" },
-  { question: "Какое колесо автомобиля не крутится при движении?", options: ["Запасное", "Переднее", "Заднее"], correct: "Запасное" },
-  { question: "Что бросают, когда нуждаются, и поднимают, когда нет нужды?", options: ["Якорь", "Мяч", "Камень"], correct: "Якорь" },
-  { question: "Чем больше из неё берёшь, тем больше она становится?", options: ["Яма", "Сумка", "Коробка"], correct: "Яма" },
-  { question: "Какое слово всегда звучит неправильно?", options: ["Неправильно", "Верно", "Ошибка"], correct: "Неправильно" },
-  { question: "За чем вода в стакане?", options: ["За стеклом", "На дне", "Внутри"], correct: "За стеклом" },
-  { question: "Какая нота не нужна для компота?", options: ["Соль", "Ми", "До"], correct: "Соль" },
-  { question: "Что всегда увеличивается и никогда не уменьшается?", options: ["Возраст", "Вес", "Рост"], correct: "Возраст" },
+  { question: "Какой месяц короче всех по названию?", options: ["Май", "Июнь", "Август"], correct: "Май" },
+  { question: "Что легко поднять, но трудно далеко бросить?", options: ["Пух", "Камень", "Мяч"], correct: "Пух" },
+  { question: "Что все люди делают постоянно?", options: ["Стареют", "Спят", "Едят"], correct: "Стареют" },
+  { question: "Чем лучше размешивать чай?", options: ["Правой рукой", "Левой рукой", "Ложкой"], correct: "Ложкой" },
+  { question: "Когда кошке легче всего попасть в дом?", options: ["Ночью", "Когда дверь открыта", "Днём"], correct: "Когда дверь открыта" },
+  { question: "Какой нос не чувствует запах?", options: ["Нос ботинка", "Нос человека", "Нос животного"], correct: "Нос ботинка" },
+  { question: "Что идёт вверх и вниз, но остаётся на месте?", options: ["Дорога", "Лестница", "Лифт"], correct: "Лестница" },
+  { question: "Что варят, а потом убирают?", options: ["Лавровый лист", "Картофель", "Макароны"], correct: "Лавровый лист" },
+  { question: "Какое колесо не крутится при движении машины?", options: ["Запасное", "Переднее", "Заднее"], correct: "Запасное" },
+  { question: "Что бросают, когда оно нужно, и поднимают, когда не нужно?", options: ["Якорь", "Мяч", "Камень"], correct: "Якорь" },
+  { question: "Чем больше из неё берёшь, тем больше она становится?", options: ["Яма", "Коробка", "Сумка"], correct: "Яма" },
+  { question: "Какое слово всегда пишется неправильно?", options: ["Неправильно", "Ошибка", "Опечатка"], correct: "Неправильно" },
+  { question: "Где находится вода в стакане?", options: ["Внутри", "Снаружи", "Под стаканом"], correct: "Внутри" },
+  { question: "Какая нота есть в супе?", options: ["Соль", "До", "Ми"], correct: "Соль" },
+  { question: "Что всегда растёт?", options: ["Возраст", "Вес", "Настроение"], correct: "Возраст" },
   { question: "Что можно увидеть только с открытыми глазами?", options: ["Свет", "Сон", "Мысль"], correct: "Свет" },
-  { question: "Кто говорит на всех языках?", options: ["Эхо", "Человек", "Переводчик"], correct: "Эхо" },
-  { question: "Что можно сломать, даже не касаясь?", options: ["Обещание", "Стекло", "Палку"], correct: "Обещание" }
+  { question: "Кто повторяет всё, что ты скажешь?", options: ["Эхо", "Человек", "Попугай"], correct: "Эхо" },
+  { question: "Что можно сломать, не трогая руками?", options: ["Обещание", "Стекло", "Палку"], correct: "Обещание" }
 ];
 
 
 // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 20 загадок, 4 варианта ответа =====
 const riddlesMedium = [
-  { question: "Ты да я, да мы с тобой. Сколько нас всего?", options: ["2", "3", "4", "5"], correct: "2" },
-  { question: "Что с каждым годом становится больше?", options: ["Возраст", "Дом", "Дерево", "Рюкзак"], correct: "Возраст" },
-  { question: "На столе лежало 4 яблока. Одно разрезали пополам. Сколько яблок стало?", options: ["4", "5", "6", "3"], correct: "4" },
+  { question: "Ты да я, да мы с тобой. Сколько нас?", options: ["2", "3", "4", "5"], correct: "2" },
+  { question: "Что с каждым годом становится больше?", options: ["Возраст", "Дом", "Рюкзак", "Книга"], correct: "Возраст" },
+  { question: "На столе лежало 4 яблока. Одно разрезали. Сколько яблок стало?", options: ["4", "5", "6", "3"], correct: "4" },
   { question: "Какой месяц имеет 28 дней?", options: ["Февраль", "Все месяцы", "Январь", "Июнь"], correct: "Все месяцы" },
-  { question: "Сколько яиц можно съесть натощак?", options: ["Одно", "Два", "Три", "Десять"], correct: "Одно" },
-  { question: "Горело 7 свечей. 2 погасли. Сколько осталось гореть?", options: ["5", "2", "7", "0"], correct: "5" },
-  { question: "У него есть спинка, но он не лежит. Есть ножки, но не ходит. Что это?", options: ["Стул", "Стол", "Кровать", "Диван"], correct: "Стул" },
-  { question: "Что принадлежит вам, но другие используют чаще?", options: ["Имя", "Дом", "Телефон", "Одежда"], correct: "Имя" },
-  { question: "В вазе было 3 яблока. Три девочки получили по яблоку, и одно осталось. Как?", options: ["Одна взяла с вазой", "Яблоко спрятали", "Разрезали", "Девочек было две"], correct: "Одна взяла с вазой" },
-  { question: "На столе 3 стакана. Один выпили и поставили обратно. Сколько стаканов на столе?", options: ["3", "2", "1", "4"], correct: "3" },
-  { question: "5 кошек ловят 5 мышей за 5 минут. Сколько нужно одной кошке?", options: ["5 минут", "1 минута", "10 минут", "3 минуты"], correct: "5 минут" },
-  { question: "В семье 5 сыновей и одна сестра. Сколько детей?", options: ["6", "5", "7", "4"], correct: "6" },
-  { question: "3 лошади пробежали 15 км. Сколько пробежала каждая?", options: ["15", "5", "10", "3"], correct: "15" },
-  { question: "На берёзе растут яблоки. Сколько яблок?", options: ["0", "10", "20", "5"], correct: "0" },
-  { question: "Что можно найти 2 раза в «мама» и ни разу в «папа»?", options: ["Букву М", "Букву А", "Букву П", "Букву О"], correct: "Букву М" },
-  { question: "На какой вопрос нельзя ответить «да»?", options: ["Ты спишь?", "Ты человек?", "Ты жив?", "Ты дома?"], correct: "Ты спишь?" },
-  { question: "Что можно измерить, но нельзя увидеть?", options: ["Время", "Стол", "Дом", "Дерево"], correct: "Время" },
+  { question: "Сколько яиц можно съесть натощак?", options: ["Одно", "Два", "Три", "Много"], correct: "Одно" },
+  { question: "Горело 7 свечей, 2 погасли. Сколько осталось гореть?", options: ["5", "2", "7", "0"], correct: "5" },
+  { question: "У него есть спинка и ножки, но он не ходит. Что это?", options: ["Стул", "Стол", "Кровать", "Диван"], correct: "Стул" },
+  { question: "Что принадлежит тебе, но чаще используют другие?", options: ["Имя", "Телефон", "Одежда", "Комната"], correct: "Имя" },
+  { question: "В вазе 3 яблока. Три девочки взяли по одному, но одно осталось. Как?", options: ["Одна взяла с вазой", "Разрезали", "Спрятали", "Ошибка"], correct: "Одна взяла с вазой" },
+  { question: "На столе 3 стакана. Один выпили. Сколько стаканов на столе?", options: ["3", "2", "1", "4"], correct: "3" },
+  { question: "5 кошек ловят 5 мышей за 5 минут. Сколько ловит одна кошка?", options: ["1 мышь за 5 минут", "5 мышей", "1 мышь за 1 минуту", "2 мыши"], correct: "1 мышь за 5 минут" },
+  { question: "В семье 5 братьев и 1 сестра. Сколько детей?", options: ["6", "5", "7", "4"], correct: "6" },
+  { question: "3 лошади пробежали 15 км. Сколько пробежала каждая?", options: ["15 км", "5 км", "10 км", "3 км"], correct: "15 км" },
+  { question: "На берёзе растут яблоки. Сколько яблок?", options: ["0", "10", "5", "1"], correct: "0" },
+  { question: "Что есть в слове «мама», но нет в слове «папа»?", options: ["Буква М", "Буква А", "Буква П", "Буква О"], correct: "Буква М" },
+  { question: "На какой вопрос нельзя ответить «да»?", options: ["Ты спишь?", "Ты дома?", "Ты человек?", "Ты готов?"], correct: "Ты спишь?" },
+  { question: "Что можно измерить, но нельзя увидеть?", options: ["Время", "Дом", "Дерево", "Стол"], correct: "Время" },
   { question: "1 кг мяса варится 1 час. Сколько варится 2 кг?", options: ["1 час", "2 часа", "30 минут", "3 часа"], correct: "1 час" },
   { question: "У 7 братьев одна сестра. Сколько детей?", options: ["8", "7", "6", "9"], correct: "8" },
-  { question: "Что становится легче, если его наполнить?", options: ["Шарик", "Сумка", "Коробка", "Ведро"], correct: "Шарик" }
+  { question: "Что становится легче, если его надуть?", options: ["Шарик", "Сумка", "Коробка", "Ведро"], correct: "Шарик" }
 ];
 
 
 // ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 20 загадок, 5 вариантов ответа =====
 const riddlesHard = [
-  { question: "Два отца и два сына поймали 3 зайцев. Каждый принёс по одному. Как?", options: ["Дед, отец и сын", "Две семьи", "Братья", "Друзья", "Соседи"], correct: "Дед, отец и сын" },
+  { question: "Два отца и два сына поймали 3 зайцев. Как?", options: ["Дед, отец и сын", "Две семьи", "Братья", "Друзья", "Соседи"], correct: "Дед, отец и сын" },
   { question: "Что можно держать, не касаясь руками?", options: ["Дыхание", "Мяч", "Книгу", "Стол", "Ручку"], correct: "Дыхание" },
-  { question: "Какое число увеличивается, но не уменьшается?", options: ["Возраст", "Порядковый номер", "Счёт", "Количество", "Вес"], correct: "Возраст" },
-  { question: "Как одним мешком наполнить два пустых?", options: ["Вложить один в другой", "Разделить", "Смешать", "Высыпать", "Разрезать"], correct: "Вложить один в другой" },
-  { question: "Когда человек бывает в комнате без головы?", options: ["Когда выглядывает в окно", "Когда спит", "Когда сидит", "Когда ест", "Когда думает"], correct: "Когда выглядывает в окно" },
+  { question: "Что увеличивается, но не уменьшается?", options: ["Возраст", "Число", "Вес", "Размер", "Объём"], correct: "Возраст" },
+  { question: "Как наполнить два пустых мешка одним?", options: ["Вложить один в другой", "Разрезать", "Разделить", "Высыпать", "Переложить"], correct: "Вложить один в другой" },
+  { question: "Когда человек в комнате без головы?", options: ["Когда выглядывает в окно", "Когда спит", "Когда сидит", "Когда ест", "Когда думает"], correct: "Когда выглядывает в окно" },
   { question: "Что нельзя увеличить лупой?", options: ["Угол", "Текст", "Изображение", "Предмет", "Свет"], correct: "Угол" },
   { question: "Что можно потерять только один раз?", options: ["Жизнь", "Деньги", "Ключи", "Время", "Работу"], correct: "Жизнь" },
-  { question: "Кто ходит сидя?", options: ["Шахматист", "Учитель", "Писатель", "Художник", "Врач"], correct: "Шахматист" },
-  { question: "Что у человека под ногами, когда он идёт по мосту?", options: ["Мост", "Река", "Вода", "Земля", "Тень"], correct: "Мост" },
-  { question: "Какой год длится один день?", options: ["Новый год", "Календарный", "Учебный", "Финансовый", "Високосный"], correct: "Новый год" },
+  { question: "Кто ходит сидя?", options: ["Шахматист", "Водитель", "Писатель", "Учитель", "Врач"], correct: "Шахматист" },
+  { question: "Что под ногами на мосту?", options: ["Мост", "Вода", "Река", "Земля", "Тень"], correct: "Мост" },
+  { question: "Какой год длится один день?", options: ["Новый год", "Учебный", "Календарный", "Финансовый", "Високосный"], correct: "Новый год" },
   { question: "Что становится больше, если перевернуть?", options: ["6 → 9", "8", "1", "0", "3"], correct: "6 → 9" },
   { question: "Где вода стоит столбом?", options: ["В колодце", "В реке", "В море", "В озере", "В луже"], correct: "В колодце" },
   { question: "Какая птица не несёт яйца?", options: ["Петух", "Курица", "Гусь", "Утка", "Индюк"], correct: "Петух" },
-  { question: "Что имеет голову, но не имеет мозга?", options: ["Чеснок", "Человек", "Собака", "Птица", "Рыба"], correct: "Чеснок" },
-  { question: "Какой остров называется одеждой?", options: ["Ямайка", "Куба", "Ява", "Сахалин", "Бали"], correct: "Ямайка" },
-  { question: "Что можно сделать, но нельзя вернуть обратно?", options: ["Слово", "Деньги", "Книгу", "Ручку", "Игрушку"], correct: "Слово" },
-  { question: "Что всегда идёт, но никуда не приходит?", options: ["Время", "Человек", "Поезд", "Дождь", "Ветер"], correct: "Время" },
-  { question: "Что можно увидеть, но нельзя потрогать?", options: ["Тень", "Стол", "Камень", "Книга", "Мяч"], correct: "Тень" },
-  { question: "Что становится мокрым, когда сушит?", options: ["Полотенце", "Солнце", "Ветер", "Фен", "Одежда"], correct: "Полотенце" },
-  { question: "Что можно сломать, не трогая?", options: ["Обещание", "Стекло", "Палку", "Игрушку", "Стул"], correct: "Обещание" }
+  { question: "Что имеет голову, но без мозга?", options: ["Чеснок", "Капуста", "Человек", "Рыба", "Птица"], correct: "Чеснок" },
+  { question: "Какой остров похож на одежду?", options: ["Ямайка", "Куба", "Ява", "Бали", "Сахалин"], correct: "Ямайка" },
+  { question: "Что нельзя вернуть после того, как сказано?", options: ["Слово", "Деньги", "Книгу", "Игрушку", "Ручку"], correct: "Слово" },
+  { question: "Что всегда идёт, но никуда не приходит?", options: ["Время", "Поезд", "Человек", "Ветер", "Дождь"], correct: "Время" },
+  { question: "Что можно увидеть, но нельзя потрогать?", options: ["Тень", "Воздух", "Свет", "Звук", "Дым"], correct: "Тень" },
+  { question: "Что становится мокрым, когда вытирает?", options: ["Полотенце", "Губка", "Салфетка", "Тряпка", "Фен"], correct: "Полотенце" },
+  { question: "Что можно сломать, не касаясь?", options: ["Обещание", "Стекло", "Палку", "Игрушку", "Стул"], correct: "Обещание" }
 ];
 
   // Выбираем загадку в зависимости от уровня
@@ -2825,7 +2867,7 @@ const matchesHard = [
         start.style.background = "#87d34c30";
         start.style.border = "2px solid #87d34c";
       });
-      showToast("🎉 Правильно! Все пары соединены верно!", "success");
+      showToast("Правильно! Все пары соединены верно!", "success");
       successAction();
       
       matchTimeout = setTimeout(() => {
@@ -3515,7 +3557,7 @@ function renderLogicCipher() {
       </div>
     </div>
     <div style="display: flex; justify-content: center;">
-      <button id="checkBtn" class="btn-primary" style="width: auto; padding: 16px 60px; font-size: 24px; margin-top: 20px;">✅ Проверить</button>
+      <button id="checkBtn" class="btn-primary" style="width: auto; padding: 16px 60px; font-size: 24px; margin-top: 20px;">Проверить</button>
     </div>
   `;
   
@@ -3718,7 +3760,7 @@ function renderPhygitalCipher() {
       <div style="min-width: ${isMobile ? '550px' : '100%'};">
         <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden;">
           <thead>
-            <tr><th colspan="6" style="padding: ${isMobile ? '10px' : '15px'}; background: #765fde; color: white; font-size: ${isMobile ? '16px' : '22px'};">🗝️ Таблица шифрования (буквы)</th></tr>
+            <tr><th colspan="6" style="padding: ${isMobile ? '10px' : '15px'}; background: #765fde; color: white; font-size: ${isMobile ? '16px' : '22px'};">Таблица шифрования (буквы)</th></tr>
           </thead>
           <tbody>
             ${tableRows.join("")}
@@ -3726,7 +3768,7 @@ function renderPhygitalCipher() {
         </td>
         <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; margin-top: 15px;">
           <thead>
-            <tr><th colspan="14" style="padding: ${isMobile ? '10px' : '15px'}; background: #ff8811; color: white; font-size: ${isMobile ? '16px' : '22px'};">🔢 Цифры и знаки препинания</th></tr>
+            <tr><th colspan="14" style="padding: ${isMobile ? '10px' : '15px'}; background: #ff8811; color: white; font-size: ${isMobile ? '16px' : '22px'};">Цифры и знаки препинания</th></tr>
           </thead>
           <tbody>
             <tr>${symbolRow}</tr>
@@ -4413,7 +4455,7 @@ function renderAttentionFindNumber() {
   
   updateProgress();
 }
-// 4. ЧЁРНО-БЕЛЫЕ ТАБЛИЦЫ (без дублей на одном цвете)
+// 4. ЧЁРНО-БЕЛЫЕ ТАБЛИЦЫ 
 function renderAttentionBlackWhite() {
   const sizes = { 1: 4, 2: 5, 3: 7 };
   const maxNumber = { 1: 8, 2: 13, 3: 25 };
@@ -4421,11 +4463,12 @@ function renderAttentionBlackWhite() {
   const maxNum = maxNumber[state.level] || 8;
   const total = size * size;
   
-  // Генерируем цифры: каждая цифра появляется ровно 2 раза, но на разных цветах
+  // Генерируем цифры: каждая цифра появляется ровно 2 раза
   let numbers = [];
   for (let i = 1; i <= maxNum; i++) {
     numbers.push(i, i);
   }
+  
   // Если total больше, добавляем недостающие цифры
   while (numbers.length < total) {
     const extra = Math.floor(Math.random() * maxNum) + 1;
@@ -4435,10 +4478,16 @@ function renderAttentionBlackWhite() {
   while (numbers.length > total) {
     numbers.pop();
   }
-  numbers.sort(() => Math.random() - 0.5);
+  
+  // Перемешиваем
+  for (let i = numbers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+  }
   
   let current = 1;
   let currentColor = "black";
+  let gameCompleted = false;
   
   gameArea.innerHTML = `
     ${renderHUD()}
@@ -4488,12 +4537,35 @@ function renderAttentionBlackWhite() {
     cell.style.display = "flex";
     cell.style.alignItems = "center";
     cell.style.justifyContent = "center";
+    cell.style.borderRadius = "12px";
+    cell.style.cursor = "pointer";
+    cell.style.transition = "all 0.2s ease";
+    cell.style.boxShadow = "6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8)";
     cell.textContent = num;
     cell.dataset.number = num;
     cell.dataset.color = bgColor;
+    
     cell.onclick = () => {
-      if (parseInt(cell.dataset.number) === current && cell.dataset.color === currentColor) {
+      if (gameCompleted) return;
+      
+      const clickedNum = parseInt(cell.dataset.number);
+      const clickedColor = cell.dataset.color;
+      
+      if (clickedNum === current && clickedColor === currentColor) {
         cell.classList.add("correct");
+        cell.style.opacity = "0.6";
+        cell.style.transform = "scale(0.95)";
+        
+        // ОСОБАЯ ПРОВЕРКА ДЛЯ ПОСЛЕДНЕГО ЧИСЛА (maxNum)
+        if (clickedNum === maxNum) {
+          // Это последнее число - завершаем задание
+          gameCompleted = true;
+          showToast(`ПОБЕДА! Ты нашёл число ${maxNum}!`, "success");
+          successAction();
+          return;
+        }
+        
+        // Обычная смена цвета/числа
         if (currentColor === "black") {
           currentColor = "white";
           currentColorSpan.textContent = "белом";
@@ -4503,15 +4575,33 @@ function renderAttentionBlackWhite() {
           currentNumSpan.textContent = current;
           currentColorSpan.textContent = "чёрном";
         }
-        if (current > maxNum) {
-          successAction();
-        }
+        showToast(`Правильно! Теперь ищи ${current} на ${currentColor === "black" ? "чёрном" : "белом"}`, "success");
       } else {
         cell.classList.add("wrong");
         setTimeout(() => cell.classList.remove("wrong"), 300);
         failAction();
+        const hint = document.createElement("div");
+        hint.textContent = `Это ${clickedNum}! Ищем ${current} на ${currentColor === "black" ? "чёрном" : "белом"}`;
+        hint.style.cssText = `
+          position: fixed;
+          bottom: 80px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: #ea3117;
+          color: white;
+          padding: 8px 16px;
+          border-radius: 40px;
+          font-size: 14px;
+          font-weight: 600;
+          z-index: 1000;
+          animation: toastSlide 0.3s ease;
+          box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
+        `;
+        document.body.appendChild(hint);
+        setTimeout(() => hint.remove(), 800);
       }
     };
+    
     grid.appendChild(cell);
   });
 }
@@ -4934,7 +5024,7 @@ function renderPhygitalColoring() {
       Обведи рисунок неведущей рукой. Если ты пишешь правой рукой, тогда обводи левой.
     </div>
     <div style="display: flex; justify-content: center; margin-top: 15px;">
-      <button id="saveAndPrintBtn" class="btn-secondary" style="width: auto; padding: 12px 32px; background: linear-gradient(135deg, #ff8811, #d97706); color: white;">💾 Сохранить и распечатать</button>
+      <button id="saveAndPrintBtn" class="btn-secondary" style="width: auto; padding: 12px 32px; background: linear-gradient(135deg, #ff8811, #d97706); color: white;">Сохранить и распечатать</button>
     </div>
   `;
   
@@ -5046,7 +5136,7 @@ function renderPhygitalColoring() {
   
   document.getElementById("clearCanvasBtn").onclick = () => {
     restoreBackground();
-    showToast("🖌️ Линии очищены! Обводи заново", "success");
+    showToast("Линии очищены! Обводи заново", "success");
   };
   
   // Функция сохранения изображения
@@ -5062,7 +5152,7 @@ function renderPhygitalColoring() {
       link.href = dataURL;
       link.click();
       
-      showToast("✅ Рисунок сохранён!", "success");
+      showToast("Рисунок сохранён!", "success");
       
       // Пробуем открыть диалог печати
       setTimeout(() => {
@@ -5103,7 +5193,7 @@ function renderPhygitalColoring() {
               </head>
               <body>
                 <div class="print-container">
-                  <h3>🎨 Фиджитал-задание Учи.ру</h3>
+                  <h3>Фиджитал-задание Учи.ру</h3>
                   <img src="${dataURL}" alt="Обведи рисунок неведущей рукой или двумя руками одновременно">
                   <p>Дата: ${new Date().toLocaleDateString()}</p>
                 </div>
@@ -5120,7 +5210,7 @@ function renderPhygitalColoring() {
           `);
           printWindow.document.close();
         } else {
-          showToast("🖨️ Нажмите Ctrl+P для печати", "info");
+          showToast("Нажмите Ctrl+P для печати", "info");
         }
       }, 300);
     } catch (error) {
@@ -5294,7 +5384,7 @@ function renderMemorySequence() {
       card.style.background = "#765fde";
       card.style.fontSize = "56px";
     });
-    document.getElementById("memoryHint").innerHTML = "🃏 Карточки закрываются и перемешиваются...";
+    document.getElementById("memoryHint").innerHTML = "Карточки закрываются и перемешиваются...";
     
     memorySequenceTimeouts.push(setTimeout(() => {
       if (!gameActive) return;
@@ -5501,7 +5591,7 @@ function renderMemoryWhatMissing() {
   whatMissingTimeouts.push(setTimeout(() => {
     if (!gameActive) return;
     
-    document.getElementById("memoryHint").innerHTML = "🔒 Карточки закрываются...";
+    document.getElementById("memoryHint").innerHTML = "Карточки закрываются...";
     
     const allCards = document.querySelectorAll(".memory-card");
     allCards.forEach(card => {
@@ -5516,7 +5606,7 @@ function renderMemoryWhatMissing() {
       missingIndex = Math.floor(Math.random() * cards.length);
       missingCard = cards[missingIndex];
       
-      document.getElementById("memoryHint").innerHTML = "✨ Одна карточка исчезает...";
+      document.getElementById("memoryHint").innerHTML = "Одна карточка исчезает...";
       
       const cardsToRemove = board.children[missingIndex];
       cardsToRemove.style.transition = "all 0.3s ease";
@@ -5923,7 +6013,7 @@ function renderPhygitalAudio() {
     
     speakBtn.disabled = true;
     speakBtn.style.opacity = "0.6";
-    speakBtn.textContent = "🔊 Озвучивание...";
+    speakBtn.textContent = "Озвучивание...";
     
     function speakNextWord() {
       if (currentWordIndex >= selectedWords.length) {
@@ -6018,7 +6108,7 @@ function renderPhygitalAudio() {
     
     <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
       <button id="speakBtn" class="btn-primary" style="width: auto; padding: 14px 32px; background: linear-gradient(135deg, #765fde, #ff8811);">🔊 Прослушать слова</button>
-      <button id="stopBtn" class="btn-secondary" style="width: auto; padding: 14px 32px; display: none;">⏹️ Остановить</button>
+      <button id="stopBtn" class="btn-secondary" style="width: auto; padding: 14px 32px; display: none;">Остановить</button>
     </div>
     
     
@@ -6131,10 +6221,19 @@ function renderReaction() {
     if (!current || ms < parseInt(current)) {
       localStorage.setItem(`reaction_record_${state.level}`, ms);
       if (recordSpan) recordSpan.textContent = ms + ' мс (НОВЫЙ!)';
+      
+      // Сохраняем в общую статистику
+      if (!state.records.reaction) state.records.reaction = {};
+      state.records.reaction[`level_${state.level}`] = ms;
+      saveProgress();
+      
       return true;
     }
     return false;
   }
+  
+  // Переменная для хранения суммы времени реакции для расчета среднего
+  let totalReactionTime = 0;
   
   function showTarget() {
     if (!active) return;
@@ -6175,6 +6274,7 @@ function renderReaction() {
         
         const reactionMs = Date.now() - startTime;
         hits++;
+        totalReactionTime += reactionMs;
         hitsSpan.textContent = hits;
         timeSpan.textContent = reactionMs;
         
@@ -6187,8 +6287,13 @@ function renderReaction() {
           startBtn.disabled = false;
           startBtn.style.opacity = '1';
           startBtn.textContent = '▶ Ещё раз';
+          
+          // Сохраняем среднее время реакции как рекорд
+          const avgReactionTime = Math.round(totalReactionTime / requiredHits);
+          saveRecord(avgReactionTime);
+          
           successAction();
-          showToast(`Отлично! ${requiredHits} попаданий!`, "success");
+          showToast(`Отлично! ${requiredHits} попаданий! Среднее время: ${avgReactionTime} мс`, "success");
         } else {
           showTarget();
         }
@@ -6219,6 +6324,7 @@ function renderReaction() {
   startBtn.onclick = () => {
     if (active) return;
     hits = 0;
+    totalReactionTime = 0;
     active = true;
     hitsSpan.textContent = '0';
     timeSpan.textContent = '0';
@@ -6409,22 +6515,27 @@ function renderFindWords() {
   };
 }
 
-// ===== 3. ТАБЛИЦА ШУЛЬТЕ (УЛУЧШЕННАЯ ВЕРСИЯ) =====
+// ===== 3. ТАБЛИЦА ШУЛЬТЕ =====
 let schulteTimeout = null;
+let schulteTimerInterval = null;  // Глобальная переменная для таймера
 
 function renderSchulte() {
-  // Очищаем предыдущий таймаут
+  // Очищаем предыдущий таймаут и таймер
   if (schulteTimeout) {
     clearTimeout(schulteTimeout);
     schulteTimeout = null;
   }
+  if (schulteTimerInterval) {
+    clearInterval(schulteTimerInterval);
+    schulteTimerInterval = null;
+  }
   
-  // Размеры таблицы с учётом экрана (увеличены в 1.5 раза)
+  // Размеры таблицы с учётом экрана
   const sizes = { 1: 9, 2: 16, 3: 25 };
   const total = sizes[state.level] || 9;
   const cols = Math.sqrt(total);
   
-  // Адаптивные размеры ячеек (увеличены в 1.5 раза)
+  // Адаптивные размеры ячеек
   let cellSize = "105px";
   let fontSize = "36px";
   
@@ -6445,7 +6556,6 @@ function renderSchulte() {
   let startTime = null;
   let penalty = 0;
   let completed = false;
-  let timerInterval = null;
   
   const recordKey = `schulte_record_${state.level}`;
   const savedRecord = localStorage.getItem(recordKey);
@@ -6495,6 +6605,9 @@ function renderSchulte() {
   updateHUD();
   
   const grid = document.getElementById('schulteGrid');
+  const timerSpan = document.getElementById('timerValue');
+  const targetSpan = document.getElementById('currentTarget');
+  const recordSpan = document.getElementById('recordValue');
   
   // Добавляем стили для ячеек и wrapper
   const style = document.createElement('style');
@@ -6578,22 +6691,31 @@ function renderSchulte() {
   document.head.appendChild(style);
   
   function startTimer() {
-    if (timerInterval) clearInterval(timerInterval);
+    // Останавливаем старый таймер, если есть
+    if (schulteTimerInterval) {
+      clearInterval(schulteTimerInterval);
+      schulteTimerInterval = null;
+    }
     startTime = Date.now();
-    timerInterval = setInterval(() => {
+    schulteTimerInterval = setInterval(() => {
       if (!completed && startTime) {
         const time = ((Date.now() - startTime) / 1000 + penalty).toFixed(2);
-        const timerSpan = document.getElementById('timerValue');
         if (timerSpan) timerSpan.textContent = time;
       }
     }, 100);
+  }
+  
+  function stopTimer() {
+    if (schulteTimerInterval) {
+      clearInterval(schulteTimerInterval);
+      schulteTimerInterval = null;
+    }
   }
   
   function saveRecord(time) {
     const current = localStorage.getItem(recordKey);
     if (!current || parseFloat(time) < parseFloat(current)) {
       localStorage.setItem(recordKey, time);
-      const recordSpan = document.getElementById('recordValue');
       if (recordSpan) {
         recordSpan.innerHTML = time + ' сек ⭐';
         recordSpan.style.animation = 'schulteCelebrate 0.5s ease';
@@ -6601,12 +6723,19 @@ function renderSchulte() {
           recordSpan.style.animation = '';
         }, 500);
       }
+      // Сохраняем в общую статистику
+      if (!state.records.schulte) state.records.schulte = {};
+      state.records.schulte[`level_${state.level}`] = parseFloat(time);
+      saveProgress();
       return true;
     }
     return false;
   }
   
   function createGrid() {
+    // Останавливаем таймер при создании новой сетки
+    stopTimer();
+    
     grid.innerHTML = '';
     numbers = Array.from({ length: total }, (_, i) => i + 1);
     for (let i = numbers.length - 1; i > 0; i--) {
@@ -6618,11 +6747,8 @@ function renderSchulte() {
     penalty = 0;
     completed = false;
     
-    const targetSpan = document.getElementById('currentTarget');
-    const timerSpan = document.getElementById('timerValue');
     if (targetSpan) targetSpan.textContent = '1';
     if (timerSpan) timerSpan.textContent = '0.00';
-    if (timerInterval) clearInterval(timerInterval);
     
     numbers.forEach(num => {
       const cell = document.createElement('div');
@@ -6645,7 +6771,7 @@ function renderSchulte() {
           
           if (current > total) {
             completed = true;
-            clearInterval(timerInterval);
+            stopTimer();
             const finalTime = ((Date.now() - startTime) / 1000 + penalty).toFixed(2);
             const isNewRecord = saveRecord(finalTime);
             
@@ -6685,7 +6811,7 @@ function renderSchulte() {
           failAction();
           
           const hintToast = document.createElement('div');
-          hintToast.textContent = `🔍 Ищем цифру ${current}!`;
+          hintToast.textContent = `Ищем цифру ${current}!`;
           hintToast.style.cssText = `
             position: fixed;
             bottom: 80px;
@@ -6716,6 +6842,7 @@ function renderSchulte() {
     resetBtn.onclick = () => {
       if (schulteTimeout) {
         clearTimeout(schulteTimeout);
+        schulteTimeout = null;
       }
       createGrid();
       showToast("Новая таблица создана!", "success");
@@ -6810,8 +6937,8 @@ statsBtn.onclick = () => {
   document.getElementById("statScore").textContent = state.score;
   document.getElementById("statCorrect").textContent = state.metrics.totalCorrect;
   document.getElementById("statErrors").textContent = state.metrics.totalErrors;
-  document.getElementById("statTime").textContent = state.metrics.totalTime;
-  
+  document.getElementById("statTime").textContent = globalTimerSeconds; 
+
   const total = state.metrics.totalCorrect + state.metrics.totalErrors;
   const accuracy = total > 0 ? Math.round((state.metrics.totalCorrect / total) * 100) : 0;
   document.getElementById("accuracyValue").textContent = `${accuracy}%`;
