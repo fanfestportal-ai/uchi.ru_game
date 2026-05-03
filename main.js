@@ -3718,80 +3718,191 @@ function renderPhygitalCipher() {
     "?": '<img src="images/сиреневый_чудик_1.png" style="width: 40px; height: 40px; object-fit: contain;">'
   };
   
-  // Определяем размер картинок в зависимости от экрана
-  const isMobile = window.innerWidth <= 768;
-  const imageSize = isMobile ? "32px" : "40px";
-  const fontSize = isMobile ? "14px" : "18px";
-  const tablePadding = isMobile ? "8px" : "12px";
-  
-  // Обновляем размеры картинок в emojiMap для мобильных
-  const adjustedEmojiMap = {};
-  for (let [key, value] of Object.entries(emojiMap)) {
-    adjustedEmojiMap[key] = value.replace(/width: \d+px; height: \d+px;/, `width: ${imageSize}; height: ${imageSize};`);
-  }
-  
-  // Создаём адаптивную таблицу 6x6 для букв
-  const alphabet = Object.keys(adjustedEmojiMap).filter(k => /[А-ЯЁ]/.test(k));
-  const tableRows = [];
-  for (let i = 0; i < alphabet.length; i += 6) {
-    const rowCells = [];
-    for (let j = 0; j < 6; j++) {
-      const idx = i + j;
-      if (idx < alphabet.length) {
-        const letter = alphabet[idx];
-        rowCells.push(`<td style="border: 1px solid #765fde; padding: ${tablePadding}; text-align: center; background: white; font-size: ${fontSize}; font-weight: 600;">${letter}<br><span style="font-size: ${isMobile ? '24px' : '32px'}; display: inline-block;">${adjustedEmojiMap[letter]}</span></td>`);
-      } else {
-        rowCells.push(`<td style="border: 1px solid #765fde; padding: ${tablePadding}; text-align: center; background: white;">—</td>`);
-      }
-    }
-    tableRows.push(`<tr>${rowCells.join("")}</tr>`);
-  }
-  
-  // Цифры и знаки
-  const symbols = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", "!", "?"];
-  const symbolRow = symbols.map(s => `<td style="border: 1px solid #ff8811; padding: ${tablePadding}; text-align: center; background: white; font-size: ${fontSize}; font-weight: 600;">${s}<br><span style="font-size: ${isMobile ? '24px' : '32px'}; display: inline-block;">${adjustedEmojiMap[s]}</span></td>`).join("");
-  
-  gameArea.innerHTML = `
-    ${renderHUD()}
-    <div class="task-title">Фиджитал: Свой шифр</div>
-    <div class="phygital-hint" style="background: #fef3c7; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-      Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
-    </div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
-      Задание: Используя таблицу шифрования ниже, придумай своё зашифрованное послание для друга или родителей.
-      Запиши его на листочке и попроси расшифровать!
-    </div>
-    <div style="background: #e0e0e0; border-radius: 16px; padding: ${isMobile ? '10px' : '15px'}; margin-bottom: 20px; overflow-x: auto; -webkit-overflow-scrolling: touch;">
-      <div style="min-width: ${isMobile ? '550px' : '100%'};">
-        <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden;">
-          <thead>
-            <tr><th colspan="6" style="padding: ${isMobile ? '10px' : '15px'}; background: #765fde; color: white; font-size: ${isMobile ? '16px' : '22px'};">Таблица шифрования (буквы)</th></tr>
-          </thead>
-          <tbody>
-            ${tableRows.join("")}
-          </tbody>
-        </td>
-        <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; margin-top: 15px;">
-          <thead>
-            <tr><th colspan="14" style="padding: ${isMobile ? '10px' : '15px'}; background: #ff8811; color: white; font-size: ${isMobile ? '16px' : '22px'};">Цифры и знаки препинания</th></tr>
-          </thead>
-          <tbody>
-            <tr>${symbolRow}</tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="phygital-hint" style="background: #e8eaff; padding: 12px; border-radius: 12px; margin-top: 10px; text-align: center;">
-    </div>
-    <button id="readyBtn" class="btn-primary" style="margin-top: 20px;">Я придумал(а) шифр и послание!</button>
-  `;
-  
-  document.getElementById("readyBtn").onclick = () => {
-    showParentPasswordModal(() => {
-      successAction();
-    });
-  };
+// ===== АДАПТИВ =====
+const isMobile = window.innerWidth <= 768;
+
+const imageSize = isMobile ? "18px" : "26px";
+const fontSize = isMobile ? "10px" : "14px";
+const emojiFont = isMobile ? "16px" : "22px";
+const tablePadding = isMobile ? "4px" : "8px";
+
+const tableWrapperStyle = `
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+`;
+
+// ===== КАРТИНКИ =====
+const adjustedEmojiMap = {};
+for (let [key, value] of Object.entries(emojiMap)) {
+  adjustedEmojiMap[key] = value.replace(
+    /width: \d+px; height: \d+px;/,
+    `width: ${imageSize}; height: ${imageSize};`
+  );
 }
+
+// ===== БУКВЫ =====
+const alphabet = Object.keys(adjustedEmojiMap).filter(k => /[А-ЯЁ]/.test(k));
+const tableRows = [];
+
+for (let i = 0; i < alphabet.length; i += 6) {
+  const rowCells = [];
+
+  for (let j = 0; j < 6; j++) {
+    const idx = i + j;
+
+    if (idx < alphabet.length) {
+      const letter = alphabet[idx];
+
+      rowCells.push(`
+        <td style="
+          border: 1px solid #765fde;
+          padding: ${tablePadding};
+          text-align: center;
+          font-size: ${fontSize};
+          font-weight: 600;
+        ">
+          <div>${letter}</div>
+          <div style="font-size: ${emojiFont};">
+            ${adjustedEmojiMap[letter]}
+          </div>
+        </td>
+      `);
+    } else {
+      rowCells.push(`
+        <td style="border: 1px solid #765fde; padding: ${tablePadding};"></td>
+      `);
+    }
+  }
+
+  tableRows.push(`<tr>${rowCells.join("")}</tr>`);
+}
+
+// ===== ЦИФРЫ (ТЕПЕРЬ ТОЖЕ 6 КОЛОНОК) =====
+const symbols = ["0","1","2","3","4","5","6","7","8","9",".",",","!","?"];
+
+const symbolRows = [];
+
+for (let i = 0; i < symbols.length; i += 6) {
+  const rowCells = [];
+
+  for (let j = 0; j < 6; j++) {
+    const idx = i + j;
+
+    if (idx < symbols.length) {
+      const s = symbols[idx];
+
+      rowCells.push(`
+        <td style="
+          border: 1px solid #ff8811;
+          padding: ${tablePadding};
+          text-align: center;
+          font-size: ${fontSize};
+          font-weight: 600;
+        ">
+          <div>${s}</div>
+          <div style="font-size: ${emojiFont};">
+            ${adjustedEmojiMap[s]}
+          </div>
+        </td>
+      `);
+    } else {
+      rowCells.push(`
+        <td style="border: 1px solid #ff8811; padding: ${tablePadding};"></td>
+      `);
+    }
+  }
+
+  symbolRows.push(`<tr>${rowCells.join("")}</tr>`);
+}
+
+// ===== РЕНДЕР =====
+gameArea.innerHTML = `
+  ${renderHUD()}
+
+  <div class="task-title">Фиджитал: Свой шифр</div>
+
+  <div class="phygital-hint" style="
+    background: #fef3c7;
+    padding: 12px;
+    margin-bottom: 15px;
+    text-align: center;
+  ">
+    Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+  </div>
+
+  <div class="task-description" style="
+    background: #e8eaff;
+    padding: 12px;
+    margin-bottom: 15px;
+  ">
+    Используя таблицу, придумай своё зашифрованное послание.
+  </div>
+
+  <div style="${tableWrapperStyle}">
+    
+    <!-- БУКВЫ -->
+    <table style="
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+    ">
+      <thead>
+        <tr>
+          <th colspan="6" style="
+            background: #765fde;
+            color: white;
+            font-size: ${isMobile ? '14px' : '18px'};
+            padding: 8px;
+          ">
+            Буквы
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        ${tableRows.join("")}
+      </tbody>
+    </table>
+
+    <!-- ЦИФРЫ -->
+    <table style="
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      margin-top: 10px;
+    ">
+      <thead>
+        <tr>
+          <th colspan="6" style="
+            background: #ff8811;
+            color: white;
+            font-size: ${isMobile ? '14px' : '18px'};
+            padding: 8px;
+          ">
+            Цифры и знаки
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        ${symbolRows.join("")}
+      </tbody>
+    </table>
+
+  </div>
+
+  <button id="readyBtn" class="btn-primary" style="margin-top: 16px;">
+    Я придумал(а) шифр
+  </button>
+`;
+
+// ===== КНОПКА =====
+document.getElementById("readyBtn").onclick = () => {
+  showParentPasswordModal(() => {
+    successAction();
+  });
+};
+}
+
 // ============================================
 // ========== ЗАДАНИЯ ВНИМАНИЕ ==========
 // ============================================
@@ -6968,6 +7079,33 @@ document.getElementById("resetAllStats").onclick = () => {
   showToast("Статистика сброшена!", "success");
   modal.style.display = "none";
 };
+
+// Добавить эту функцию для пересчёта размеров на мобильных
+function adjustSizeSortSizes() {
+  if (window.innerWidth > 767) return;
+  
+  const container = document.querySelector('.size-sort-letters');
+  if (!container) return;
+  
+  const spans = container.querySelectorAll('span');
+  const containerWidth = container.clientWidth - 20; // отступы
+  const totalItems = spans.length;
+  const maxSize = Math.min(60, Math.floor(containerWidth / totalItems / 1.2));
+  
+  spans.forEach(span => {
+    const originalSize = parseFloat(span.style.fontSize) || 36;
+    const newSize = Math.min(originalSize, maxSize);
+    span.style.fontSize = `${newSize}px`;
+    span.style.margin = '0 2px';
+  });
+}
+
+// Вызывать после рендера и при изменении ориентации
+window.addEventListener('resize', () => {
+  if (window.innerWidth <= 767) {
+    adjustSizeSortSizes();
+  }
+});
 
 // ===== ЗАПУСК =====
 loadProgress();
