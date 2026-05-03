@@ -1971,11 +1971,11 @@ function renderSizeSort() {
   };
 }
 
-// 7. Фиджитал: Перевёрнутое письмо (с таблицей)
+// // 7. Фиджитал: Перевёрнутое письмо (с таблицей)
 function renderPhygitalFlipped() {
   const alphabet = ["А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З", "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ы", "Ь", "Э", "Ю", "Я"];
   
-  // Создаём таблицу 6x6 для алфавита (только буквы, без дублирования)
+  // Создаём таблицу 6x6 для алфавита
   const tableRows = [];
   for (let i = 0; i < alphabet.length; i += 6) {
     const rowCells = [];
@@ -1987,14 +1987,14 @@ function renderPhygitalFlipped() {
         rowCells.push(`<td style="border: 2px solid #765fde; padding: 12px; text-align: center; background: white;">—</td>`);
       }
     }
-    tableRows.push(`<tr>${rowCells.join("")}<tr>`);
+    tableRows.push(`<tr>${rowCells.join("")}</tr>`);
   }
   
   gameArea.innerHTML = `
     ${renderHUD()}
     <div class="task-title">Фиджитал: Перевёрнутое письмо</div>
-    <div class="phygital-hint" style="background: #fef3c7; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-      Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+    <div style="background: #fff0f0; border-left: 4px solid #ff6170; border-radius: 16px; padding: 14px 20px; margin-bottom: 20px; text-align: center; color: #2f2f45; font-weight: 500; box-shadow: 4px 4px 10px rgba(0,0,0,0.03), -2px -2px 6px rgba(255,255,255,0.7);">
+      🔐 Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
     </div>
     <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задание: Возьми листочек!
@@ -2012,6 +2012,10 @@ function renderPhygitalFlipped() {
         </table>
       </div>
     </div>
+    <div class="phygital-hint" style="background: #e8eaff; padding: 12px; border-radius: 12px; margin-top: 10px; text-align: center;">
+      Подсказка: Буквы должны смотреть в правильную сторону!<br>
+      Попробуй написать перевёрнутое слово, глядя на эту таблицу.
+    </div>
     <div class="options-list">
       <button class="option-btn" data-answer="idea">Напиши перевёрнутое имя</button>
       <button class="option-btn" data-answer="idea2">А теперь любое слово</button>
@@ -2026,6 +2030,7 @@ function renderPhygitalFlipped() {
     });
   };
 }
+
 
 // ============================================
 // ========== ЗАДАНИЯ ЛОГИКА ==========
@@ -5007,8 +5012,8 @@ function renderPhygitalColoring() {
   gameArea.innerHTML = `
     ${renderHUD()}
     <div class="task-title">Фиджитал: Обведи по контуру ${'⭐'.repeat(state.level)}</div>
-    <div class="phygital-hint" style="background: #fef3c7; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-      Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+    <div style="background: #fff0f0; border-left: 4px solid #ff6170; border-radius: 16px; padding: 14px 20px; margin-bottom: 15px; text-align: center; color: #2f2f45; font-weight: 500; box-shadow: 4px 4px 10px rgba(0,0,0,0.03), -2px -2px 6px rgba(255,255,255,0.7);">
+      🔐 Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
       <br> ${instructions}
     </div>
     <div class="contour-area" style="display: flex; justify-content: center; margin: 20px 0;">
@@ -5024,7 +5029,7 @@ function renderPhygitalColoring() {
       Обведи рисунок неведущей рукой. Если ты пишешь правой рукой, тогда обводи левой.
     </div>
     <div style="display: flex; justify-content: center; margin-top: 15px;">
-      <button id="saveAndPrintBtn" class="btn-secondary" style="width: auto; padding: 12px 32px; background: linear-gradient(135deg, #ff8811, #d97706); color: white;">Сохранить и распечатать</button>
+      <button id="saveAndPrintBtn" class="btn-secondary" style="width: auto; padding: 12px 32px; background: linear-gradient(135deg, #ff8811, #d97706); color: white;">💾 Сохранить и распечатать</button>
     </div>
   `;
   
@@ -5193,8 +5198,8 @@ function renderPhygitalColoring() {
               </head>
               <body>
                 <div class="print-container">
-                  <h3>Фиджитал-задание Учи.ру</h3>
-                  <img src="${dataURL}" alt="Обведи рисунок неведущей рукой или двумя руками одновременно">
+                  <h3>Фиджитал-задание</h3>
+                  <img src="${dataURL}" alt="Обведённый рисунок">
                   <p>Дата: ${new Date().toLocaleDateString()}</p>
                 </div>
                 <script>
@@ -6023,17 +6028,17 @@ function renderPhygitalAudio() {
           statusSpan.style.background = "#87d34c20";
           statusSpan.style.color = "#065f46";
         }
-        showToast("🔊 Готово! Все слова произнесены", "success");
+        showToast("Готово! Все слова произнесены", "success");
         speakBtn.disabled = false;
         speakBtn.style.opacity = "1";
-        speakBtn.textContent = "🔊 Прослушать слова заново";
+        speakBtn.textContent = "Прослушать слова заново";
         isPlaying = false;
         return;
       }
       
       const word = selectedWords[currentWordIndex];
       if (statusSpan) {
-        statusSpan.innerHTML = `🎙️ Слово ${currentWordIndex + 1} из ${selectedWords.length}: <strong style="color: #ff8811;">"${word}"</strong>`;
+        statusSpan.innerHTML = `Слово ${currentWordIndex + 1} из ${selectedWords.length}: <strong style="color: #ff8811;">"${word}"</strong>`;
       }
       
       const utterance = new SpeechSynthesisUtterance(word);
@@ -6060,7 +6065,7 @@ function renderPhygitalAudio() {
         }
         speakBtn.disabled = false;
         speakBtn.style.opacity = "1";
-        speakBtn.textContent = "🔊 Прослушать слова";
+        speakBtn.textContent = "Прослушать слова";
         isPlaying = false;
       };
       
@@ -6096,21 +6101,27 @@ function renderPhygitalAudio() {
     ${renderHUD()}
     <div class="task-title">Фиджитал: Запомни на слух ${'⭐'.repeat(state.level)}</div>
     
-    <div class="phygital-hint" style="background: #fef3c7; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-      Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+    <div style="background: #fff0f0; border-left: 4px solid #ff6170; border-radius: 16px; padding: 14px 20px; margin-bottom: 15px; text-align: center; color: #2f2f45; font-weight: 500; box-shadow: 4px 4px 10px rgba(0,0,0,0.03), -2px -2px 6px rgba(255,255,255,0.7);">
+      🔐 Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
     </div>
     
     <div class="audio-info" style="background: linear-gradient(135deg, #765fde15, #ff881115); padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: center;">
       <div style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">Слушай внимательно!</div>
-      <div style="font-size: 14px; color: #666;">Будет произнесено несколько слов</strong>. Запомни их и запиши на листочек.</div>
+      <div style="font-size: 14px; color: #666;">Будет произнесено <strong>${wordsCount}</strong> слов. Запомни их и запиши на листочек.</div>
     </div>
     
+    <div id="audioStatus" style="text-align: center; margin-bottom: 20px; padding: 15px; background: #e8eaff; border-radius: 16px; font-size: 16px; color: #765fde;">
+      Нажми на кнопку, чтобы начать
+    </div>
     
     <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
       <button id="speakBtn" class="btn-primary" style="width: auto; padding: 14px 32px; background: linear-gradient(135deg, #765fde, #ff8811);">🔊 Прослушать слова</button>
       <button id="stopBtn" class="btn-secondary" style="width: auto; padding: 14px 32px; display: none;">Остановить</button>
     </div>
     
+    <div class="phygital-tip" style="background: #E0E7FF; padding: 16px 24px; border-radius: 24px; margin: 25px 0 15px 0; text-align: center;">
+      Совет: Закрой глаза и сосредоточься! Записывай слова по мере запоминания.
+    </div>
     
     <div style="display: flex; justify-content: center; margin-top: 15px;">
       <button id="readyBtn" class="btn-primary" style="width: auto; padding: 16px 48px; background: linear-gradient(135deg, #87d34c, #57a718);">Я всё запомнил(а) и записал(а)!</button>
@@ -6130,7 +6141,7 @@ function renderPhygitalAudio() {
   stopBtn.onclick = () => {
     stopAndReset();
     stopBtn.style.display = "none";
-    showToast("⏹Озвучивание остановлено", "info");
+    showToast("Озвучивание остановлено", "info");
   };
   
   readyBtn.onclick = () => {
