@@ -1672,30 +1672,48 @@ const textsHard = [
   // Инициализируем массив активных позиций разделителей
   currentSplitPositions = new Array(chars.length - 1).fill(false);
   
-  // Находим правильные позиции для разделения
+    // Находим правильные позиции для разделения
   const correctPositions = [];
   let currentPos = 0;
   for (let i = 0; i < task.words.length; i++) {
     currentPos += task.words[i].length;
     if (i < task.words.length - 1) {
+      // Правильная позиция — это индекс ПОСЛЕДНЕЙ буквы текущего слова
+      // То есть currentPos - 1
       correctPositions.push(currentPos - 1);
     }
   }
   
-  // Обработчики для позиций разделителей
+  // Отладочный вывод (можно убрать после проверки)
+  console.log("Слово:", task.correct);
+  console.log("Длины слов:", task.words.map(w => w.length));
+  console.log("Правильные позиции (индексы между буквами):", correctPositions);
+  console.log("Всего символов:", task.text.length);
+  
+    // Обработчики для позиций разделителей
   const splitPositions = document.querySelectorAll('.split-position');
   splitPositions.forEach((pos, idx) => {
-    pos.onclick = () => {
+    // Очищаем старые классы и стили
+    pos.classList.remove('active');
+    pos.textContent = '●';
+    pos.style.color = '#acacb5';
+    pos.style.fontSize = '32px';
+    
+    pos.onclick = (e) => {
+      e.stopPropagation();
       // Переключаем состояние разделителя
       currentSplitPositions[idx] = !currentSplitPositions[idx];
       if (currentSplitPositions[idx]) {
         pos.classList.add('active');
         pos.textContent = '|';
         pos.style.color = '#87d34c';
+        pos.style.fontSize = '40px';
+        pos.style.fontWeight = 'bold';
       } else {
         pos.classList.remove('active');
-        pos.textContent = '⬤';
-        pos.style.color = '#ccc';
+        pos.textContent = '●';
+        pos.style.color = '#acacb5';
+        pos.style.fontSize = '32px';
       }
     };
   });
@@ -3192,55 +3210,193 @@ function renderLogicPicture() {
     }
   ];
 
-  // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) =====
-  const itemsMedium = [
-    { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/красный_помидор.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
-      name: "Помидор",
-      questions: ["Это овощ", "Синего цвета", "Имеет круглую форму", "Растёт на дереве", "Из него делают сок"],
-      correct: [true, false, true, false, true]
-    },
-    { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_котёнок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
-      name: "Котёнок",
-      questions: ["Это домашнее животное", "Умеет лаять", "Любит молоко", "Имеет крылья", "Умеет мяукать"],
-      correct: [true, false, true, false, true]
-    },
-    { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_щенок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
-      name: "Щенок",
-      questions: ["Это домашнее животное", "Умеет мяукать", "Любит гулять", "Имеет хобот", "Охраняет дом"],
-      correct: [true, false, true, false, true]
-    },
-    { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_мяч.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
-      name: "Мяч",
-      questions: ["Имеет квадратную форму", "Используется в спорте", "Можно пинать ногой", "Умеет летать сам", "Можно бросать руками"],
-      correct: [false, true, true, false, true]
-    },
-    { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_роликовый_конёк.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
-      name: "Роликовый конёк",
-      questions: ["Используется для катания", "Имеет лыжи", "Надевается на ногу", "Имеет 4 колеса", "Нужен для плавания"],
-      correct: [true, false, true, true, false]
-    }
-  ];
+ // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 15 картинок =====
+const itemsMedium = [
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/красный_помидор.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Помидор",
+    questions: ["Это овощ", "Синего цвета", "Имеет круглую форму", "Растёт на дереве", "Из него делают сок"],
+    correct: [true, false, true, false, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_котёнок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Котёнок",
+    questions: ["Это домашнее животное", "Умеет лаять", "Любит молоко", "Имеет крылья", "Умеет мяукать"],
+    correct: [true, false, true, false, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_щенок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Щенок",
+    questions: ["Это домашнее животное", "Умеет мяукать", "Любит гулять", "Имеет хобот", "Охраняет дом"],
+    correct: [true, false, true, false, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_мяч.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Мяч",
+    questions: ["Имеет квадратную форму", "Используется в спорте", "Можно пинать ногой", "Умеет летать сам", "Можно бросать руками"],
+    correct: [false, true, true, false, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_роликовый_конёк.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Роликовый конёк",
+    questions: ["Используется для катания", "Имеет лыжи", "Надевается на ногу", "Имеет 4 колеса", "Нужен для плавания"],
+    correct: [true, false, true, true, false]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/красный_яблоко.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Яблоко",
+    questions: ["Это фрукт", "Фиолетового цвета", "Растёт на дереве", "Из него делают сок", "Круглой формы"],
+    correct: [true, false, true, true, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_морковка.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Морковка",
+    questions: ["Это овощ", "Растёт на дереве", "Оранжевого цвета", "Любят зайцы", "Круглой формы"],
+    correct: [true, false, true, true, false]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_груша.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Груша",
+    questions: ["Это фрукт", "Красного цвета", "Растёт на дереве", "Бывает жёлтой или зелёной", "Имеет форму лампочки"],
+    correct: [true, false, true, true, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/зелёный_брокколи.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Брокколи",
+    questions: ["Это овощ", "Красного цвета", "Зелёного цвета", "Похожа на дерево", "Полезна для здоровья"],
+    correct: [true, false, true, true, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_паук.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Паук",
+    questions: ["Это насекомое", "Имеет 8 ног", "Умеет летать", "Плетёт паутину", "Ловит мух"],
+    correct: [false, true, false, true, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/сиреневый_ягода.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Ягода",
+    questions: ["Маленькая и круглая", "Растёт в земле", "Бывает сладкой или кислой", "Из неё варят варенье", "Сиреневого цвета"],
+    correct: [true, false, true, true, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_стул.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Стул",
+    questions: ["Мебель", "На нём сидят", "Имеет спинку", "Умеет летать", "Имеет ножки"],
+    correct: [true, true, true, false, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_часы.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Часы",
+    questions: ["Показывают время", "Имеют стрелки", "Нужны для измерения температуры", "Бывают настенными", "Могут быть электронными"],
+    correct: [true, true, false, true, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_гитара.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Гитара",
+    questions: ["Музыкальный инструмент", "Используется в спорте", "Имеет струны", "Играют пальцами или медиатором", "Бывает акустической"],
+    correct: [true, false, true, true, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/сиреневый_книга.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Книга",
+    questions: ["Состоит из страниц", "Имеет обложку", "Нужна для приготовления пищи", "Можно читать", "Бывает разной толщины"],
+    correct: [true, true, false, true, true]
+  }
+];
 
-  // ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 15 картинок, по 7 утверждений =====
-  const itemsHard = [
-    { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_кубок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
-      name: "Кубок",
-      questions: ["Даётся за победу", "Сделан из стекла", "Имеет награвированные слова", "Из него едят суп", "Бывает разных размеров"],
-      correct: [true, false, true, false, true]
-    },
-    { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_молния.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
-      name: "Молния",
-      questions: ["Возникает во время грозы", "Сопровождается тишиной", "Очень опасна", "Это электрический разряд", "Поднимается от земли к небу"],
-      correct: [true, false, true, true, false]
-    }
-  ];
+// ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 15 картинок =====
+const itemsHard = [
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_кубок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Кубок",
+    questions: ["Даётся за победу", "Сделан из стекла", "Имеет награвированные слова", "Из него едят суп", "Бывает разных размеров"],
+    correct: [true, false, true, false, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_молния.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Молния",
+    questions: ["Возникает во время грозы", "Сопровождается тишиной", "Очень опасна", "Это электрический разряд", "Поднимается от земли к небу"],
+    correct: [true, false, true, true, false]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_пазл.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Пазл",
+    questions: ["Состоит из деталей", "Нужен для раскрашивания", "Собирается в картинку", "Имеет замки-соединения", "Развивает логику"],
+    correct: [true, false, true, true, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_лупа.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Лупа",
+    questions: ["Увеличивает предметы", "Помогает видеть мелкие детали", "Используется учёными", "Нужна для измерения времени", "Имеет линзу"],
+    correct: [true, true, true, false, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/сиреневый_песочные_часы.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Песочные часы",
+    questions: ["Измеряют время", "Внутри песок", "Нужно переворачивать", "Работают от батареек", "Используются в играх"],
+    correct: [true, true, true, false, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/розовый_мозг.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Мозг",
+    questions: ["Находится в голове", "Отвечает за мышление", "Розового цвета", "Состоит из двух полушарий", "Нужен для дыхания"],
+    correct: [true, true, true, true, false]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_лампочка.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Лампочка",
+    questions: ["Даёт свет", "Работает от электричества", "Изобретена Эдисоном", "Используется для охлаждения", "Может перегореть"],
+    correct: [true, true, true, false, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/сиреневый_замочек.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Замочек",
+    questions: ["Нужен для запирания", "Открывается ключом", "Сделан из дерева", "Имеет скважину", "Бывает навесным"],
+    correct: [true, true, false, true, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_батут.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Батут",
+    questions: ["Используется для прыжков", "Сделан из бетона", "Бывает надувным", "Помогает подпрыгивать высоко", "Используется в спорте"],
+    correct: [true, false, true, true, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_зуб.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Зуб",
+    questions: ["Находится во рту", "Помогает пережёвывать пищу", "Нуждается в чистке", "Растёт на дереве", "Бывает молочным"],
+    correct: [true, true, true, false, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_рюкзак.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Рюкзак",
+    questions: ["Носится на спине", "Имеет лямки", "Сделан из стекла", "В него кладут вещи", "Используется в школе"],
+    correct: [true, true, false, true, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_карандаш.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Карандаш",
+    questions: ["Используется для рисования", "Имеет грифель", "Нужно точить", "Пишет чернилами", "Бывает цветным"],
+    correct: [true, true, true, false, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/сиреневый_наушники.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Наушники",
+    questions: ["Используются для прослушивания музыки", "Подключаются к телефону", "Имеют динамики", "Нужны для разговора", "Бывают беспроводными"],
+    correct: [true, true, true, false, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_палитра.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Палитра",
+    questions: ["Используется для смешивания красок", "Нужна художникам", "Имеет отверстие для пальца", "Из неё едят", "Помогает создавать новые цвета"],
+    correct: [true, true, true, false, true]
+  },
+  { 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/красный_арбуз.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    name: "Арбуз",
+    questions: ["Это ягода", "Зелёный снаружи", "Красный внутри", "Имеет косточки", "Растёт на дереве"],
+    correct: [true, true, true, true, false]
+  }
+];
 
   // Выбираем элемент в зависимости от уровня
   let item;
