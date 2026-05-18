@@ -320,7 +320,7 @@ function getTaskName(taskId) {
     "mirror_text": " Зеркальный текст",
     "split_words": " Раздели текст на слова",
     "size_sort": " Прочитай по размеру",
-    "phygital_flipped": " Фиджитал: Перевёрнутое письмо",
+    "phygital_flipped": " Перевёрнутое письмо",
     
     // Логика
     "logic_chain": " Продолжи цепочку",
@@ -329,7 +329,7 @@ function getTaskName(taskId) {
     "logic_anagram": " Переставь буквы",
     "logic_picture": " Выбери утверждения",
     "logic_cipher": " Расшифруй послание",
-    "phygital_cipher": " Фиджитал: Свой шифр",
+    "phygital_cipher": " Свой шифр",
     
     // Внимание
     "attention_find_odd": " Найди лишнее",
@@ -338,19 +338,19 @@ function getTaskName(taskId) {
     "attention_black_white": " Чёрно-белые таблицы",
     "attention_circle_square": " Зачеркни-обведи",
     "attention_find_among": " Найди среди...",
-    "phygital_coloring": " Фиджитал: Раскраска",
+    "phygital_coloring": " Раскраска",
     
     // Память
     "memory_sequence": " Запомни порядок",
     "memory_what_missing": " Что пропало?",
     "memory_quiz": " Мини-опрос",
-    "phygital_audio": " Фиджитал: Запомни на слух",
+    "phygital_audio": " Запомни на слух",
     
     // Ловкость 
     "reaction": " Реакция",
     "findwords": " Найди слова",
     "schulte": " Таблица Шульте",
-    "readingspeed": " Фиджитал: Скорость чтения" 
+    "readingspeed": " Скорость чтения" 
   };
   return names[taskId] || taskId;
 }
@@ -480,7 +480,7 @@ function showParentPasswordModal(onSuccess) {
   
   const handleSubmit = () => {
     const password = input ? input.value : "";
-    if (password === "UNO_MISS_DI") {
+    if (password === "1234") {
       modal.style.display = "none";
       if (pendingPhygitalSuccess) {
         pendingPhygitalSuccess();
@@ -488,7 +488,7 @@ function showParentPasswordModal(onSuccess) {
       }
       showToast("Задание подтверждено! Молодец!", "success");
     } else {
-      showToast("Неверный пароль! Попроси помощи у родителей", "error");
+      showToast("Неверный пароль! Посмотри ещё раз", "error");
     }
   };
   
@@ -696,8 +696,8 @@ function renderFlippedText() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Перевёрнутый текст ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">Перевёрнутый текст ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задача: Переверни телефон (или переверни текст в уме). Прочитай текст и выбери правильный ответ.
     </div>
     <div class="reading-container">
@@ -707,7 +707,7 @@ function renderFlippedText() {
     </div>
     <div class="options-list-horizontal" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
       ${task.options.map((opt, idx) => `
-        <button class="option-btn-horizontal" data-answer="${opt}" data-index="${idx}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 150px; color: #2f2f45;">
+        <button class="option-btn-horizontal" data-answer="${opt}" data-index="${idx}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #fff0f0; cursor: pointer; transition: all 0.2s ease; min-width: 150px; color: #2f2f45;">
           ${opt}
         </button>
       `).join('')}
@@ -723,12 +723,12 @@ function renderFlippedText() {
     }
     .option-btn-horizontal:hover {
       transform: translateY(-3px);
-      border-color: #765fde;
+      border-color: #37084f;
       background: #f8f9ff;
       box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
     }
     .option-btn-horizontal.selected {
-      background: #765fde !important;
+      background: #37084f !important;
       color: white !important;
       border-color: transparent !important;
       transform: scale(1.02);
@@ -758,11 +758,11 @@ function renderFlippedText() {
       
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "#ffffff";
+        b.style.background = "#fff0f0";
         b.style.color = "#2f2f45";
       });
       btn.classList.add("selected");
-      btn.style.background = "#765fde";
+      btn.style.background = "#37084f";
       btn.style.color = "white";
       selected = btn.dataset.answer;
       selectedButton = btn;
@@ -799,7 +799,7 @@ function renderFlippedText() {
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "#ffffff";
+          selectedButton.style.background = "#fff0f0";
           selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
@@ -915,8 +915,8 @@ const textsHard = [
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Текст с препятствиями ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">Текст с препятствиями ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задача: В тексте есть лишние символы ( @ # $ % ^ & * ( ) { } [ ] ). Прочитай только буквы и пойми смысл!
     </div>
     <div class="obstacle-text" style="transform: none; font-size: ${fontSize}; font-family: monospace; background: white; padding: 25px; border-radius: 20px; line-height: 1.6; font-weight: 500; text-align: center;">
@@ -924,7 +924,7 @@ const textsHard = [
     </div>
     <div class="options-list-horizontal" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
       ${task.options.map(opt => `
-        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 200px; color: #2f2f45;">
+        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #fff0f0; cursor: pointer; transition: all 0.2s ease; min-width: 200px; color: #2f2f45;">
           ${opt}
         </button>
       `).join('')}
@@ -941,12 +941,12 @@ const textsHard = [
     }
     .option-btn-horizontal:hover {
       transform: translateY(-3px);
-      border-color: #765fde;
+      border-color: #37084f;
       background: #f8f9ff;
       box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
     }
     .option-btn-horizontal.selected {
-      background: #765fde !important;
+      background: #37084f !important;
       color: white !important;
       border-color: transparent !important;
       transform: scale(1.02);
@@ -977,11 +977,11 @@ const textsHard = [
       
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "#ffffff";
+        b.style.background = "#fff0f0";
         b.style.color = "#2f2f45";
       });
       btn.classList.add("selected");
-      btn.style.background = "#765fde";
+      btn.style.background = "#37084f";
       btn.style.color = "white";
       selected = btn.dataset.answer;
       selectedButton = btn;
@@ -1018,7 +1018,7 @@ const textsHard = [
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "#ffffff";
+          selectedButton.style.background = "#fff0f0";
           selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
@@ -1136,8 +1136,8 @@ function renderHalfText() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Непропечатанный текст ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">Непропечатанный текст ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задача: Текст напечатан не полностью — видна только верхняя часть букв. 
       Попробуй прочитать и понять смысл!
     </div>
@@ -1148,7 +1148,7 @@ function renderHalfText() {
     </div>
     <div class="options-list-horizontal" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
       ${task.options.map(opt => `
-        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 200px; color: #2f2f45;">
+        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #fff0f0; cursor: pointer; transition: all 0.2s ease; min-width: 200px; color: #2f2f45;">
           ${opt}
         </button>
       `).join('')}
@@ -1165,12 +1165,12 @@ function renderHalfText() {
     }
     .option-btn-horizontal:hover {
       transform: translateY(-3px);
-      border-color: #765fde;
+      border-color: #37084f;
       background: #f8f9ff;
       box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
     }
     .option-btn-horizontal.selected {
-      background: #765fde !important;
+      background: #37084f !important;
       color: white !important;
       border-color: transparent !important;
       transform: scale(1.02);
@@ -1201,11 +1201,11 @@ function renderHalfText() {
       
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "#ffffff";
+        b.style.background = "#fff0f0";
         b.style.color = "#2f2f45";
       });
       btn.classList.add("selected");
-      btn.style.background = "#765fde";
+      btn.style.background = "#37084f";
       btn.style.color = "white";
       selected = btn.dataset.answer;
       selectedButton = btn;
@@ -1242,7 +1242,7 @@ function renderHalfText() {
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "#ffffff";
+          selectedButton.style.background = "#fff0f0";
           selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
@@ -1367,8 +1367,8 @@ function renderMirrorText() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Зеркальный текст ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">Зеркальный текст ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задача: Текст написан задом наперёд (зеркально). Прочитай его правильно и выбери ответ!
     </div>
     <div class="mirror-text-container" style="text-align: center; margin: 20px 0;">
@@ -1378,7 +1378,7 @@ function renderMirrorText() {
     </div>
     <div class="options-list-horizontal" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
       ${task.options.map(opt => `
-        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 200px; color: #2f2f45;">
+        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #fff0f0; cursor: pointer; transition: all 0.2s ease; min-width: 200px; color: #2f2f45;">
           ${opt}
         </button>
       `).join('')}
@@ -1395,12 +1395,12 @@ function renderMirrorText() {
     }
     .option-btn-horizontal:hover {
       transform: translateY(-3px);
-      border-color: #765fde;
+      border-color: #37084f;
       background: #f8f9ff;
       box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
     }
     .option-btn-horizontal.selected {
-      background: #765fde !important;
+      background: #37084f !important;
       color: white !important;
       border-color: transparent !important;
       transform: scale(1.02);
@@ -1431,11 +1431,11 @@ function renderMirrorText() {
       
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "#ffffff";
+        b.style.background = "#fff0f0";
         b.style.color = "#2f2f45";
       });
       btn.classList.add("selected");
-      btn.style.background = "#765fde";
+      btn.style.background = "#37084f";
       btn.style.color = "white";
       selected = btn.dataset.answer;
       selectedButton = btn;
@@ -1472,7 +1472,7 @@ function renderMirrorText() {
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "#ffffff";
+          selectedButton.style.background = "#fff0f0";
           selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
@@ -1620,8 +1620,8 @@ const textsHard = [
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Раздели текст на слова ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">Раздели текст на слова ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задача: В тексте нет пробелов. Нажимай на кружочки между буквами, чтобы поставить разделитель. 
       Раздели слова так, чтобы получился осмысленный текст!
     </div>
@@ -1651,7 +1651,7 @@ const textsHard = [
       font-size: 20px;
     }
     .split-position:hover {
-      color: #765fde;
+      color: #37084f;
       transform: scale(1.2);
     }
     .split-position.active {
@@ -1941,8 +1941,8 @@ function renderSizeSort() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Прочитай по размеру ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">Прочитай по размеру ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задача: Прочитай слово, начиная с самой большой буквы и заканчивая самой маленькой.
       <br>
     </div>
@@ -1991,7 +1991,7 @@ function renderSizeSort() {
   };
 }
 
-// // 7. Фиджитал: Перевёрнутое письмо (с таблицей)
+// // 7. Перевёрнутое письмо (с таблицей)
 function renderPhygitalFlipped() {
   const alphabet = ["А", "Б", "В", "Г", "Д", "Е", "Ё", "Ж", "З", "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ы", "Ь", "Э", "Ю", "Я"];
   
@@ -2002,9 +2002,9 @@ function renderPhygitalFlipped() {
     for (let j = 0; j < 6; j++) {
       const idx = i + j;
       if (idx < alphabet.length) {
-        rowCells.push(`<td style="border: 2px solid #765fde; padding: 12px; text-align: center; background: white; font-size: 32px; font-weight: bold;">${alphabet[idx]}</td>`);
+        rowCells.push(`<td style="border: 2px solid #37084f; padding: 12px; text-align: center; background: white; font-size: 32px; font-weight: bold;">${alphabet[idx]}</td>`);
       } else {
-        rowCells.push(`<td style="border: 2px solid #765fde; padding: 12px; text-align: center; background: white;">—</td>`);
+        rowCells.push(`<td style="border: 2px solid #37084f; padding: 12px; text-align: center; background: white;">—</td>`);
       }
     }
     tableRows.push(`<tr>${rowCells.join("")}</tr>`);
@@ -2012,11 +2012,11 @@ function renderPhygitalFlipped() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Фиджитал: Перевёрнутое письмо</div>
-    <div style="background: #fff0f0; border-left: 4px solid #ff6170; border-radius: 16px; padding: 14px 20px; margin-bottom: 20px; text-align: center; color: #2f2f45; font-weight: 500; box-shadow: 4px 4px 10px rgba(0,0,0,0.03), -2px -2px 6px rgba(255,255,255,0.7);">
-      🔐 Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+    <div class="task-title">Перевёрнутое письмо</div>
+    <div style="background: #fff0f0; border-left: 4px solid #f8b195; border-radius: 16px; padding: 14px 20px; margin-bottom: 20px; text-align: center; color: #2f2f45; font-weight: 500; box-shadow: 4px 4px 10px rgba(0,0,0,0.03), -2px -2px 6px rgba(255,255,255,0.7);">
+      🔐 Это задание на бумажке! После выполнения нужно будет ввести пароль.
     </div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задание: Возьми листочек!
       Напиши перевёрнутое послание, используя эту таблицу.
     </div>
@@ -2024,7 +2024,7 @@ function renderPhygitalFlipped() {
       <div id="flippedTableContainer" style="transform: rotate(180deg); display: inline-block; width: 100%;">
         <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden;">
           <thead>
-            <tr><th colspan="6" style="padding: 10px; background: #765fde; color: white; font-size: 18px;">АЛФАВИТ</th></tr>
+            <tr><th colspan="6" style="padding: 10px; background: #37084f; color: white; font-size: 18px;">АЛФАВИТ</th></tr>
           </thead>
           <tbody>
             ${tableRows.join("")}
@@ -2032,7 +2032,7 @@ function renderPhygitalFlipped() {
         </table>
       </div>
     </div>
-    <div class="phygital-hint" style="background: #e8eaff; padding: 12px; border-radius: 12px; margin-top: 10px; text-align: center;">
+    <div class="phygital-hint" style="background: #ffe8e8; padding: 12px; border-radius: 12px; margin-top: 10px; text-align: center;">
       Подсказка: Буквы должны смотреть в правильную сторону!<br>
       Попробуй написать перевёрнутое слово, глядя на эту таблицу.
     </div>
@@ -2287,8 +2287,8 @@ function renderLogicChain() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Продолжи логическую цепочку ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">Продолжи логическую цепочку ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задача: Посмотри на последовательность. Найди закономерность и выбери следующий элемент!
     </div>
     <div class="logic-task" style="background: white; padding: 30px; font-size: ${fontSize}; text-align: center; word-break: break-word; line-height: 2;">
@@ -2301,7 +2301,7 @@ function renderLogicChain() {
   
   const optionsContainer = document.getElementById("optionsContainer");
   optionsContainer.innerHTML = chain.options.map(opt => `
-    <button class="option-btn-horizontal" data-answer="${opt.replace(/"/g, '&quot;')}" style="padding: 12px 24px; font-size: 20px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 80px; color: #2f2f45;">
+    <button class="option-btn-horizontal" data-answer="${opt.replace(/"/g, '&quot;')}" style="padding: 12px 24px; font-size: 20px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #fff0f0; cursor: pointer; transition: all 0.2s ease; min-width: 80px; color: #2f2f45;">
       ${opt}
     </button>
   `).join('');
@@ -2316,11 +2316,11 @@ function renderLogicChain() {
       if (isAnswered) return;
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "#ffffff";
+        b.style.background = "#fff0f0";
         b.style.color = "#2f2f45";
       });
       btn.classList.add("selected");
-      btn.style.background = "#765fde";
+      btn.style.background = "#37084f";
       btn.style.color = "white";
       selected = btn.getAttribute("data-answer");
       selectedButton = btn;
@@ -2356,7 +2356,7 @@ function renderLogicChain() {
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "#ffffff";
+          selectedButton.style.background = "#fff0f0";
           selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
@@ -2378,7 +2378,7 @@ function renderLogicRiddle() {
     riddleTimeout = null;
   }
   
-  // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 20 загадок, 3 варианта ответа =====
+  // ===== ЛЁГКИЙ УРОВЕНЬ (1) - 20 загадок, 3 варианта ответа =====
 const riddlesEasy = [
   { question: "Висит груша, нельзя скушать. Что это?", options: ["Яблоко", "Лампочка", "Фрукт"], correct: "Лампочка" },
   { question: "Что можно приготовить, но нельзя съесть?", options: ["Уроки", "Суп", "Кашу"], correct: "Уроки" },
@@ -2403,7 +2403,7 @@ const riddlesEasy = [
 ];
 
 
-// ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 20 загадок, 4 варианта ответа =====
+// ===== СРЕДНИЙ УРОВЕНЬ (2) - 20 загадок, 4 варианта ответа =====
 const riddlesMedium = [
   { question: "Ты да я, да мы с тобой. Сколько нас?", options: ["2", "3", "4", "5"], correct: "2" },
   { question: "Что с каждым годом становится больше?", options: ["Возраст", "Дом", "Рюкзак", "Книга"], correct: "Возраст" },
@@ -2428,7 +2428,7 @@ const riddlesMedium = [
 ];
 
 
-// ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 20 загадок, 5 вариантов ответа =====
+// ===== СЛОЖНЫЙ УРОВЕНЬ (3) - 20 загадок, 5 вариантов ответа =====
 const riddlesHard = [
   { question: "Два отца и два сына поймали 3 зайцев. Как?", options: ["Дед, отец и сын", "Две семьи", "Братья", "Друзья", "Соседи"], correct: "Дед, отец и сын" },
   { question: "Что можно держать, не касаясь руками?", options: ["Дыхание", "Мяч", "Книгу", "Стол", "Ручку"], correct: "Дыхание" },
@@ -2464,8 +2464,8 @@ const riddlesHard = [
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Отгадай загадку ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">Отгадай загадку ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задача: Внимательно прочитай загадку и выбери правильный ответ. Здесь важно логически мыслить, а не просто знать!
     </div>
     <div class="logic-task" style="background: white; padding: 30px; font-size: 22px; text-align: center;">
@@ -2473,7 +2473,7 @@ const riddlesHard = [
     </div>
     <div class="options-list-horizontal">
       ${riddle.options.map(opt => `
-        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 120px; color: #2f2f45;">
+        <button class="option-btn-horizontal" data-answer="${opt}" style="padding: 14px 28px; font-size: 18px; font-weight: 600; border: 2px solid #d5d5da; border-radius: 60px; background: #fff0f0; cursor: pointer; transition: all 0.2s ease; min-width: 120px; color: #2f2f45;">
           ${opt}
         </button>
       `).join('')}
@@ -2490,12 +2490,12 @@ const riddlesHard = [
     }
     .option-btn-horizontal:hover {
       transform: translateY(-3px);
-      border-color: #765fde;
+      border-color: #37084f;
       background: #f8f9ff;
       box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
     }
     .option-btn-horizontal.selected {
-      background: #765fde !important;
+      background: #37084f !important;
       color: white !important;
       border-color: transparent !important;
       transform: scale(1.02);
@@ -2526,11 +2526,11 @@ const riddlesHard = [
       
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "#ffffff";
+        b.style.background = "#fff0f0";
         b.style.color = "#2f2f45";
       });
       btn.classList.add("selected");
-      btn.style.background = "#765fde";
+      btn.style.background = "#37084f";
       btn.style.color = "white";
       selected = btn.dataset.answer;
       selectedButton = btn;
@@ -2567,7 +2567,7 @@ const riddlesHard = [
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "#ffffff";
+          selectedButton.style.background = "#fff0f0";
           selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
@@ -2590,7 +2590,7 @@ function renderLogicMatch() {
     matchTimeout = null;
   }
   
-  // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 25 вариантов, по 3 пары =====
+  // ===== ЛЁГКИЙ УРОВЕНЬ (1) - 25 вариантов, по 3 пары =====
 const matchesEasy = [
   { starts: ["Без труда не выловишь", "Волка бояться", "Что посеешь"], ends: ["рыбку из пруда", "в лес не ходить", "то и пожнёшь"] },
   { starts: ["Поспешишь", "Семь раз отмерь", "Делу время"], ends: ["людей насмешишь", "один раз отрежь", "потехе час"] },
@@ -2618,7 +2618,7 @@ const matchesEasy = [
   { starts: ["Кто рано встаёт", "Без труда", "Зачем платить больше"], ends: ["тому Бог подаёт", "не вынешь и рыбку из пруда", "когда можно не переплачивать"] }
 ];
 
-// ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 25 вариантов, по 4 пары =====
+// ===== СРЕДНИЙ УРОВЕНЬ (2) - 25 вариантов, по 4 пары =====
 const matchesMedium = [
   { starts: ["Кошка", "Собака", "Лошадь", "Корова"], ends: ["мяукает", "лает", "ржёт", "мычит"] },
   { starts: ["Яблоко", "Апельсин", "Банан", "Виноград"], ends: ["дерево", "дерево", "пальма", "лоза"] },
@@ -2647,7 +2647,7 @@ const matchesMedium = [
   { starts: ["Василиса Премудрая", "Илья Муромец", "Добрыня Никитич", "Алёша Попович"], ends: ["мудрая", "богатырь", "богатырь", "богатырь"] }
 ];
 
-// ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 25 вариантов, по 5 пар =====
+// ===== СЛОЖНЫЙ УРОВЕНЬ (3) - 25 вариантов, по 5 пар =====
 const matchesHard = [
   { starts: ["Платина", "Золото", "Серебро", "Железо", "Медь"], ends: ["Pt", "Au", "Ag", "Fe", "Cu"] },
   { starts: ["Север", "Юг", "Запад", "Восток", "Центр"], ends: ["С", "Ю", "З", "В", "центр"] },
@@ -2726,8 +2726,8 @@ const matchesHard = [
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Соедини части ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">Соедини части ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задача: Перетащи окончания (правый столбик) к подходящим началам (левый столбик).
     </div>
     <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap;">
@@ -2736,7 +2736,7 @@ const matchesHard = [
         <div id="startsContainer">
           ${match.starts.map((start, i) => `
             <div class="match-start" data-start-index="${i}" 
-                 style="background: #765fde20; padding: ${paddingSize} 20px; margin: 10px 0; border-radius: 16px; text-align: center; border: 2px dashed #765fde; font-size: ${fontSize}; font-weight: 500;">
+                 style="background: #37084f20; padding: ${paddingSize} 20px; margin: 10px 0; border-radius: 16px; text-align: center; border: 2px dashed #37084f; font-size: ${fontSize}; font-weight: 500;">
                ${start}...
             </div>
           `).join("")}
@@ -2747,7 +2747,7 @@ const matchesHard = [
         <div id="endsContainer">
           ${shuffledEnds.map((end, i) => `
             <div class="match-end" data-end-index="${i}" data-original-index="${endMapping[i]}" draggable="true"
-                 style="background: #ff881120; padding: ${paddingSize} 20px; margin: 10px 0; border-radius: 16px; text-align: center; cursor: grab; border: 2px solid #ff8811; font-size: ${fontSizeEnd}; font-weight: 500;">
+                 style="background: #c06c8420; padding: ${paddingSize} 20px; margin: 10px 0; border-radius: 16px; text-align: center; cursor: grab; border: 2px solid #c06c84; font-size: ${fontSizeEnd}; font-weight: 500;">
               ...${end}
             </div>
           `).join("")}
@@ -2783,8 +2783,8 @@ const matchesHard = [
     document.querySelectorAll(".match-start").forEach(start => {
       const placeholder = start.querySelector(".match-placeholder");
       if (placeholder) placeholder.remove();
-      start.style.background = "#765fde20";
-      start.style.border = "2px dashed #765fde";
+      start.style.background = "#37084f20";
+      start.style.border = "2px dashed #37084f";
     });
     updateMatchStatus();
   }
@@ -3065,8 +3065,8 @@ function renderLogicAnagram() {
 
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Переставь буквы ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">Переставь буквы ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задача: Буквы перепутаны. Переставь их местами, чтобы получилось слово.
       <br>Подсказка: ${anagram.hint}
     </div>
@@ -3124,276 +3124,276 @@ function renderLogicPicture() {
     pictureTimeout = null;
   }
   
-  // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 15 картинок, по 3 утверждения =====
+  // ===== ЛЁГКИЙ УРОВЕНЬ (1) - 15 картинок, по 3 утверждения =====
   const itemsEasy = [
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/красный_яблоко.png" alt="Яблоко" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/красный_яблоко.png" alt="Яблоко" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Яблоко",
       questions: ["Это фрукт", "Красного или зелёного цвета", "Растёт на дереве"],
       correct: [true, true, true]
     },
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_морковка.png" alt="Морковь" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/оранжевый_морковка.png" alt="Морковь" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Морковь",
       questions: ["Это овощ", "Оранжевого цвета", "Растёт в земле"],
       correct: [true, true, true]
     },
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_котёнок.png" alt="Кошка" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/синий_котёнок.png" alt="Кошка" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Кошка",
       questions: ["Это домашнее животное", "Умеет лаять", "Любит молоко"],
       correct: [true, false, true]
     },
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_щенок.png" alt="Собака" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/оранжевый_щенок.png" alt="Собака" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Собака",
       questions: ["Это домашнее животное", "Умеет мяукать", "Охраняет дом"],
       correct: [true, false, true]
     },
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/сиреневый_ягода.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/сиреневый_ягода.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Виноград",
       questions: ["Это ягода", "Сиреневого цвета", "Растёт гроздьями"],
       correct: [true, true, true]
     },
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_гитара.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/оранжевый_гитара.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Гитара",
       questions: ["Музыкальный инструмент", "Используют в спорте", "Имеет струны"],
       correct: [true, false, true]
     },
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_день_небо_и_солнце.png" alt="Солнце" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/голубой_день_небо_и_солнце.png" alt="Солнце" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Солнце",
       questions: ["Даёт свет и тепло", "Видно ночью", "Это звезда"],
       correct: [true, false, true]
     },
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_ночь_небо_и_месяц.png" alt="Луна" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/синий_ночь_небо_и_месяц.png" alt="Луна" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Луна",
       questions: ["Видно ночью", "Даёт тепло", "Спутник Земли"],
       correct: [true, false, true]
     },
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_рыба.png" alt="Рыба" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/голубой_рыба.png" alt="Рыба" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Рыба",
       questions: ["Живёт в воде", "Умеет летать", "Дышит жабрами"],
       correct: [true, false, true]
     },
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/серый_голубь_1.png" alt="Птица" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/серый_голубь_1.png" alt="Птица" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Птица",
       questions: ["Умеет летать", "Живёт под водой", "У неё есть перья"],
       correct: [true, false, true]
     },
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_груша.png" alt="Груша" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/желтый_груша.png" alt="Груша" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Груша",
       questions: ["Это фрукт", "Жёлтого цвета", "Растёт на дереве"],
       correct: [true, true, true]
     },
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/зелёный_брокколи.png" alt="Брокколи" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/зелёный_брокколи.png" alt="Брокколи" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Брокколи",
       questions: ["Это овощ", "Зелёного цвета", "Сладкий на вкус"],
       correct: [true, true, false]
     },
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/красный_вишня.png" alt="Вишня" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/красный_вишня.png" alt="Вишня" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Вишня",
       questions: ["Это ягода", "Красного цвета", "Растёт в траве"],
       correct: [true, true, false]
     },
     { 
-      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_лампа.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+      emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/синий_лампа.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
       name: "Лампа",
       questions: ["Даёт свет", "Плавает в воде", "Работает от электричества"],
       correct: [true, false, true]
     }
   ];
 
- // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 15 картинок =====
+ // ===== СРЕДНИЙ УРОВЕНЬ (2) - 15 картинок =====
 const itemsMedium = [
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/красный_помидор.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/красный_помидор.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Помидор",
     questions: ["Это овощ", "Синего цвета", "Имеет круглую форму", "Растёт на дереве", "Из него делают сок"],
     correct: [true, false, true, false, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_котёнок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/синий_котёнок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Котёнок",
     questions: ["Это домашнее животное", "Умеет лаять", "Любит молоко", "Имеет крылья", "Умеет мяукать"],
     correct: [true, false, true, false, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_щенок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/оранжевый_щенок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Щенок",
     questions: ["Это домашнее животное", "Умеет мяукать", "Любит гулять", "Имеет хобот", "Охраняет дом"],
     correct: [true, false, true, false, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_мяч.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/голубой_мяч.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Мяч",
     questions: ["Имеет квадратную форму", "Используется в спорте", "Можно пинать ногой", "Умеет летать сам", "Можно бросать руками"],
     correct: [false, true, true, false, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_роликовый_конёк.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/голубой_роликовый_конёк.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Роликовый конёк",
     questions: ["Используется для катания", "Имеет лыжи", "Надевается на ногу", "Имеет 4 колеса", "Нужен для плавания"],
     correct: [true, false, true, true, false]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/красный_яблоко.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/красный_яблоко.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Яблоко",
     questions: ["Это фрукт", "Фиолетового цвета", "Растёт на дереве", "Из него делают сок", "Круглой формы"],
     correct: [true, false, true, true, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_морковка.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/оранжевый_морковка.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Морковка",
     questions: ["Это овощ", "Растёт на дереве", "Оранжевого цвета", "Любят зайцы", "Круглой формы"],
     correct: [true, false, true, true, false]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_груша.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/желтый_груша.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Груша",
     questions: ["Это фрукт", "Красного цвета", "Растёт на дереве", "Бывает жёлтой или зелёной", "Имеет форму лампочки"],
     correct: [true, false, true, true, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/зелёный_брокколи.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/зелёный_брокколи.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Брокколи",
     questions: ["Это овощ", "Красного цвета", "Зелёного цвета", "Похожа на дерево", "Полезна для здоровья"],
     correct: [true, false, true, true, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_паук.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/синий_паук.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Паук",
     questions: ["Это насекомое", "Имеет 8 ног", "Умеет летать", "Плетёт паутину", "Ловит мух"],
     correct: [false, true, false, true, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/сиреневый_ягода.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/сиреневый_ягода.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Ягода",
     questions: ["Маленькая и круглая", "Растёт в земле", "Бывает сладкой или кислой", "Из неё варят варенье", "Сиреневого цвета"],
     correct: [true, false, true, true, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_стул.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/голубой_стул.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Стул",
     questions: ["Мебель", "На нём сидят", "Имеет спинку", "Умеет летать", "Имеет ножки"],
     correct: [true, true, true, false, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_часы.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/голубой_часы.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Часы",
     questions: ["Показывают время", "Имеют стрелки", "Нужны для измерения температуры", "Бывают настенными", "Могут быть электронными"],
     correct: [true, true, false, true, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_гитара.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/оранжевый_гитара.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Гитара",
     questions: ["Музыкальный инструмент", "Используется в спорте", "Имеет струны", "Играют пальцами или медиатором", "Бывает акустической"],
     correct: [true, false, true, true, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/сиреневый_книга.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/сиреневый_книга.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Книга",
     questions: ["Состоит из страниц", "Имеет обложку", "Нужна для приготовления пищи", "Можно читать", "Бывает разной толщины"],
     correct: [true, true, false, true, true]
   }
 ];
 
-// ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 15 картинок =====
+// ===== СЛОЖНЫЙ УРОВЕНЬ (3) - 15 картинок =====
 const itemsHard = [
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_кубок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/желтый_кубок.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Кубок",
     questions: ["Даётся за победу", "Сделан из стекла", "Имеет награвированные слова", "Из него едят суп", "Бывает разных размеров"],
     correct: [true, false, true, false, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_молния.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/желтый_молния.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Молния",
     questions: ["Возникает во время грозы", "Сопровождается тишиной", "Очень опасна", "Это электрический разряд", "Поднимается от земли к небу"],
     correct: [true, false, true, true, false]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_пазл.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/голубой_пазл.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Пазл",
     questions: ["Состоит из деталей", "Нужен для раскрашивания", "Собирается в картинку", "Имеет замки-соединения", "Развивает логику"],
     correct: [true, false, true, true, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_лупа.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/синий_лупа.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Лупа",
     questions: ["Увеличивает предметы", "Помогает видеть мелкие детали", "Используется учёными", "Нужна для измерения времени", "Имеет линзу"],
     correct: [true, true, true, false, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/сиреневый_песочные_часы.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/сиреневый_песочные_часы.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Песочные часы",
     questions: ["Измеряют время", "Внутри песок", "Нужно переворачивать", "Работают от батареек", "Используются в играх"],
     correct: [true, true, true, false, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/розовый_мозг.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/розовый_мозг.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Мозг",
     questions: ["Находится в голове", "Отвечает за мышление", "Розового цвета", "Состоит из двух полушарий", "Нужен для дыхания"],
     correct: [true, true, true, true, false]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_лампочка.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/желтый_лампочка.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Лампочка",
     questions: ["Даёт свет", "Работает от электричества", "Изобретена Эдисоном", "Используется для охлаждения", "Может перегореть"],
     correct: [true, true, true, false, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/сиреневый_замочек.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/сиреневый_замочек.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Замочек",
     questions: ["Нужен для запирания", "Открывается ключом", "Сделан из дерева", "Имеет скважину", "Бывает навесным"],
     correct: [true, true, false, true, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/голубой_батут.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/голубой_батут.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Батут",
     questions: ["Используется для прыжков", "Сделан из бетона", "Бывает надувным", "Помогает подпрыгивать высоко", "Используется в спорте"],
     correct: [true, false, true, true, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_зуб.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/синий_зуб.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Зуб",
     questions: ["Находится во рту", "Помогает пережёвывать пищу", "Нуждается в чистке", "Растёт на дереве", "Бывает молочным"],
     correct: [true, true, true, false, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/синий_рюкзак.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/синий_рюкзак.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Рюкзак",
     questions: ["Носится на спине", "Имеет лямки", "Сделан из стекла", "В него кладут вещи", "Используется в школе"],
     correct: [true, true, false, true, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/оранжевый_карандаш.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/оранжевый_карандаш.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Карандаш",
     questions: ["Используется для рисования", "Имеет грифель", "Нужно точить", "Пишет чернилами", "Бывает цветным"],
     correct: [true, true, true, false, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/сиреневый_наушники.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/сиреневый_наушники.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Наушники",
     questions: ["Используются для прослушивания музыки", "Подключаются к телефону", "Имеют динамики", "Нужны для разговора", "Бывают беспроводными"],
     correct: [true, true, true, false, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/желтый_палитра.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/желтый_палитра.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Палитра",
     questions: ["Используется для смешивания красок", "Нужна художникам", "Имеет отверстие для пальца", "Из неё едят", "Помогает создавать новые цвета"],
     correct: [true, true, true, false, true]
   },
   { 
-    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #765fde;"><img src="images/красный_арбуз.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
+    emoji: '<div style="width: 160px; height: 160px; background: #f0f0ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; border: 2px solid #37084f;"><img src="images/красный_арбуз.png" style="width: 140px; height: 140px; object-fit: contain;"></div>', 
     name: "Арбуз",
     questions: ["Это ягода", "Зелёный снаружи", "Красный внутри", "Имеет косточки", "Растёт на дереве"],
     correct: [true, true, true, true, false]
@@ -3412,8 +3412,8 @@ const itemsHard = [
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Выбери правильные утверждения ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
+    <div class="task-title">Выбери правильные утверждения ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
       Задача: Посмотри на картинку и выбери все правильные утверждения о ней.
     </div>
     <div style="display: flex; justify-content: center; margin: 20px 0;">
@@ -3443,7 +3443,7 @@ const itemsHard = [
       transition: all 0.2s ease;
     }
     .option-item:hover {
-      background: #e8eaff;
+      background: #ffe8e8;
       transform: translateX(5px);
     }
     .option-item.correct {
@@ -3691,8 +3691,8 @@ function renderLogicCipher() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Расшифруй послание ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center; font-size: 18px;">
+    <div class="task-title">Расшифруй послание ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center; font-size: 18px;">
       Задача: Используй таблицу шифровки, чтобы расшифровать слово.
       <br> В таблице есть лишние символы, которые не нужны для решения!
     </div>
@@ -3703,7 +3703,7 @@ function renderLogicCipher() {
       </div>
     </div>
     <div style="display: flex; justify-content: center; margin: 30px 0;">
-      <div class="encoded-word" style="background: linear-gradient(135deg, #765fde15, #ff881115); padding: 35px 45px; border-radius: 35px; text-align: center;">
+      <div class="encoded-word" style="background: linear-gradient(135deg, #37084f15, #c06c8415); padding: 35px 45px; border-radius: 35px; text-align: center;">
         <strong style="font-size: 28px;">Зашифрованное слово:</strong><br>
         <div style="font-size: ${fontSize}; letter-spacing: ${letterSpacing}; font-family: monospace; font-weight: bold; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
           ${encoded}
@@ -3713,7 +3713,7 @@ function renderLogicCipher() {
     <div style="display: flex; justify-content: center;">
       <div class="options-list-horizontal" style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 30px 0; max-width: 1000px;">
         ${options.map(opt => `
-          <button class="option-btn-cipher" data-answer="${opt}" style="padding: 18px 32px; font-size: 24px; font-weight: 700; border: 2px solid #d5d5da; border-radius: 80px; background: #ffffff; cursor: pointer; transition: all 0.2s ease; min-width: 180px; color: #2f2f45;">
+          <button class="option-btn-cipher" data-answer="${opt}" style="padding: 18px 32px; font-size: 24px; font-weight: 700; border: 2px solid #d5d5da; border-radius: 80px; background: #fff0f0; cursor: pointer; transition: all 0.2s ease; min-width: 180px; color: #2f2f45;">
             ${opt}
           </button>
         `).join('')}
@@ -3733,12 +3733,12 @@ function renderLogicCipher() {
     }
     .option-btn-cipher:hover {
       transform: translateY(-5px);
-      border-color: #765fde;
+      border-color: #37084f;
       background: #f8f9ff;
       box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);
     }
     .option-btn-cipher.selected {
-      background: #765fde !important;
+      background: #37084f !important;
       color: white !important;
       border-color: transparent !important;
       transform: scale(1.05);
@@ -3769,11 +3769,11 @@ function renderLogicCipher() {
       
       buttons.forEach(b => {
         b.classList.remove("selected");
-        b.style.background = "#ffffff";
+        b.style.background = "#fff0f0";
         b.style.color = "#2f2f45";
       });
       btn.classList.add("selected");
-      btn.style.background = "#765fde";
+      btn.style.background = "#37084f";
       btn.style.color = "white";
       selected = btn.dataset.answer;
       selectedButton = btn;
@@ -3810,7 +3810,7 @@ function renderLogicCipher() {
         setTimeout(() => {
           selectedButton.classList.remove("wrong");
           selectedButton.classList.remove("selected");
-          selectedButton.style.background = "#ffffff";
+          selectedButton.style.background = "#fff0f0";
           selectedButton.style.color = "#2f2f45";
           selected = null;
           selectedButton = null;
@@ -3823,7 +3823,7 @@ function renderLogicCipher() {
   };
 }
 
-// 7. Фиджитал: Свой шифр (полная таблица алфавита) - адаптивная версия
+// 7. Свой шифр (полная таблица алфавита) - адаптивная версия
 function renderPhygitalCipher() {
   // Создаём полную таблицу шифрования из картинок
   const emojiMap = {
@@ -3914,7 +3914,7 @@ for (let i = 0; i < alphabet.length; i += 6) {
 
       rowCells.push(`
         <td style="
-          border: 1px solid #765fde;
+          border: 1px solid #37084f;
           padding: ${tablePadding};
           text-align: center;
           font-size: ${fontSize};
@@ -3928,7 +3928,7 @@ for (let i = 0; i < alphabet.length; i += 6) {
       `);
     } else {
       rowCells.push(`
-        <td style="border: 1px solid #765fde; padding: ${tablePadding};"></td>
+        <td style="border: 1px solid #37084f; padding: ${tablePadding};"></td>
       `);
     }
   }
@@ -3952,7 +3952,7 @@ for (let i = 0; i < symbols.length; i += 6) {
 
       rowCells.push(`
         <td style="
-          border: 1px solid #ff8811;
+          border: 1px solid #c06c84;
           padding: ${tablePadding};
           text-align: center;
           font-size: ${fontSize};
@@ -3966,7 +3966,7 @@ for (let i = 0; i < symbols.length; i += 6) {
       `);
     } else {
       rowCells.push(`
-        <td style="border: 1px solid #ff8811; padding: ${tablePadding};"></td>
+        <td style="border: 1px solid #c06c84; padding: ${tablePadding};"></td>
       `);
     }
   }
@@ -3978,7 +3978,7 @@ for (let i = 0; i < symbols.length; i += 6) {
 gameArea.innerHTML = `
   ${renderHUD()}
 
-  <div class="task-title">Фиджитал: Свой шифр</div>
+  <div class="task-title">Свой шифр</div>
 
   <div class="phygital-hint" style="
     background: #fef3c7;
@@ -3986,11 +3986,11 @@ gameArea.innerHTML = `
     margin-bottom: 15px;
     text-align: center;
   ">
-    Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+    Это задание на бумажке! После выполнения нужно будет ввести пароль.
   </div>
 
   <div class="task-description" style="
-    background: #e8eaff;
+    background: #ffe8e8;
     padding: 12px;
     margin-bottom: 15px;
   ">
@@ -4008,7 +4008,7 @@ gameArea.innerHTML = `
       <thead>
         <tr>
           <th colspan="6" style="
-            background: #765fde;
+            background: #37084f;
             color: white;
             font-size: ${isMobile ? '14px' : '18px'};
             padding: 8px;
@@ -4032,7 +4032,7 @@ gameArea.innerHTML = `
       <thead>
         <tr>
           <th colspan="6" style="
-            background: #ff8811;
+            background: #c06c84;
             color: white;
             font-size: ${isMobile ? '14px' : '18px'};
             padding: 8px;
@@ -4128,7 +4128,7 @@ function renderAttentionFindOdd() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Найди лишнее ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Найди лишнее ${''.repeat(state.level)}</div>
     <div class="attention-target" style="text-align: center; font-size: 24px;">
       Найди лишний предмет:
     </div>
@@ -4297,15 +4297,15 @@ function renderAttentionFindItems() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Найди предметы в комнате ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
+    <div class="task-title">Найди предметы в комнате ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
       В ${bg.name} разбросаны разные предметы. Найди все предметы из списка ниже!
       Нажимай на предметы, которые нужно найти.
     </div>
     <div class="attention-target" style="text-align: center; background: white; padding: 15px; border-radius: 20px; margin-bottom: 20px;">
       Найди эти предметы:
       <div style="display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
-        ${toFind.map((item, idx) => `<span id="targetItem_${idx}" style="display: inline-block; background: #f0f0ff; padding: 6px 10px; border-radius: 12px; border: 2px solid #765fde; font-size: 12px;">${item}</span>`).join('')}
+        ${toFind.map((item, idx) => `<span id="targetItem_${idx}" style="display: inline-block; background: #f0f0ff; padding: 6px 10px; border-radius: 12px; border: 2px solid #37084f; font-size: 12px;">${item}</span>`).join('')}
       </div>
     </div>
     <div id="roomScene" style="position: relative; width: 100%; margin: 15px 0; height: ${containerHeight + 10}px;">
@@ -4314,7 +4314,7 @@ function renderAttentionFindItems() {
     </div>
     <div style="display: flex; justify-content: center; margin: 15px 0;">
       <div class="attention-stats" style="text-align: center; font-size: 18px; background: white; padding: 10px 20px; border-radius: 40px; display: inline-block;">
-        Найдено: <b id="foundCount" style="color: #ff8811; font-size: 28px;">0</b> / ${config.needToFind}
+        Найдено: <b id="foundCount" style="color: #c06c84; font-size: 28px;">0</b> / ${config.needToFind}
       </div>
     </div>
     <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
@@ -4452,13 +4452,13 @@ function renderAttentionFindNumber() {
   
   // НОВЫЕ ЦВЕТА ПО ПАЛИТРЕ
   const colorPalette = {
-    blue: { 80: "#3aafff", 60: "#75c7ff", 40: "#9dd7ff", 20: "#c4e7ff" },
-    mint: { 80: "#00b2a8", 60: "#4cc9c2", 40: "#80d9d3", 20: "#b3e8e5" },
-    purple: { 80: "#765fde", 60: "#9f8fe8", 40: "#bbafef", 20: "#d6cff5" },
-    orange: { 80: "#ff8811", 60: "#ffac58", 40: "#ffc388", 20: "#ffdbb8" },
-    coral: { 80: "#ff6170", 60: "#ff909b", 40: "#ffb0b8", 20: "#ffd0d4" },
+    blue: { 80: "#9f8fe8", 60: "#a797ef", 40: "#b3a5f3", 20: "#9f8fe8" },
+    mint: { 80: "#bbafef", 60: "#d1c8f9", 40: "#bbafef", 20: "#bbafef" },
+    purple: { 80: "#37084f", 60: "#9f8fe8", 40: "#bbafef", 20: "#d6cff5" },
+    orange: { 80: "#c06c84", 60: "#d994a7", 40: "#c5758c", 20: "#d88da2" },
+    coral: { 80: "#ff909b", 60: "#fb949f", 40: "#ffb0b8", 20: "#ffd0d4" },
     green: { 80: "#10c84e", 60: "#58d883", 40: "#87e3a7", 20: "#b7eeca" },
-    yellow: { 80: "#fbcc3c", 60: "#fcdb76", 40: "#fde59e", 20: "#fef0c5" }
+    yellow: { 80: "#fcd8ff", 60: "#fcdeff", 40: "#fadffd", 20: "#fde2ff" }
   };
   
   const colorNames = ["blue", "mint", "purple", "orange", "coral", "green", "yellow"];
@@ -4518,18 +4518,18 @@ function renderAttentionFindNumber() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Найди цифру ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
+    <div class="task-title">Найди цифру ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
       Нажимай на цифры по порядку: от 1 до ${total}.
     </div>
     
     <div class="current-task" style="text-align: center; margin-bottom: 25px;">
-      <div style="display: inline-block; background: linear-gradient(135deg, #765fde, #ff8811); padding: 5px; border-radius: 80px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
+      <div style="display: inline-block; background: linear-gradient(135deg, #37084f, #c06c84); padding: 5px; border-radius: 80px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
         <div style="background: white; border-radius: 80px; padding: 12px 32px;">
-          <span style="font-size: 16px; font-weight: 600; color: #765fde;">НАЙДИ</span><br>
-          <span id="currentNumber" style="font-size: 72px; font-weight: 800; color: #ff8811; line-height: 1;">1</span>
+          <span style="font-size: 16px; font-weight: 600; color: #37084f;">НАЙДИ</span><br>
+          <span id="currentNumber" style="font-size: 72px; font-weight: 800; color: #c06c84; line-height: 1;">1</span>
         </div>
-      </div>
+      </div>37084f
     </div>
     
     <div class="find-number-progress" style="text-align: center; margin-bottom: 20px;">
@@ -4765,7 +4765,7 @@ function renderAttentionBlackWhite() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Чёрно-белые таблицы ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Чёрно-белые таблицы ${''.repeat(state.level)}</div>
     <div class="current-task" style="text-align: center; margin-bottom: 20px; font-size: 22px;">
       Найди: <b id="currentNumber" style="font-size: 42px;">1</b> на <b id="currentColor" style="font-size: 32px; color: #333;">чёрном</b> фоне
     </div>
@@ -4919,7 +4919,7 @@ function renderAttentionCircleSquare() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">⭕ Зачеркни-обведи ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">⭕ Зачеркни-обведи ${''.repeat(state.level)}</div>
     <div class="attention-target" style="text-align: center; font-size: 20px;">
       ${instructions}
     </div>
@@ -5172,8 +5172,8 @@ function renderAttentionFindAmong() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Найди среди... ${'⭐'.repeat(state.level)}</div>
-    <div class="attention-target" style="text-align: center; font-size: 26px; padding: 20px; background: #e8eaff; border-radius: 20px; margin-bottom: 20px; font-weight: 700;">
+    <div class="task-title">Найди среди... ${''.repeat(state.level)}</div>
+    <div class="attention-target" style="text-align: center; font-size: 26px; padding: 20px; background: #ffe8e8; border-radius: 20px; margin-bottom: 20px; font-weight: 700;">
       Найди: ${target.name}
     </div>
     <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-top: 20px;">
@@ -5238,7 +5238,7 @@ function renderAttentionFindAmong() {
   });
 }
 
-// 7. ФИДЖИТАЛ: РАСКРАСКА (ОБВЕДЕНИЕ ПО КОНТУРУ)
+// 7. РАСКРАСКА (ОБВЕДЕНИЕ ПО КОНТУРУ)
 function renderPhygitalColoring() {
   // ===== КАРТИНКИ ДЛЯ РАЗНЫХ УРОВНЕЙ =====
   const imagesByLevel = {
@@ -5280,14 +5280,14 @@ function renderPhygitalColoring() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Фиджитал: Обведи по контуру ${'⭐'.repeat(state.level)}</div>
-    <div style="background: #fff0f0; border-left: 4px solid #ff6170; border-radius: 16px; padding: 14px 20px; margin-bottom: 15px; text-align: center; color: #2f2f45; font-weight: 500; box-shadow: 4px 4px 10px rgba(0,0,0,0.03), -2px -2px 6px rgba(255,255,255,0.7);">
-      🔐 Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+    <div class="task-title">Обведи по контуру ${''.repeat(state.level)}</div>
+    <div style="background: #fff0f0; border-left: 4px solid #f8b195; border-radius: 16px; padding: 14px 20px; margin-bottom: 15px; text-align: center; color: #2f2f45; font-weight: 500; box-shadow: 4px 4px 10px rgba(0,0,0,0.03), -2px -2px 6px rgba(255,255,255,0.7);">
+      🔐 Это задание на бумажке! После выполнения нужно будет ввести пароль.
       <br> ${instructions}
     </div>
     <div class="contour-area" style="display: flex; justify-content: center; margin: 20px 0;">
       <div style="background: white; padding: 20px; border-radius: 20px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
-        <canvas id="drawingCanvas" width="${canvasSize}" height="${canvasSize}" style="border: 3px dashed #765fde; border-radius: 16px; cursor: crosshair; background: white; touch-action: none;"></canvas>
+        <canvas id="drawingCanvas" width="${canvasSize}" height="${canvasSize}" style="border: 3px dashed #37084f; border-radius: 16px; cursor: crosshair; background: white; touch-action: none;"></canvas>
       </div>
     </div>
     <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
@@ -5298,7 +5298,7 @@ function renderPhygitalColoring() {
       Обведи рисунок неведущей рукой. Если ты пишешь правой рукой, тогда обводи левой.
     </div>
     <div style="display: flex; justify-content: center; margin-top: 15px;">
-      <button id="saveAndPrintBtn" class="btn-secondary" style="width: auto; padding: 12px 32px; background: linear-gradient(135deg, #ff8811, #d97706); color: white;">💾 Сохранить и распечатать</button>
+      <button id="saveAndPrintBtn" class="btn-secondary" style="width: auto; padding: 12px 32px; background: linear-gradient(135deg, #c06c84, #6c5b7b); color: white;">💾 Сохранить и распечатать</button>
     </div>
   `;
   
@@ -5315,9 +5315,9 @@ function renderPhygitalColoring() {
   
   backgroundImage.onerror = () => {
     console.error("Не удалось загрузить картинку:", selectedImage.file);
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = "#fff0f0";
     ctx.fillRect(0, 0, canvasSize, canvasSize);
-    ctx.strokeStyle = "#765fde";
+    ctx.strokeStyle = "#37084f";
     ctx.lineWidth = 3;
     ctx.setLineDash([8, 8]);
     ctx.strokeRect(10, 10, canvasSize - 20, canvasSize - 20);
@@ -5328,7 +5328,7 @@ function renderPhygitalColoring() {
   backgroundImage.src = selectedImage.file;
   
   // Настройки для рисования поверх картинки
-  ctx.strokeStyle = "#ff8811";
+  ctx.strokeStyle = "#c06c84";
   ctx.lineWidth = brushSize;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
@@ -5339,10 +5339,10 @@ function renderPhygitalColoring() {
     if (window.currentBackgroundImage) {
       ctx.drawImage(window.currentBackgroundImage, 0, 0, canvasSize, canvasSize);
     } else {
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = "#fff0f0";
       ctx.fillRect(0, 0, canvasSize, canvasSize);
     }
-    ctx.strokeStyle = "#ff8811";
+    ctx.strokeStyle = "#c06c84";
     ctx.lineWidth = brushSize;
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
@@ -5457,7 +5457,7 @@ function renderPhygitalColoring() {
                     border-radius: 8px;
                   }
                   h3 {
-                    color: #765fde;
+                    color: #37084f;
                     margin-top: 20px;
                   }
                   p {
@@ -5618,8 +5618,8 @@ function renderMemorySequence() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Запомни порядок ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">Запомни порядок ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задание: Запомни порядок карточек. Через 3 секунды они закроются, перемешаются и откроются снова. 
       Нажимай на карточки в правильном порядке!
     </div>
@@ -5641,7 +5641,7 @@ function renderMemorySequence() {
     card.style.display = "flex";
     card.style.alignItems = "center";
     card.style.justifyContent = "center";
-    card.style.background = "#765fde";
+    card.style.background = "#37084f";
     card.style.borderRadius = "24px";
     card.style.cursor = "pointer";
     card.style.transition = "all 0.3s ease";
@@ -5655,7 +5655,7 @@ function renderMemorySequence() {
     
     cards.forEach(card => {
       card.innerHTML = "?";
-      card.style.background = "#765fde";
+      card.style.background = "#37084f";
       card.style.fontSize = "56px";
     });
     document.getElementById("memoryHint").innerHTML = "Карточки закрываются и перемешиваются...";
@@ -5680,7 +5680,7 @@ function renderMemorySequence() {
         
         cards.forEach(card => {
           card.innerHTML = `<img src="images/${card.dataset.value}" style="width: 80px; height: 80px; object-fit: contain;">`;
-          card.style.background = "#765fde";
+          card.style.background = "#37084f";
         });
         
         document.getElementById("memoryHint").innerHTML = "Теперь нажимай на карточки в том порядке, в котором они были ИЗНАЧАЛЬНО!";
@@ -5716,11 +5716,11 @@ function renderMemorySequence() {
               
               cards.forEach(c => {
                 if (parseInt(c.dataset.originalIndex) === expectedIndex) {
-                  c.style.background = "#ff8811";
+                  c.style.background = "#c06c84";
                   c.style.transform = "scale(1.05)";
                   setTimeout(() => {
                     if (gameActive) {
-                      c.style.background = "#765fde";
+                      c.style.background = "#37084f";
                       c.style.transform = "scale(1)";
                     }
                   }, 800);
@@ -5833,8 +5833,8 @@ function renderMemoryWhatMissing() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Что пропало? ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">Что пропало? ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задание: Запомни все карточки. Сейчас они закроются, одна исчезнет, а потом откроются снова. 
       Выбери, какая карточка пропала!
     </div>
@@ -5854,7 +5854,7 @@ function renderMemoryWhatMissing() {
     card.style.display = "flex";
     card.style.alignItems = "center";
     card.style.justifyContent = "center";
-    card.style.background = "#765fde";
+    card.style.background = "#37084f";
     card.style.borderRadius = "24px";
     card.style.cursor = "pointer";
     card.style.transition = "all 0.3s ease";
@@ -5869,7 +5869,7 @@ function renderMemoryWhatMissing() {
     
     const allCards = document.querySelectorAll(".memory-card");
     allCards.forEach(card => {
-      card.style.background = "#765fde";
+      card.style.background = "#37084f";
       card.innerHTML = "?";
       card.style.fontSize = "56px";
     });
@@ -5938,7 +5938,7 @@ function renderMemoryWhatMissing() {
           btn.style.padding = "12px 24px";
           btn.style.border = "2px solid #d5d5da";
           btn.style.borderRadius = "60px";
-          btn.style.background = "#ffffff";
+          btn.style.background = "#fff0f0";
           btn.style.cursor = "pointer";
           btn.style.transition = "all 0.2s ease";
           btn.style.minWidth = "80px";
@@ -5978,7 +5978,7 @@ function renderMemoryWhatMissing() {
           };
           btn.onmouseleave = () => {
             if (btn.style.background !== "#87d34c" && btn.style.background !== "#ea3117") {
-              btn.style.background = "#ffffff";
+              btn.style.background = "#fff0f0";
               btn.style.transform = "translateY(0)";
             }
           };
@@ -6002,7 +6002,7 @@ function renderMemoryQuiz() {
     quizTimeout = null;
   }
   
-  // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 30 вопросов о недавних событиях =====
+  // ===== ЛЁГКИЙ УРОВЕНЬ (1) - 30 вопросов о недавних событиях =====
   const questionsEasy = [
     "Что ты сегодня ел(а) на завтрак?",
     "Какого цвета твоя зубная щётка?",
@@ -6036,7 +6036,7 @@ function renderMemoryQuiz() {
     "Какую игру ты открывал(а) последней на телефоне?"
   ];
 
-  // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 30 вопросов о менее очевидных вещах =====
+  // ===== СРЕДНИЙ УРОВЕНЬ (2) - 30 вопросов о менее очевидных вещах =====
   const questionsMedium = [
     "Сколько ступенек на лестнице в твоём подъезде?",
     "Какого цвета занавески на кухне?",
@@ -6070,7 +6070,7 @@ function renderMemoryQuiz() {
     "Что ты слушал(а) в наушниках последний раз?"
   ];
 
-  // ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 30 вопросов о деталях из прошлого =====
+  // ===== СЛОЖНЫЙ УРОВЕНЬ (3) - 30 вопросов о деталях из прошлого =====
   const questionsHard = [
     "Сколько шагов от твоей кровати до двери в комнате?",
     "Какой узор на твоём постельном белье?",
@@ -6123,11 +6123,11 @@ function renderMemoryQuiz() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Мини-опрос ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Мини-опрос ${''.repeat(state.level)}</div>
     
     <div style="display: flex; justify-content: center; margin-bottom: 20px;">
       <div class="memory-sign" style="
-        background: linear-gradient(135deg, #FFD700, #ff8811, #ea3117);
+        background: linear-gradient(135deg, #FFD700, #c06c84, #ea3117);
         transform: rotate(-3deg);
         padding: 12px 28px;
         border-radius: 20px;
@@ -6143,10 +6143,10 @@ function renderMemoryQuiz() {
       </div>
     </div>
     
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
       Задание: Вспомни и напиши ответ. Здесь нет правильных или неправильных ответов — просто ответь честно!
     </div>
-    <div class="quiz-question" style="background: linear-gradient(135deg, #765fde15, #ff881115); padding: 30px; border-radius: 30px; margin: 20px 0; text-align: center;">
+    <div class="quiz-question" style="background: linear-gradient(135deg, #37084f15, #c06c8415); padding: 30px; border-radius: 30px; margin: 20px 0; text-align: center;">
       <div style="font-size: ${fontSize}; font-weight: 700; line-height: 1.4;">${question}</div>
     </div>
     <textarea id="quizAnswer" class="answer-input" placeholder="Напиши свой ответ здесь..." style="width: 100%; min-height: 150px; padding: 20px; font-size: 20px; border-radius: 20px; border: 2px solid #e0e0e0; resize: vertical; font-family: inherit; margin-top: 20px;"></textarea>
@@ -6210,7 +6210,7 @@ function renderMemoryQuiz() {
   });
 }
 
-// БЛОК 4. ФИДЖИТАЛ: ЗАПОМНИ НА СЛУХ (phygital_audio)
+// БЛОК 4. ЗАПОМНИ НА СЛУХ (phygital_audio)
 let audioTimeout = null;
 
 function renderPhygitalAudio() {
@@ -6220,20 +6220,20 @@ function renderPhygitalAudio() {
     audioTimeout = null;
   }
   
-  // ===== ЛЁГКИЙ УРОВЕНЬ (1⭐) - 20 простых слов, выбираем 4 =====
+  // ===== ЛЁГКИЙ УРОВЕНЬ (1) - 20 простых слов, выбираем 4 =====
   const wordsEasy = [
     "кот", "дом", "лес", "мяч", "сон", "день", "нос", "рот", "сад", "парк",
     "лук", "жук", "мяч", "меч", "пол", "год", "бег", "воз", "зуб", "суп"
   ];
   
-  // ===== СРЕДНИЙ УРОВЕНЬ (2⭐⭐) - 20 слов средней сложности, выбираем 6 =====
+  // ===== СРЕДНИЙ УРОВЕНЬ (2) - 20 слов средней сложности, выбираем 6 =====
   const wordsMedium = [
     "солнце", "цветок", "бабочка", "дерево", "машина", "комната", "радуга", "облако",
     "ветер", "дождик", "снежинка", "ромашка", "подруга", "учитель", "рисунок", "погода",
     "каникулы", "мороженое", "библиотека", "путешествие"
   ];
   
-  // ===== СЛОЖНЫЙ УРОВЕНЬ (3⭐⭐⭐) - 20 сложных слов, выбираем 8 =====
+  // ===== СЛОЖНЫЙ УРОВЕНЬ (3) - 20 сложных слов, выбираем 8 =====
   const wordsHard = [
     "велосипед", "компьютер", "телефон", "бинокль", "электричество", "достопримечательность", "фотография", "телевизор",
     "микроскоп", "конструктор", "расписание", "впечатление", "путешественник", "исследование", "изобретение", "поздравление",
@@ -6307,7 +6307,7 @@ function renderPhygitalAudio() {
       
       const word = selectedWords[currentWordIndex];
       if (statusSpan) {
-        statusSpan.innerHTML = `Слово ${currentWordIndex + 1} из ${selectedWords.length}: <strong style="color: #ff8811;">"${word}"</strong>`;
+        statusSpan.innerHTML = `Слово ${currentWordIndex + 1} из ${selectedWords.length}: <strong style="color: #c06c84;">"${word}"</strong>`;
       }
       
       const utterance = new SpeechSynthesisUtterance(word);
@@ -6361,30 +6361,30 @@ function renderPhygitalAudio() {
     }
     if (statusSpan) {
       statusSpan.innerHTML = "Нажми на кнопку, чтобы начать";
-      statusSpan.style.background = "#e8eaff";
-      statusSpan.style.color = "#765fde";
+      statusSpan.style.background = "#ffe8e8";
+      statusSpan.style.color = "#37084f";
     }
   }
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Фиджитал: Запомни на слух ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Запомни на слух ${''.repeat(state.level)}</div>
     
-    <div style="background: #fff0f0; border-left: 4px solid #ff6170; border-radius: 16px; padding: 14px 20px; margin-bottom: 15px; text-align: center; color: #2f2f45; font-weight: 500; box-shadow: 4px 4px 10px rgba(0,0,0,0.03), -2px -2px 6px rgba(255,255,255,0.7);">
-      🔐 Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+    <div style="background: #fff0f0; border-left: 4px solid #f8b195; border-radius: 16px; padding: 14px 20px; margin-bottom: 15px; text-align: center; color: #2f2f45; font-weight: 500; box-shadow: 4px 4px 10px rgba(0,0,0,0.03), -2px -2px 6px rgba(255,255,255,0.7);">
+      🔐 Это задание на бумажке! После выполнения нужно будет ввести пароль.
     </div>
     
-    <div class="audio-info" style="background: linear-gradient(135deg, #765fde15, #ff881115); padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: center;">
+    <div class="audio-info" style="background: linear-gradient(135deg, #37084f15, #c06c8415); padding: 20px; border-radius: 20px; margin-bottom: 20px; text-align: center;">
       <div style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">Слушай внимательно!</div>
       <div style="font-size: 14px; color: #666;">Будет произнесено <strong>${wordsCount}</strong> слов. Запомни их и запиши на листочек.</div>
     </div>
     
-    <div id="audioStatus" style="text-align: center; margin-bottom: 20px; padding: 15px; background: #e8eaff; border-radius: 16px; font-size: 16px; color: #765fde;">
+    <div id="audioStatus" style="text-align: center; margin-bottom: 20px; padding: 15px; background: #ffe8e8; border-radius: 16px; font-size: 16px; color: #37084f;">
       Нажми на кнопку, чтобы начать
     </div>
     
     <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-      <button id="speakBtn" class="btn-primary" style="width: auto; padding: 14px 32px; background: linear-gradient(135deg, #765fde, #ff8811);">🔊 Прослушать слова</button>
+      <button id="speakBtn" class="btn-primary" style="width: auto; padding: 14px 32px; background: linear-gradient(135deg, #37084f, #c06c84);">🔊 Прослушать слова</button>
       <button id="stopBtn" class="btn-secondary" style="width: auto; padding: 14px 32px; display: none;">Остановить</button>
     </div>
     
@@ -6474,7 +6474,7 @@ function renderReaction() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Реакция ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Реакция ${''.repeat(state.level)}</div>
     <div class="reaction-stats">
       <div>Попаданий: <span id="hitCount">0</span> / ${requiredHits}</div>
       <div>Время реакции: <span id="reactionTime">0</span> мс</div>
@@ -6540,7 +6540,7 @@ function renderReaction() {
       target.style.position = 'absolute';
       target.style.width = size + 'px';
       target.style.height = size + 'px';
-      target.style.backgroundColor = '#ff8811';
+      target.style.backgroundColor = '#c06c84';
       target.style.borderRadius = '50%';
       target.style.cursor = 'pointer';
       target.style.boxShadow = '0 0 15px rgba(255,136,17,0.8)';
@@ -6581,11 +6581,11 @@ function renderReaction() {
       
       target.onmouseenter = () => {
         target.style.transform = 'scale(1.1)';
-        target.style.boxShadow = '0 0 25px rgba(255,136,17,1)';
+        target.style.boxShadow = '0 0 25px rgb(240, 43, 86)';
       };
       target.onmouseleave = () => {
         target.style.transform = 'scale(1)';
-        target.style.boxShadow = '0 0 15px rgba(255,136,17,0.8)';
+        target.style.boxShadow = '0 0 15px rgba(216, 40, 243, 0.8)';
       };
       
       field.appendChild(target);
@@ -6686,12 +6686,12 @@ function renderFindWords() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Найди слово ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
+    <div class="task-title">Найди слово ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px;">
       Задача: В строке из букв спрятано слово. Найди его и нажми на ПЕРВУЮ букву слова!
     </div>
     <div class="findword-target" style="text-align: center; margin-bottom: 20px;">
-      Найди слово: <span class="target-word" style="background: linear-gradient(135deg, #ff8811, #d97706); color: white; padding: 8px 24px; border-radius: 40px; font-size: 28px;">${currentWord.toUpperCase()}</span>
+      Найди слово: <span class="target-word" style="background: linear-gradient(135deg, #c06c84, #6c5b7b); color: white; padding: 8px 24px; border-radius: 40px; font-size: 28px;">${currentWord.toUpperCase()}</span>
     </div>
     <div class="findword-grid" id="findwordGrid" style="background: white; border-radius: 24px; padding: 20px; display: flex; flex-direction: column; gap: 15px; margin: 20px 0; border: 2px solid #E5E7EB;">
       ${generatedLines.map((line, lineIdx) => `
@@ -6773,7 +6773,7 @@ function renderFindWords() {
     char.onmouseenter = () => {
       if (!found && !isAnswered && !char.classList.contains('found')) {
         char.style.transform = "scale(1.1)";
-        char.style.background = "#765fde";
+        char.style.background = "#37084f";
         char.style.color = "white";
       }
     };
@@ -6842,30 +6842,30 @@ function renderSchulte() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Таблица Шульте ${'⭐'.repeat(state.level)}</div>
-    <div class="task-description" style="background: #e8eaff; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
+    <div class="task-title">Таблица Шульте ${''.repeat(state.level)}</div>
+    <div class="task-description" style="background: #ffe8e8; padding: 15px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
       Нажимай на цифры по порядку от 1 до ${total}. 
       Чем быстрее, тем лучше! За ошибку +0.5 сек.
     </div>
     
-    <div class="schulte-stats" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; background: linear-gradient(135deg, #765fde15, #ff881115); padding: 15px 20px; border-radius: 60px; margin-bottom: 25px;">
+    <div class="schulte-stats" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; background: linear-gradient(135deg, #37084f15, #c06c8415); padding: 15px 20px; border-radius: 60px; margin-bottom: 25px;">
       <div class="schulte-timer" style="display: flex; align-items: center; gap: 8px; background: white; padding: 8px 20px; border-radius: 40px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
         <span style="font-size: 24px;"></span>
         <span style="font-weight: 600;">Время:</span>
-        <span id="timerValue" style="font-size: 28px; font-weight: 800; color: #ff8811; font-family: monospace;">0.00</span>
+        <span id="timerValue" style="font-size: 28px; font-weight: 800; color: #c06c84; font-family: monospace;">0.00</span>
         <span>сек</span>
       </div>
       
       <div class="schulte-target" style="display: flex; align-items: center; gap: 8px; background: white; padding: 8px 20px; border-radius: 40px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
         <span style="font-size: 24px;"></span>
         <span style="font-weight: 600;">Найди:</span>
-        <span id="currentTarget" style="font-size: 32px; font-weight: 800; color: #765fde; min-width: 40px; text-align: center;">1</span>
+        <span id="currentTarget" style="font-size: 32px; font-weight: 800; color: #37084f; min-width: 40px; text-align: center;">1</span>
       </div>
       
       <div class="schulte-record" style="display: flex; align-items: center; gap: 8px; background: white; padding: 8px 20px; border-radius: 40px; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
         <span style="font-size: 24px;"></span>
         <span style="font-weight: 600;">Рекорд:</span>
-        <span id="recordValue" style="font-size: 20px; font-weight: 700; color: #ff8811;">${savedRecord ? savedRecord + ' сек' : '—'}</span>
+        <span id="recordValue" style="font-size: 20px; font-weight: 700; color: #c06c84;">${savedRecord ? savedRecord + ' сек' : '—'}</span>
       </div>
     </div>
     
@@ -6903,7 +6903,7 @@ function renderSchulte() {
     
     .schulte-cell {
       aspect-ratio: 1;
-      background: linear-gradient(135deg, #ffffff, #f8f9ff);
+      background: linear-gradient(135deg, #fff0f0, #f8f9ff);
       border-radius: 20px;
       display: flex;
       align-items: center;
@@ -6921,8 +6921,8 @@ function renderSchulte() {
     
     .schulte-cell:hover {
       transform: scale(1.08);
-      background: linear-gradient(135deg, #765fde20, #ff881120);
-      border-color: #765fde;
+      background: linear-gradient(135deg, #37084f20, #c06c8420);
+      border-color: #37084f;
     }
     
     .schulte-cell.correct {
@@ -6960,7 +6960,7 @@ function renderSchulte() {
     
     @keyframes borderGlow {
       0% { box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8); }
-      50% { box-shadow: 6px 6px 12px rgba(118,95,222,0.3), -3px -3px 10px rgba(255,255,255,0.8); border-color: #ff8811; }
+      50% { box-shadow: 6px 6px 12px rgba(118,95,222,0.3), -3px -3px 10px rgba(255,255,255,0.8); border-color: #c06c84; }
       100% { box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8); }
     }
     
@@ -6997,7 +6997,7 @@ function renderSchulte() {
     if (!current || parseFloat(time) < parseFloat(current)) {
       localStorage.setItem(recordKey, time);
       if (recordSpan) {
-        recordSpan.innerHTML = time + ' сек ⭐';
+        recordSpan.innerHTML = time + ' сек ';
         recordSpan.style.animation = 'schulteCelebrate 0.5s ease';
         setTimeout(() => {
           recordSpan.style.animation = '';
@@ -7097,7 +7097,7 @@ function renderSchulte() {
             bottom: 80px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(135deg, #ff8811, #d97706);
+            background: linear-gradient(135deg, #c06c84, #6c5b7b);
             color: white;
             padding: 10px 20px;
             border-radius: 40px;
@@ -7132,11 +7132,11 @@ function renderSchulte() {
 
 // ===== ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ ЗВЁЗД =====
 function getStars() {
-  const stars = { 1: '⭐', 2: '⭐⭐', 3: '⭐⭐⭐' };
-  return stars[state.level] || '⭐';
+  const stars = { 1: '', 2: '', 3: '' };
+  return stars[state.level] || '';
 }
 
-// ===== ФИДЖИТАЛ: ЗАМЕР СКОРОСТИ ЧТЕНИЯ =====
+// ===== ЗАМЕР СКОРОСТИ ЧТЕНИЯ =====
 let readingSpeedTimeout = null;
 let readingSpeedTimer = null;
 
@@ -7317,7 +7317,7 @@ function renderReadingSpeed() {
               const savedRecord = localStorage.getItem(`readingspeed_record_${state.level}`);
               recordBadge.innerHTML = savedRecord ? `Рекорд: ${savedRecord} слов/мин` : 'Попробуй побить рекорд!';
               recordBadge.style.background = '#eae6ff';
-              recordBadge.style.color = '#765fde';
+              recordBadge.style.color = '#37084f';
             }
             
             document.getElementById('resultPanel').style.display = 'block';
@@ -7352,24 +7352,24 @@ function renderReadingSpeed() {
   
   gameArea.innerHTML = `
     ${renderHUD()}
-    <div class="task-title">Фиджитал: Замер скорости чтения ${'⭐'.repeat(state.level)}</div>
+    <div class="task-title">Замер скорости чтения ${''.repeat(state.level)}</div>
     
     <div class="phygital-hint" style="background: #fef3c7; padding: 12px; border-radius: 12px; margin-bottom: 15px; text-align: center;">
-      Это фиджитал-задание! После выполнения нужно будет ввести родительский пароль.
+      Возьми листочек и ручку!
     </div>
     
-    <div style="background: linear-gradient(135deg, #765fde15, #ff881115); border-radius: 20px; padding: 15px; margin-bottom: 20px;">
+    <div style="background: linear-gradient(135deg, #37084f15, #c06c8415); border-radius: 20px; padding: 15px; margin-bottom: 20px;">
       <div style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">${selectedText.title}</div>
       <div style="font-size: 14px; color: #666;">Объём текста: примерно ${selectedText.wordCount} слов</div>
     </div>
     
     <div style="background: white; border-radius: 20px; padding: 15px; margin-bottom: 20px; text-align: center; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
-      <div style="font-size: 14px; font-weight: 600; color: #765fde;">ВРЕМЯ ЧТЕНИЯ</div>
-      <div id="timerDisplay" style="font-size: 64px; font-weight: 800; color: #ff8811; font-family: monospace; line-height: 1.2;">1:00</div>
+      <div style="font-size: 14px; font-weight: 600; color: #37084f;">ВРЕМЯ ЧТЕНИЯ</div>
+      <div id="timerDisplay" style="font-size: 64px; font-weight: 800; color: #c06c84; font-family: monospace; line-height: 1.2;">1:00</div>
       <div style="background: #e5e7eb; height: 8px; border-radius: 10px; margin-top: 10px; overflow: hidden;">
-        <div id="timerProgressFill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #87d34c, #ff8811); transition: width 0.3s ease;"></div>
+        <div id="timerProgressFill" style="width: 0%; height: 100%; background: linear-gradient(90deg, #87d34c, #c06c84); transition: width 0.3s ease;"></div>
       </div>
-      <div id="timerStatus" style="margin-top: 10px; font-size: 13px; color: #765fde;">Нажми «Старт» и читай вслух</div>
+      <div id="timerStatus" style="margin-top: 10px; font-size: 13px; color: #37084f;">Нажми «Старт» и читай вслух</div>
     </div>
     
     <div style="background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; max-height: 400px; overflow-y: auto; box-shadow: 6px 6px 12px rgba(0,0,0,0.05), -3px -3px 10px rgba(255,255,255,0.8);">
@@ -7380,9 +7380,9 @@ function renderReadingSpeed() {
       <button id="startReadingBtn" class="btn-primary" style="width: auto; padding: 12px 32px; background: linear-gradient(135deg, #87d34c, #57a718);">СТАРТ</button>
     </div>
     
-    <div id="resultPanel" style="display: none; background: linear-gradient(135deg, #e8eaff, #f8f9ff); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px;">
-      <h3 style="color: #765fde; margin-bottom: 15px;">Результат замера</h3>
-      <div style="font-size: 48px; font-weight: 800; color: #ff8811;" id="speedResult">0</div>
+    <div id="resultPanel" style="display: none; background: linear-gradient(135deg, #ffe8e8, #f8f9ff); border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 20px;">
+      <h3 style="color: #37084f; margin-bottom: 15px;">Результат замера</h3>
+      <div style="font-size: 48px; font-weight: 800; color: #c06c84;" id="speedResult">0</div>
       <div style="font-size: 14px; color: #666; margin-bottom: 15px;">слов в минуту</div>
       <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-bottom: 15px;">
         <div><span style="font-weight: 600;">Прочитано слов:</span> <span id="wordsReadResult">0</span></div>
@@ -7476,7 +7476,7 @@ function renderReadingSpeed() {
     if (timerStatus) {
       timerStatus.innerHTML = 'Нажми «Старт» и читай вслух';
       timerStatus.style.background = '';
-      timerStatus.style.color = '#765fde';
+      timerStatus.style.color = '#37084f';
     }
     
     disableWordSelection();

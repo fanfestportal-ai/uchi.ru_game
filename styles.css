@@ -30,17 +30,17 @@
 /* ===== CSS-ПЕРЕМЕННЫЕ ===== */
 :root {
   /* ЦВЕТА */
-  --primary-base: #765fde;
-  --primary-hover: #634ad6;
-  --primary-active: #5137c7;
+  --primary-base: #37084f;
+  --primary-hover: #37084f;
+  --primary-active: #37084f;
   --primary-soft: #eae6ff;
   
   --success-base: #87d34c;
   --error-base: #ea3117;
   --error-hover: #d5260e;
   
-  --yellow-base: #fbcc3c;
-  --orange-base: #ff8811;
+  --yellow-base: #c06c84;
+  --orange-base: #f8b195;
   
   --bg-page: #f5f6f7;
   --bg-surface: #ffffff;
@@ -356,7 +356,7 @@ body {
   font-weight: 800;
   text-align: center;
   margin-bottom: var(--space-xl);
-  background: linear-gradient(135deg, var(--primary-base), #5B6BFF);
+  background: linear-gradient(135deg, var(--primary-base), #37084f);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -972,7 +972,7 @@ body {
 .result-screen h2 {
   font-size: var(--font-size-display);
   margin-bottom: var(--space-xl);
-  background: linear-gradient(135deg, var(--primary-base), #5B6BFF);
+  background: linear-gradient(135deg, var(--primary-base), #37084f);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1629,13 +1629,13 @@ body {
     margin-top: 4px;
   }
 }
-/* ===== ФИДЖИТАЛ: ЗАМЕР СКОРОСТИ ЧТЕНИЯ ===== */
+/* ===== ЗАМЕР СКОРОСТИ ЧТЕНИЯ ===== */
 .reading-speed-container {
   width: 100%;
 }
 
 .reading-speed-info {
-  background: linear-gradient(135deg, #765fde15, #ff881115);
+  background: linear-gradient(135deg, #37084f15, #f8b19515);
   border-radius: 20px;
   padding: 15px;
   margin-bottom: 20px;
